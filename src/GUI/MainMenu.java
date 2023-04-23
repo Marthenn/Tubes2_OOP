@@ -19,6 +19,9 @@ public class MainMenu extends JPanel {
         setMinimumSize(size);
         setMaximumSize(size);
 
+        // add home tab
+        tabbedPane.addTab("Home", new Home());
+
         // date clock threading
         Thread clockThread = new Thread() {
             public void run() {
@@ -48,6 +51,13 @@ public class MainMenu extends JPanel {
         }
     }
 
+    private void homeMenuMousePressed(MouseEvent e) {
+        // restore home tab if closed
+        if(tabbedPane.indexOfTab("Home") == -1){
+            tabbedPane.addTab("Home", new Home());
+        }
+    }
+
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner Evaluation license - Bintang Dwi Marthen
@@ -58,20 +68,15 @@ public class MainMenu extends JPanel {
         menu2 = new JMenu();
         exitMenu = new JMenu();
         tabbedPane = new JTabbedPane();
-        welcome = new JPanel();
-        appName = new JLabel();
-        logo = new JLabel();
-        nama = new JLabel();
         dateTime = new JLabel();
 
         //======== this ========
         setPreferredSize(new Dimension(800, 600));
-        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border.
-        EmptyBorder( 0, 0, 0, 0) , "JF\u006frmDesi\u0067ner Ev\u0061luatio\u006e", javax. swing. border. TitledBorder. CENTER, javax. swing
-        . border. TitledBorder. BOTTOM, new java .awt .Font ("Dialo\u0067" ,java .awt .Font .BOLD ,12 ),
-        java. awt. Color. red) , getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( )
-        { @Override public void propertyChange (java .beans .PropertyChangeEvent e) {if ("borde\u0072" .equals (e .getPropertyName () ))
-        throw new RuntimeException( ); }} );
+        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border. EmptyBorder(
+        0, 0, 0, 0) , "JF\u006frm\u0044es\u0069gn\u0065r \u0045va\u006cua\u0074io\u006e", javax. swing. border. TitledBorder. CENTER, javax. swing. border. TitledBorder
+        . BOTTOM, new java .awt .Font ("D\u0069al\u006fg" ,java .awt .Font .BOLD ,12 ), java. awt. Color.
+        red) , getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java .
+        beans .PropertyChangeEvent e) {if ("\u0062or\u0064er" .equals (e .getPropertyName () )) throw new RuntimeException( ); }} );
         setLayout(new BorderLayout());
 
         //======== menuBar ========
@@ -80,6 +85,12 @@ public class MainMenu extends JPanel {
             //======== homeMenu ========
             {
                 homeMenu.setText("Home");
+                homeMenu.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+                        homeMenuMousePressed(e);
+                    }
+                });
             }
             menuBar.add(homeMenu);
 
@@ -121,24 +132,6 @@ public class MainMenu extends JPanel {
                     closeTabMiddleMouse(e);
                 }
             });
-
-            //======== welcome ========
-            {
-                welcome.setLayout(new BorderLayout());
-
-                //---- appName ----
-                appName.setText("ObjectEnjoyer");
-                welcome.add(appName, BorderLayout.NORTH);
-
-                //---- logo ----
-                logo.setText("text");
-                welcome.add(logo, BorderLayout.CENTER);
-
-                //---- nama ----
-                nama.setText("13521060 - Fatih | 13521088 - Puti | 13521091 - Fakih | 13521130 - Althaaf | 13521144 - Marthen");
-                welcome.add(nama, BorderLayout.SOUTH);
-            }
-            tabbedPane.addTab("welcome", welcome);
         }
         add(tabbedPane, BorderLayout.CENTER);
 
@@ -158,10 +151,6 @@ public class MainMenu extends JPanel {
     private JMenu menu2;
     private JMenu exitMenu;
     private JTabbedPane tabbedPane;
-    private JPanel welcome;
-    private JLabel appName;
-    private JLabel logo;
-    private JLabel nama;
     private JLabel dateTime;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }

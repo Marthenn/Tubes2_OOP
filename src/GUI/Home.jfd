@@ -1,0 +1,30 @@
+JFDML JFormDesigner: "8.0.3.0.246" Java: "17.0.6" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+			name: "this"
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "appName"
+				"text": "ObjectEnjoyer - HEY"
+			}, new FormLayoutConstraints( class java.lang.String ) {
+				"value": "North"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "logo"
+			}, new FormLayoutConstraints( class java.lang.String ) {
+				"value": "Center"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "namaKelompok"
+				"text": "13521060 - Fatih | 13521088 - Puti | 13521091 - Fakih | 13521130 - Althaaf | 13521144 - Marthen"
+			}, new FormLayoutConstraints( class java.lang.String ) {
+				"value": "South"
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 400, 300 )
+		} )
+	}
+}

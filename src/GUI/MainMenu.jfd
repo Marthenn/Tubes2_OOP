@@ -11,6 +11,7 @@ new FormModel {
 				add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
 					name: "homeMenu"
 					"text": "Home"
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mousePressed", "homeMenuMousePressed", true ) )
 				} )
 				add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
 					name: "menu1"
@@ -35,29 +36,6 @@ new FormModel {
 			add( new FormContainer( "javax.swing.JTabbedPane", new FormLayoutManager( class javax.swing.JTabbedPane ) ) {
 				name: "tabbedPane"
 				addEvent( new FormEvent( "java.awt.event.MouseListener", "mousePressed", "closeTabMiddleMouse", true ) )
-				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
-					name: "welcome"
-					add( new FormComponent( "javax.swing.JLabel" ) {
-						name: "appName"
-						"text": "ObjectEnjoyer"
-					}, new FormLayoutConstraints( class java.lang.String ) {
-						"value": "North"
-					} )
-					add( new FormComponent( "javax.swing.JLabel" ) {
-						name: "logo"
-						"text": "text"
-					}, new FormLayoutConstraints( class java.lang.String ) {
-						"value": "Center"
-					} )
-					add( new FormComponent( "javax.swing.JLabel" ) {
-						name: "nama"
-						"text": "13521060 - Fatih | 13521088 - Puti | 13521091 - Fakih | 13521130 - Althaaf | 13521144 - Marthen"
-					}, new FormLayoutConstraints( class java.lang.String ) {
-						"value": "South"
-					} )
-				}, new FormLayoutConstraints( null ) {
-					"title": "welcome"
-				} )
 			}, new FormLayoutConstraints( class java.lang.String ) {
 				"value": "Center"
 			} )
@@ -69,8 +47,8 @@ new FormModel {
 				"value": "South"
 			} )
 		}, new FormLayoutConstraints( null ) {
-			"location": new java.awt.Point( 190, 130 )
-			"size": new java.awt.Dimension( 400, 300 )
+			"location": new java.awt.Point( 125, 70 )
+			"size": new java.awt.Dimension( 800, 600 )
 		} )
 	}
 }
