@@ -52,10 +52,43 @@ public class MainMenu extends JPanel {
     }
 
     private void homeMenuMousePressed(MouseEvent e) {
-        // restore home tab if closed
         if(tabbedPane.indexOfTab("Home") == -1){
             tabbedPane.addTab("Home", new Home());
         }
+        tabbedPane.setSelectedIndex(tabbedPane.indexOfTab("Home"));
+    }
+
+    private void cashierMenuMousePressed(MouseEvent e) {
+        tabbedPane.addTab("Cashier", new Cashier());
+        tabbedPane.setSelectedIndex(tabbedPane.getTabCount()-1);
+    }
+
+    private void inventoryMenuMousePressed(MouseEvent e) {
+        if(tabbedPane.indexOfTab("Inventory") == -1){
+            tabbedPane.addTab("Inventory", new Inventory());
+        }
+        tabbedPane.setSelectedIndex(tabbedPane.indexOfTab("Inventory"));
+    }
+
+    private void registerMenuMousePressed(MouseEvent e) {
+        if(tabbedPane.indexOfTab("Register") == -1){
+            tabbedPane.addTab("Register", new Register());
+        }
+        tabbedPane.setSelectedIndex(tabbedPane.indexOfTab("Register"));
+    }
+
+    private void updateMenuMousePressed(MouseEvent e) {
+        if(tabbedPane.indexOfTab("Update") == -1){
+            tabbedPane.addTab("Update", new Update());
+        }
+        tabbedPane.setSelectedIndex(tabbedPane.indexOfTab("Update"));
+    }
+
+    private void settingMenuMousePressed(MouseEvent e) {
+        if(tabbedPane.indexOfTab("Setting") == -1){
+            tabbedPane.addTab("Setting", new Setting());
+        }
+        tabbedPane.setSelectedIndex(tabbedPane.indexOfTab("Setting"));
     }
 
     private void initComponents() {
@@ -63,20 +96,26 @@ public class MainMenu extends JPanel {
         // Generated using JFormDesigner Evaluation license - Bintang Dwi Marthen
         menuBar = new JMenuBar();
         homeMenu = new JMenu();
-        menu1 = new JMenu();
-        menuItem1 = new JMenuItem();
-        menu2 = new JMenu();
+        storeMenu = new JMenu();
+        cashierMenu = new JMenuItem();
+        inventoryMenu = new JMenuItem();
+        memberMenu = new JMenu();
+        registerMenu = new JMenuItem();
+        updateMenu = new JMenuItem();
+        settingMenu = new JMenu();
         exitMenu = new JMenu();
         tabbedPane = new JTabbedPane();
         dateTime = new JLabel();
 
         //======== this ========
         setPreferredSize(new Dimension(800, 600));
-        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border. EmptyBorder(
-        0, 0, 0, 0) , "JF\u006frm\u0044es\u0069gn\u0065r \u0045va\u006cua\u0074io\u006e", javax. swing. border. TitledBorder. CENTER, javax. swing. border. TitledBorder
-        . BOTTOM, new java .awt .Font ("D\u0069al\u006fg" ,java .awt .Font .BOLD ,12 ), java. awt. Color.
-        red) , getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java .
-        beans .PropertyChangeEvent e) {if ("\u0062or\u0064er" .equals (e .getPropertyName () )) throw new RuntimeException( ); }} );
+        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax
+        . swing. border. EmptyBorder( 0, 0, 0, 0) , "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn", javax. swing
+        . border. TitledBorder. CENTER, javax. swing. border. TitledBorder. BOTTOM, new java .awt .
+        Font ("Dia\u006cog" ,java .awt .Font .BOLD ,12 ), java. awt. Color. red
+        ) , getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override
+        public void propertyChange (java .beans .PropertyChangeEvent e) {if ("\u0062ord\u0065r" .equals (e .getPropertyName (
+        ) )) throw new RuntimeException( ); }} );
         setLayout(new BorderLayout());
 
         //======== menuBar ========
@@ -94,21 +133,69 @@ public class MainMenu extends JPanel {
             }
             menuBar.add(homeMenu);
 
-            //======== menu1 ========
+            //======== storeMenu ========
             {
-                menu1.setText("Member");
+                storeMenu.setText("Store");
 
-                //---- menuItem1 ----
-                menuItem1.setText("Register");
-                menu1.add(menuItem1);
+                //---- cashierMenu ----
+                cashierMenu.setText("Cashier");
+                cashierMenu.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+                        cashierMenuMousePressed(e);
+                    }
+                });
+                storeMenu.add(cashierMenu);
+
+                //---- inventoryMenu ----
+                inventoryMenu.setText("Inventory");
+                inventoryMenu.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+                        inventoryMenuMousePressed(e);
+                    }
+                });
+                storeMenu.add(inventoryMenu);
             }
-            menuBar.add(menu1);
+            menuBar.add(storeMenu);
 
-            //======== menu2 ========
+            //======== memberMenu ========
             {
-                menu2.setText("text");
+                memberMenu.setText("Member");
+
+                //---- registerMenu ----
+                registerMenu.setText("Register");
+                registerMenu.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+                        registerMenuMousePressed(e);
+                    }
+                });
+                memberMenu.add(registerMenu);
+
+                //---- updateMenu ----
+                updateMenu.setText("Update");
+                updateMenu.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+                        updateMenuMousePressed(e);
+                    }
+                });
+                memberMenu.add(updateMenu);
             }
-            menuBar.add(menu2);
+            menuBar.add(memberMenu);
+
+            //======== settingMenu ========
+            {
+                settingMenu.setText("Setting");
+                settingMenu.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+                        settingMenuMousePressed(e);
+                    }
+                });
+            }
+            menuBar.add(settingMenu);
 
             //======== exitMenu ========
             {
@@ -146,9 +233,13 @@ public class MainMenu extends JPanel {
     // Generated using JFormDesigner Evaluation license - Bintang Dwi Marthen
     private JMenuBar menuBar;
     private JMenu homeMenu;
-    private JMenu menu1;
-    private JMenuItem menuItem1;
-    private JMenu menu2;
+    private JMenu storeMenu;
+    private JMenuItem cashierMenu;
+    private JMenuItem inventoryMenu;
+    private JMenu memberMenu;
+    private JMenuItem registerMenu;
+    private JMenuItem updateMenu;
+    private JMenu settingMenu;
     private JMenu exitMenu;
     private JTabbedPane tabbedPane;
     private JLabel dateTime;
