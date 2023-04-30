@@ -1,0 +1,247 @@
+/*
+ * Created by JFormDesigner on Sun Apr 23 04:42:03 WIB 2023
+ */
+
+package GUI;
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+/**
+ * @author Marthen
+ */
+public class MainMenu extends JPanel {
+    public MainMenu() {
+        initComponents();
+        Dimension size = new Dimension(800, 600);
+        setPreferredSize(size);
+        setMinimumSize(size);
+        setMaximumSize(size);
+
+        // add home tab
+        tabbedPane.addTab("Home", new Home());
+
+        // date clock threading
+        Thread clockThread = new Thread() {
+            public void run() {
+                try {
+                    while (true) {
+                        dateTime.setText(new java.util.Date().toString());
+                        sleep(1000);
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        clockThread.start();
+    }
+
+    private void exitMenuMousePressed(MouseEvent e) {
+        System.exit(0);
+    }
+
+    private void closeTabMiddleMouse(MouseEvent e) {
+        if(e.getButton() == MouseEvent.BUTTON2){
+            int tabIdx = tabbedPane.indexAtLocation(e.getX(),e.getY());
+            if (tabIdx >= 0) {
+                tabbedPane.removeTabAt(tabIdx);
+            }
+        }
+    }
+
+    private void homeMenuMousePressed(MouseEvent e) {
+        if(tabbedPane.indexOfTab("Home") == -1){
+            tabbedPane.addTab("Home", new Home());
+        }
+        tabbedPane.setSelectedIndex(tabbedPane.indexOfTab("Home"));
+    }
+
+    private void cashierMenuMousePressed(MouseEvent e) {
+        tabbedPane.addTab("Cashier", new Cashier());
+        tabbedPane.setSelectedIndex(tabbedPane.getTabCount()-1);
+    }
+
+    private void inventoryMenuMousePressed(MouseEvent e) {
+        if(tabbedPane.indexOfTab("Inventory") == -1){
+            tabbedPane.addTab("Inventory", new Inventory());
+        }
+        tabbedPane.setSelectedIndex(tabbedPane.indexOfTab("Inventory"));
+    }
+
+    private void registerMenuMousePressed(MouseEvent e) {
+        if(tabbedPane.indexOfTab("Register") == -1){
+            tabbedPane.addTab("Register", new Register());
+        }
+        tabbedPane.setSelectedIndex(tabbedPane.indexOfTab("Register"));
+    }
+
+    private void updateMenuMousePressed(MouseEvent e) {
+        if(tabbedPane.indexOfTab("Update") == -1){
+            tabbedPane.addTab("Update", new Update());
+        }
+        tabbedPane.setSelectedIndex(tabbedPane.indexOfTab("Update"));
+    }
+
+    private void settingMenuMousePressed(MouseEvent e) {
+        if(tabbedPane.indexOfTab("Setting") == -1){
+            tabbedPane.addTab("Setting", new Setting());
+        }
+        tabbedPane.setSelectedIndex(tabbedPane.indexOfTab("Setting"));
+    }
+
+    private void initComponents() {
+        // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
+        // Generated using JFormDesigner Evaluation license - Bintang Dwi Marthen
+        menuBar = new JMenuBar();
+        homeMenu = new JMenu();
+        storeMenu = new JMenu();
+        cashierMenu = new JMenuItem();
+        inventoryMenu = new JMenuItem();
+        memberMenu = new JMenu();
+        registerMenu = new JMenuItem();
+        updateMenu = new JMenuItem();
+        settingMenu = new JMenu();
+        exitMenu = new JMenu();
+        tabbedPane = new JTabbedPane();
+        dateTime = new JLabel();
+
+        //======== this ========
+        setPreferredSize(new Dimension(800, 600));
+        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax
+        . swing. border. EmptyBorder( 0, 0, 0, 0) , "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn", javax. swing
+        . border. TitledBorder. CENTER, javax. swing. border. TitledBorder. BOTTOM, new java .awt .
+        Font ("Dia\u006cog" ,java .awt .Font .BOLD ,12 ), java. awt. Color. red
+        ) , getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override
+        public void propertyChange (java .beans .PropertyChangeEvent e) {if ("\u0062ord\u0065r" .equals (e .getPropertyName (
+        ) )) throw new RuntimeException( ); }} );
+        setLayout(new BorderLayout());
+
+        //======== menuBar ========
+        {
+
+            //======== homeMenu ========
+            {
+                homeMenu.setText("Home");
+                homeMenu.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+                        homeMenuMousePressed(e);
+                    }
+                });
+            }
+            menuBar.add(homeMenu);
+
+            //======== storeMenu ========
+            {
+                storeMenu.setText("Store");
+
+                //---- cashierMenu ----
+                cashierMenu.setText("Cashier");
+                cashierMenu.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+                        cashierMenuMousePressed(e);
+                    }
+                });
+                storeMenu.add(cashierMenu);
+
+                //---- inventoryMenu ----
+                inventoryMenu.setText("Inventory");
+                inventoryMenu.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+                        inventoryMenuMousePressed(e);
+                    }
+                });
+                storeMenu.add(inventoryMenu);
+            }
+            menuBar.add(storeMenu);
+
+            //======== memberMenu ========
+            {
+                memberMenu.setText("Member");
+
+                //---- registerMenu ----
+                registerMenu.setText("Register");
+                registerMenu.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+                        registerMenuMousePressed(e);
+                    }
+                });
+                memberMenu.add(registerMenu);
+
+                //---- updateMenu ----
+                updateMenu.setText("Update");
+                updateMenu.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+                        updateMenuMousePressed(e);
+                    }
+                });
+                memberMenu.add(updateMenu);
+            }
+            menuBar.add(memberMenu);
+
+            //======== settingMenu ========
+            {
+                settingMenu.setText("Setting");
+                settingMenu.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+                        settingMenuMousePressed(e);
+                    }
+                });
+            }
+            menuBar.add(settingMenu);
+
+            //======== exitMenu ========
+            {
+                exitMenu.setText("Exit");
+                exitMenu.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+                        exitMenuMousePressed(e);
+                    }
+                });
+            }
+            menuBar.add(exitMenu);
+        }
+        add(menuBar, BorderLayout.NORTH);
+
+        //======== tabbedPane ========
+        {
+            tabbedPane.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    closeTabMiddleMouse(e);
+                }
+            });
+        }
+        add(tabbedPane, BorderLayout.CENTER);
+
+        //---- dateTime ----
+        dateTime.setText("text");
+        dateTime.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+        add(dateTime, BorderLayout.SOUTH);
+        // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
+    }
+
+    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
+    // Generated using JFormDesigner Evaluation license - Bintang Dwi Marthen
+    private JMenuBar menuBar;
+    private JMenu homeMenu;
+    private JMenu storeMenu;
+    private JMenuItem cashierMenu;
+    private JMenuItem inventoryMenu;
+    private JMenu memberMenu;
+    private JMenuItem registerMenu;
+    private JMenuItem updateMenu;
+    private JMenu settingMenu;
+    private JMenu exitMenu;
+    private JTabbedPane tabbedPane;
+    private JLabel dateTime;
+    // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
+}
