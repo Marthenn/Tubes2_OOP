@@ -4,32 +4,69 @@
 
 package GUI;
 
-import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 import javax.swing.*;
 
 /**
  * @author Marthen
  */
 public class Setting extends JPanel {
+    private JButton saveButton;
+    private JFileChooser fileChooser;
+    private JRadioButton objRadioButton, xmlRadioButton, jsonRadioButton;
+    private JLabel fileFormat;
+
     public Setting() {
         initComponents();
     }
 
     private void initComponents() {
-        // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
-        // Generated using JFormDesigner Evaluation license - Bintang Dwi Marthen
+        // create the JFileChooser component
+        fileChooser = new JFileChooser();
 
-        //======== this ========
-        setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax . swing. border .EmptyBorder ( 0
-        , 0 ,0 , 0) ,  "JF\u006frmDes\u0069gner \u0045valua\u0074ion" , javax. swing .border . TitledBorder. CENTER ,javax . swing. border .TitledBorder . BOTTOM
-        , new java. awt .Font ( "D\u0069alog", java .awt . Font. BOLD ,12 ) ,java . awt. Color .red ) ,
-         getBorder () ) );  addPropertyChangeListener( new java. beans .PropertyChangeListener ( ){ @Override public void propertyChange (java . beans. PropertyChangeEvent e
-        ) { if( "\u0062order" .equals ( e. getPropertyName () ) )throw new RuntimeException( ) ;} } );
-        setLayout(new BorderLayout());
-        // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
+        // create label for file format
+        JLabel fileFormat = new JLabel("File Format:");
+
+        // create the radio button group
+        ButtonGroup buttonGroup = new ButtonGroup();
+
+        // create the radio buttons
+        JRadioButton objRadioButton = new JRadioButton("Object");
+        JRadioButton xmlRadioButton = new JRadioButton("XML");
+        JRadioButton jsonRadioButton = new JRadioButton("JSON");
+
+        // add the radio buttons to the group
+        buttonGroup.add(objRadioButton);
+        buttonGroup.add(xmlRadioButton);
+        buttonGroup.add(jsonRadioButton);
+
+        // create the button to trigger the file chooser
+        saveButton = new JButton("Configure Save Location");
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // open the file chooser dialog
+                int result = fileChooser.showSaveDialog(Setting.this);
+
+                // TODO: check if file > 1 -> folder
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    // get the selected file
+                    File selectedFile = fileChooser.getSelectedFile();
+
+                    // TODO: truly saving file
+                }
+            }
+        });
+
+        // add the radio buttons and save button to the panel
+        add(fileFormat);
+        add(objRadioButton);
+        add(xmlRadioButton);
+        add(jsonRadioButton);
+        add(saveButton);
+        // TODO: plugin setting
     }
-
-    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
-    // Generated using JFormDesigner Evaluation license - Bintang Dwi Marthen
-    // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }
+

@@ -7,9 +7,6 @@ package GUI;
 import java.awt.*;
 import javax.swing.*;
 
-/**
- * @author Marthen
- */
 public class Home extends JPanel {
     public Home() {
         initComponents();
@@ -17,42 +14,50 @@ public class Home extends JPanel {
         setPreferredSize(size);
         setMinimumSize(size);
         setMaximumSize(size);
-        
+
         // set logo
-        logo.setIcon(new ImageIcon("img\\placeholder.jpg"));
+        logo.setIcon(new ImageIcon("app/src/main/java/GUI/ObjectEnjoyer_Logo.png"));
     }
 
     private void initComponents() {
-        // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
+        // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         // Generated using JFormDesigner Evaluation license - Bintang Dwi Marthen
         appName = new JLabel();
         logo = new JLabel();
         namaKelompok = new JLabel();
 
         //======== this ========
-        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border. EmptyBorder
-        ( 0, 0, 0, 0) , "JF\u006frmDesi\u0067ner Ev\u0061luatio\u006e", javax. swing. border. TitledBorder. CENTER, javax. swing. border
-        . TitledBorder. BOTTOM, new java .awt .Font ("Dialo\u0067" ,java .awt .Font .BOLD ,12 ), java. awt
-        . Color. red) , getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void
-        propertyChange (java .beans .PropertyChangeEvent e) {if ("borde\u0072" .equals (e .getPropertyName () )) throw new RuntimeException( )
-        ; }} );
-        setLayout(new BorderLayout());
+        setLayout(new GridBagLayout());
 
         //---- appName ----
         appName.setText("ObjectEnjoyer - HEY");
-        add(appName, BorderLayout.NORTH);
-        add(logo, BorderLayout.CENTER);
+        appName.setHorizontalAlignment(SwingConstants.CENTER);
+        add(appName, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.NONE,
+                new Insets(0, 0, 0, 0), 0, 0));
+
+        //---- logo ----
+        add(logo, new GridBagConstraints(0, 1, GridBagConstraints.REMAINDER, 1, 0.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.NONE,
+                new Insets(0, 0, 0, 0), 0, 0));
 
         //---- namaKelompok ----
-        namaKelompok.setText("13521060 - Fatih | 13521088 - Puti | 13521091 - Fakih | 13521130 - Althaaf | 13521144 - Marthen");
-        add(namaKelompok, BorderLayout.SOUTH);
-        // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
+        namaKelompok.setText("<html><br>13521060 - Fatih Nararya Rashadyfa I&nbsp;| " +
+                "13521088 - Puti Nabilla Aidira<br>" +
+                "13521091 - Fakih Anugerah Pratama &nbsp;&nbsp;| " +
+                "13521130 - Althaaf Khasyi Atisomya<br>" +
+                "13521144 - Bintang Dwi Marthen</html>");
+        namaKelompok.setHorizontalAlignment(SwingConstants.CENTER);
+        add(namaKelompok, new GridBagConstraints(0, 10, 1, 2, 0.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.NONE,
+                new Insets(0, 0, 0, 0), 0, 0));
+        // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
 
-    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
+    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
     // Generated using JFormDesigner Evaluation license - Bintang Dwi Marthen
     private JLabel appName;
     private JLabel logo;
     private JLabel namaKelompok;
-    // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
+    // JFormDesigner - End of variables declaration  //GEN-END:variables
 }
