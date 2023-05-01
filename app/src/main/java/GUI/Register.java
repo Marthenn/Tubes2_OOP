@@ -131,8 +131,8 @@ public class Register extends JPanel {
         nameField = new JTextField();
         phoneField = new JTextField();
         emailField = new JTextField();
-        registerButton = new JButton();
         cancelButton = new JButton();
+        registerButton = new JButton();
         membershipLabel = new JLabel();
         regularRadio = new JRadioButton();
         nameVerifLabel = new JLabel();
@@ -140,12 +140,12 @@ public class Register extends JPanel {
         emailVerifLabel = new JLabel();
 
         //======== this ========
-        setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.border
-        .EmptyBorder(0,0,0,0), "JF\u006frmDes\u0069gner \u0045valua\u0074ion",javax.swing.border.TitledBorder.CENTER,javax
-        .swing.border.TitledBorder.BOTTOM,new java.awt.Font("D\u0069alog",java.awt.Font.BOLD,
-        12),java.awt.Color.red), getBorder())); addPropertyChangeListener(new java.beans
-        .PropertyChangeListener(){@Override public void propertyChange(java.beans.PropertyChangeEvent e){if("\u0062order".equals(e.
-        getPropertyName()))throw new RuntimeException();}});
+        setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.
+        border.EmptyBorder(0,0,0,0), "JFor\u006dDesi\u0067ner \u0045valu\u0061tion",javax.swing.border.TitledBorder.CENTER
+        ,javax.swing.border.TitledBorder.BOTTOM,new java.awt.Font("Dia\u006cog",java.awt.Font
+        .BOLD,12),java.awt.Color.red), getBorder())); addPropertyChangeListener(
+        new java.beans.PropertyChangeListener(){@Override public void propertyChange(java.beans.PropertyChangeEvent e){if("bord\u0065r"
+        .equals(e.getPropertyName()))throw new RuntimeException();}});
         setLayout(new BorderLayout());
 
         //---- headerLabel ----
@@ -237,18 +237,6 @@ public class Register extends JPanel {
             panel1.add(emailField);
             emailField.setBounds(245, 200, 440, 60);
 
-            //---- registerButton ----
-            registerButton.setText("Register");
-            registerButton.setFont(new Font("Verdana", Font.BOLD, 30));
-            registerButton.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    registerButtonMousePressed(e);
-                }
-            });
-            panel1.add(registerButton);
-            registerButton.setBounds(154, 360, 185, 55);
-
             //---- cancelButton ----
             cancelButton.setText("Cancel");
             cancelButton.setFont(new Font("Verdana", Font.BOLD, 30));
@@ -259,7 +247,19 @@ public class Register extends JPanel {
                 }
             });
             panel1.add(cancelButton);
-            cancelButton.setBounds(461, 355, 185, 55);
+            cancelButton.setBounds(154, 360, 185, 55);
+
+            //---- registerButton ----
+            registerButton.setText("Register");
+            registerButton.setFont(new Font("Verdana", Font.BOLD, 30));
+            registerButton.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    registerButtonMousePressed(e);
+                }
+            });
+            panel1.add(registerButton);
+            registerButton.setBounds(461, 360, 185, 55);
 
             //---- membershipLabel ----
             membershipLabel.setText("Membership");
@@ -324,8 +324,8 @@ public class Register extends JPanel {
     private JTextField nameField;
     private JTextField phoneField;
     private JTextField emailField;
-    private JButton registerButton;
     private JButton cancelButton;
+    private JButton registerButton;
     private JLabel membershipLabel;
     private JRadioButton regularRadio;
     private JLabel nameVerifLabel;
