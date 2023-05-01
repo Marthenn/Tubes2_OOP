@@ -19,7 +19,6 @@ public class Register extends JPanel {
     }
 
     private void cancelButtonMousePressed(MouseEvent e) {
-        // TODO add your code here
         nameField.setText("");
         phoneField.setText("");
         emailField.setText("");
@@ -30,7 +29,6 @@ public class Register extends JPanel {
     }
 
     private void registerButtonMousePressed(MouseEvent e) {
-        // TODO add your code here
         if(nameField.getText().equals("") || phoneField.getText().equals("") || emailField.getText().equals("") || phoneField.getText().equals("must be 12 digits")){
             JOptionPane.showMessageDialog(null, "Please fill all fields");
         } else if (nameVerifLabel.getText().equals("INVALID") || phoneVerifLabel.getText().equals("INVALID") || emailVerifLabel.getText().equals("INVALID")){
@@ -41,7 +39,6 @@ public class Register extends JPanel {
     }
 
     private void phoneFieldFocusGained(FocusEvent e) {
-        // TODO add your code here
         if(phoneField.getText().equals("must be 12 digits")){
             phoneField.setText("");
             phoneVerifLabel.setText("INVALID");
@@ -58,14 +55,12 @@ public class Register extends JPanel {
     }
     
     private void phoneFieldFocusLost(FocusEvent e) {
-        // TODO add your code here
         if (phoneField.getText().length() == 0){
             phoneField.setText("must be 12 digits");
         }
     }
 
     private void nameFieldKeyReleased(KeyEvent e) {
-        // TODO add your code here
         String input = nameField.getText();
         // check if alphabet using regex
         if (!input.matches("[a-zA-Z ]*")) {
@@ -79,7 +74,6 @@ public class Register extends JPanel {
     }
 
     private void phoneFieldKeyReleased(KeyEvent e) {
-        // TODO add your code here
         String input = phoneField.getText();
         if(!Character.isDigit(input.charAt(input.length()-1))){
             phoneField.setText(input.substring(0, input.length()-1));
@@ -95,7 +89,6 @@ public class Register extends JPanel {
     }
 
     private void emailFieldKeyReleased(KeyEvent e) {
-        // TODO add your code here
         String input = emailField.getText();
         // check validity of email using regex
         if(input.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")){
@@ -106,14 +99,12 @@ public class Register extends JPanel {
     }
 
     private void nameFieldFocusGained(FocusEvent e) {
-        // TODO add your code here
         if(nameField.getText().length() == 0){
             nameVerifLabel.setText("INVALID");
         }
     }
 
     private void emailFieldFocusGained(FocusEvent e) {
-        // TODO add your code here
         if(emailField.getText().length() == 0){
             emailVerifLabel.setText("INVALID");
         }
