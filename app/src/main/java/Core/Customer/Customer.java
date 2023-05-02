@@ -6,6 +6,7 @@ import Core.IDAble;
 import Core.Customer.CanPay;
 import Core.Item.Bill.Bill;
 import Core.Item.Bill.FixedBill.FixedBill;
+import Core.Item.Bill.FixedBill.FixedBillModifier.FixedBillModifier;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NonNull;
@@ -34,14 +35,17 @@ class Customer implements IDAble, CanPay {
 
     @Override
     public FixedBill pay()  throws NoOngoingPurchaseException {
-        if (isNoOngoingPurchase()) {
-            throw new NoOngoingPurchaseException();
+        return this.pay(new ArrayList<FixedBillModifier>());
+    }
+
+    @Override
+    public FixedBill pay(ArrayList<FixedBillModifier> externalModifier) throws NoOngoingPurchaseException {
+        FixedBill finalBill = finalizeOngoingPurchase();
+        for (FixedBillModifier modifier : externalModifier) {
+            finalBill.addFixedBillModifier(modifier);
         }
-        assert(ongoingPurchase != null);
-        FixedBill fixedBill = ongoingPurchase.getFixedBill();
-        addFixedBill(fixedBill);
-        ongoingPurchase = null;
-        return fixedBill;
+
+        return finalBill;
     }
 
     public boolean isNoOngoingPurchase() {

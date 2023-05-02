@@ -9,6 +9,8 @@ import Core.Item.Bill.FixedBill.FixedBillModifier.DiscountFixedBillModifier;
 import Core.Item.Bill.FixedBill.FixedBillModifier.FixedBillModifier;
 import Core.Item.Bill.FixedBill.FixedBillModifier.FlatFixedBillModifier;
 
+import java.util.ArrayList;
+
 public class Member extends MembershipState{
     public Member(PremiumCustomer context) {
         super(context);
@@ -21,18 +23,30 @@ public class Member extends MembershipState{
 
     @Override
     public FixedBill pay() throws NoOngoingPurchaseException {
-        return getContext().finalizeOngoingPurchase();
+        return this.pay(new ArrayList<FixedBillModifier>());
+    }
+
+    @Override
+    public FixedBill pay(ArrayList<FixedBillModifier> externalModifier) throws NoOngoingPurchaseException {
+        FixedBill finalBill = getContext().finalizeOngoingPurchase();
+        for (FixedBillModifier modifier : externalModifier) {
+            finalBill.addFixedBillModifier(modifier);
+        }
+        return finalBill;
     }
 
     @Override
     public FixedBill payWithPoint() throws ZeroPointException, PointInaccessibleIfNotMemberException, NoOngoingPurchaseException {
-        FixedBill finalBill = getContext().finalizeOngoingPurchase();
+        return this.payWithPoint(new ArrayList<FixedBillModifier>());
+    }
 
-        if (this.getContext().isNoPoint()){
+    @Override
+    public FixedBill payWithPoint(ArrayList<FixedBillModifier> externalModifier) throws ZeroPointException, PointInaccessibleIfNotMemberException, NoOngoingPurchaseException {
+        if (getContext().isNoPoint()) {
             throw new ZeroPointException();
         }
 
-        finalBill.addFixedBillModifier(new FlatFixedBillModifier("Pembayaran dengan poin sebagai member", getContext().getPoint()));
-        return finalBill;
+        externalModifier.add(new FlatFixedBillModifier("Pembayaran dengan poin sebagai member", getContext().getPoint()));
+        return pay(externalModifier);
     }
 }
