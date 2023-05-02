@@ -6,12 +6,22 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-public class TransactionHistory extends Item{
+public class QuantifiableItem extends Item{
     @Setter
     private int quantity = 0;
 
-    public TransactionHistory(Item item){
+    public QuantifiableItem(Item item){
         super(item);
+    }
+
+    public QuantifiableItem(Item item, int quantity) throws NegativeQuantityException {
+        super(item);
+        if (quantity < 0) {
+            throw  new NegativeQuantityException();
+        }
+
+        this.quantity = quantity;
+
     }
 
     public void decreaseQuantity(int number) throws NegativeQuantityException, NegativeQuantityModifierException {
@@ -42,6 +52,10 @@ public class TransactionHistory extends Item{
 
     public void increaseQuantity() throws NegativeQuantityException, NegativeQuantityModifierException {
         increaseQuantity(1);
+    }
+
+    public double getCost() {
+        return quantity * super.getCost();
     }
 
 

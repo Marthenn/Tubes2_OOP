@@ -31,7 +31,7 @@ public class Item implements IDAble, Cloneable, Costly {
     @NonNull
     @Getter
     @Builder.Default
-    private boolean deleted = true;
+    private boolean deleted = false;
 
     @Override
     public Integer getID() {
@@ -60,6 +60,10 @@ public class Item implements IDAble, Cloneable, Costly {
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();
         }
+    }
+
+    public void setDeleted() {
+        this.deleted = true;
     }
 
     @Override
