@@ -1,4 +1,4 @@
-package Core.Item.Bill;
+package Core.Item.Bill.Original;
 
 import Core.Item.Exception.NegativeQuantityException;
 import lombok.EqualsAndHashCode;
