@@ -37,18 +37,29 @@ public class StorerData<T extends IDAble> {
         addItem(item, false);
     }
 
-    public void removeItem(T item, boolean ignoreNotExist) throws RemovedItemNotExist {
-        int addedID = item.getID();
-        if (!store.containsKey(addedID) && !ignoreNotExist){
+    public T removeItem(int id, boolean ignoreNotExist) throws RemovedItemNotExist {
+        if (!store.containsKey(id) && !ignoreNotExist){
             String errorMessage = "Tidak ada " + storedItemName + " dengan ID yang diberikan!";
             throw new RemovedItemNotExist(errorMessage);
         }
-        store.remove(item.getID());
+        T removedItem = store.get(id);
+        store.remove(id);
+        return removedItem;
     }
 
-    public void removeItem(T item) throws RemovedItemNotExist {
-        removeItem(item, false);
+    public T removeItem(T item, boolean ignoreNotExist) throws RemovedItemNotExist {
+        int removedID = item.getID();
+        return removeItem(removedID, ignoreNotExist);
     }
+
+    public T removeItem(T item) throws RemovedItemNotExist {
+        return removeItem(item, false);
+    }
+
+    public T removeItem(int id) throws RemovedItemNotExist {
+        return removeItem(id, false);
+    }
+
 
     public int getHighestID() {
         Integer highestID = null;

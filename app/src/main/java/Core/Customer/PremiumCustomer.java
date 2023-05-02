@@ -29,9 +29,8 @@ public class PremiumCustomer extends Customer implements MembershipStateInterfac
     @NonNull
     private int point = 0;
 
-
-    public PremiumCustomer(int id,String name, String phoneNumber){
-        super(id);
+    public PremiumCustomer(Customer customer, String name, String phoneNumber){
+        super(customer);
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.state = new Deactivated(this);

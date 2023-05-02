@@ -15,11 +15,9 @@ import lombok.Setter;
 import javax.annotation.Nullable;
 
 @Data
-class Customer implements IDAble, CanPay {
+public class Customer implements IDAble, CanPay {
     @NonNull
     private Integer id;
-
-
 
     private ArrayList<FixedBill> history = new ArrayList<>();
 
@@ -27,6 +25,15 @@ class Customer implements IDAble, CanPay {
     @Nullable
     private Bill ongoingPurchase;
 
+    public Customer(int id) {
+        this.id = id;
+    }
+
+    public  Customer(Customer customer) {
+        this.id = customer.getID();
+        this.history = customer.getHistory();
+        this.ongoingPurchase = customer.getOngoingPurchase();
+    }
 
     @Override
     public Integer getID() {
