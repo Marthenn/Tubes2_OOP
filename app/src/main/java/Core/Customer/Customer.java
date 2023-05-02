@@ -3,14 +3,12 @@ import java.util.*;
 
 import Core.Customer.Exception.NoOngoingPurchaseException;
 import Core.IDAble;
-import Core.Customer.CanPay;
-import Core.Item.Bill.Bill;
+import Core.Item.Bill.Original.Bill;
 import Core.Item.Bill.FixedBill.FixedBill;
 import Core.Item.Bill.FixedBill.FixedBillModifier.FixedBillModifier;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.Setter;
 
 import javax.annotation.Nullable;
 
@@ -74,4 +72,8 @@ public class Customer implements IDAble, CanPay {
     private void addFixedBill(FixedBill fixedBill){
         history.add(fixedBill);
     };
+
+    public void assignBill(Bill bill){
+        ongoingPurchase = bill;
+    }
 }
