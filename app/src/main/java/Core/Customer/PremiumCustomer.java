@@ -3,10 +3,7 @@ package Core.Customer;
 import Core.Customer.Exception.NoOngoingPurchaseException;
 import Core.Customer.Exception.PointInaccessibleIfNotMemberException;
 import Core.Customer.Exception.ZeroPointException;
-import Core.Customer.MembershipState.Deactivated;
-import Core.Customer.MembershipState.MembershipState;
-import Core.Customer.MembershipState.MembershipStateInterface;
-import Core.Customer.MembershipState.MembershipStateName;
+import Core.Customer.MembershipState.*;
 import Core.Item.Bill.FixedBill.FixedBill;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -35,6 +32,14 @@ public class PremiumCustomer extends Customer implements MembershipStateInterfac
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.state = new Deactivated(this);
+    }
+
+    public void transitionToState(MembershipStateName state) {
+        if (state == this.getStatus()){
+            return;
+        }
+
+        this.state = MembershipStateFactory.getInstance().createState(state, this);
     }
 
     @Override
