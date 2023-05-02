@@ -17,6 +17,7 @@ public class Customer implements IDAble, CanPay {
     @NonNull
     private Integer id;
 
+    @Getter
     private ArrayList<FixedBill> history = new ArrayList<>();
 
     @Getter

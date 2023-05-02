@@ -11,6 +11,7 @@ import Core.DataStore.StorerData.StorerCustomer;
 import Core.DataStore.StorerData.StorerImage;
 import Core.DataStore.StorerData.StorerItem;
 import Core.DataStore.StorerData.StorerPremiumCustomer;
+import Core.Item.Bill.Image.ImageWithID;
 import Core.Item.Item;
 import lombok.SneakyThrows;
 
@@ -73,6 +74,10 @@ public class DataStore {
         } catch (SearchedItemNotExist e) {
         }
         return customers.getItem(id);
+    }
+
+    public ImageWithID getImageWithID(int id) throws SearchedItemNotExist {
+        return images.getItem(id);
     }
 
 
