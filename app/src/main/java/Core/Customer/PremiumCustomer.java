@@ -5,10 +5,13 @@ import Core.Customer.Exception.PointInaccessibleIfNotMemberException;
 import Core.Customer.Exception.ZeroPointException;
 import Core.Customer.MembershipState.*;
 import Core.Item.Bill.FixedBill.FixedBill;
+import Core.Item.Bill.FixedBill.FixedBillModifier.FixedBillModifier;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.SneakyThrows;
+
+import java.util.ArrayList;
 
 
 public class PremiumCustomer extends Customer implements MembershipStateInterface {
@@ -54,5 +57,10 @@ public class PremiumCustomer extends Customer implements MembershipStateInterfac
     @Override
     public FixedBill payWithPoint() throws ZeroPointException, PointInaccessibleIfNotMemberException, NoOngoingPurchaseException {
         return state.payWithPoint();
+    }
+
+    @Override
+    public FixedBill payWithPoint(ArrayList<FixedBillModifier> externalModifier) throws ZeroPointException, PointInaccessibleIfNotMemberException, NoOngoingPurchaseException {
+        return state.payWithPoint(externalModifier);
     }
 }
