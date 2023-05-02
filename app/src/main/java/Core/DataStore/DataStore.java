@@ -6,14 +6,22 @@ import Core.DataStore.Exception.CustomerNotExistException;
 import Core.DataStore.Exception.PromotedCustomerAlreadyExist;
 import Core.DataStore.StorerData.Exception.ItemWithIDAlreadyExist;
 import Core.DataStore.StorerData.Exception.RemovedItemNotExist;
+import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
 import Core.DataStore.StorerData.StorerCustomer;
+import Core.DataStore.StorerData.StorerImage;
+import Core.DataStore.StorerData.StorerItem;
 import Core.DataStore.StorerData.StorerPremiumCustomer;
+import Core.Item.Item;
 import lombok.SneakyThrows;
 
 public class DataStore {
     private static DataStore instance = null;
+
+    private StorerItem items = new StorerItem();
     private StorerCustomer customers = new StorerCustomer();
     private StorerPremiumCustomer premiumCustomers = new StorerPremiumCustomer();
+
+    private StorerImage images = new StorerImage();
 
     private DataStore() {
 
@@ -53,6 +61,18 @@ public class DataStore {
         }
         return newPremiumCustomer;
 
+    }
+
+    public Item getItemWithID(int id) throws SearchedItemNotExist {
+        return items.getItem(id);
+    }
+
+    public Customer getCustomerWithID(int id) throws SearchedItemNotExist {
+        try {
+            return premiumCustomers.getItem(id);
+        } catch (SearchedItemNotExist e) {
+        }
+        return customers.getItem(id);
     }
 
 
