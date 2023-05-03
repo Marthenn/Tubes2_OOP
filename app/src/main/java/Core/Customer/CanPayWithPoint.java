@@ -9,7 +9,23 @@ import Core.Item.Bill.FixedBill.FixedBillModifier.FixedBillModifier;
 import java.util.ArrayList;
 
 public interface CanPayWithPoint {
+    /**
+     * Finalize the current bill held by the Customer
+     * @return The final FixedBill after all applicable modifier
+     * @throws ZeroPointException The PremiumCustomer has no point
+     * @throws PointInaccessibleIfNotMemberException The PremiumCustomer cannot pay with point due to their membership being deactivated
+     * @throws NoOngoingPurchaseException The PremiumCustomer has no current Bill
+     */
     public FixedBill payWithPoint() throws ZeroPointException, PointInaccessibleIfNotMemberException, NoOngoingPurchaseException;
+
+    /**
+     * Finalize the current bill held by the PremiumCustomer. External modifier will be applied first before the PremiumCustomer's own modifier
+     * @param externalModifier Modifiers to be first applied to the FixedBill
+     * @return The final FixedBill after all applicable modifier
+     * @throws ZeroPointException The PremiumCustomer has no point
+     * @throws PointInaccessibleIfNotMemberException The PremiumCustomer cannot pay with point due to their membership being deactivated
+     * @throws NoOngoingPurchaseException The PremiumCustomer has no current Bill
+     */
     public FixedBill payWithPoint(ArrayList<FixedBillModifier> externalModifier) throws ZeroPointException, PointInaccessibleIfNotMemberException, NoOngoingPurchaseException;
 
 }

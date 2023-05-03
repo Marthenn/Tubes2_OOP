@@ -58,6 +58,11 @@ public class Customer implements IDAble, CanPay {
         return ongoingPurchase == null;
     }
 
+    /**
+     * Convert the Bill in ongoingPurchase to FixedBill, insert it to history and return it
+     * @return The Bill from ongoingPurchase converted to FixedBill
+     * @throws NoOngoingPurchaseException The Customer has no current bill
+     */
     public FixedBill finalizeOngoingPurchase() throws NoOngoingPurchaseException {
         if (isNoOngoingPurchase()) {
             throw new NoOngoingPurchaseException();
@@ -70,10 +75,18 @@ public class Customer implements IDAble, CanPay {
 
     }
 
+    /**
+     * Add fixedBill to the Customer's history
+     * @param fixedBill
+     */
     private void addFixedBill(FixedBill fixedBill){
         history.add(fixedBill);
     };
 
+    /**
+     * Assign bill to the Customer's ongoingPurchase
+     * @param bill
+     */
     public void assignBill(Bill bill){
         ongoingPurchase = bill;
     }

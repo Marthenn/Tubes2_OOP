@@ -36,6 +36,10 @@ public class PremiumCustomer extends Customer implements MembershipStateInterfac
         this.state = new Deactivated(this);
     }
 
+    /**
+     * Transition the PremiumCustomer to a another state
+     * @param state The MembershipState to transition into
+     */
     public void transitionToState(MembershipStateName state) {
         if (state == this.getStatus()){
             return;
@@ -44,11 +48,18 @@ public class PremiumCustomer extends Customer implements MembershipStateInterfac
         this.state = MembershipStateFactory.getInstance().createState(state, this);
     }
 
+    /**
+     * @return The state (MembershipState) of the PremiumCustomer
+     */
     @Override
     public MembershipStateName getStatus() {
         return state.getStatus();
     }
 
+    /**
+     *
+     * @return Whether the PremiumCustomer has any point
+     */
     public boolean isNoPoint() {
         return point == 0;
     }

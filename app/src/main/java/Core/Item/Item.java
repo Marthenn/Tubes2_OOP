@@ -1,6 +1,7 @@
 package Core.Item;
 
 import Core.IDAble;
+import Core.Item.Bill.Image.ImageWithID;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -26,7 +27,7 @@ public class Item implements IDAble, Cloneable, Costly {
     private String category;
     @Nullable
     @Getter
-    private String image;
+    private ImageWithID image;
 
     @NonNull
     @Getter
@@ -47,6 +48,10 @@ public class Item implements IDAble, Cloneable, Costly {
     }
 
 
+    /**
+     *
+     * @return a clone of the item without the ID
+     */
     @Override
     public Item clone() {
         try {
@@ -62,6 +67,9 @@ public class Item implements IDAble, Cloneable, Costly {
         }
     }
 
+    /**
+     * Set the Item's deleted attribute to true
+     */
     public void setDeleted() {
         this.deleted = true;
     }
