@@ -88,7 +88,6 @@ public class Item implements Cloneable, ItemInterface {
         return price;
     }
 
-    @Override
     public void setCost(Double cost) {
         this.price = cost;
     }
