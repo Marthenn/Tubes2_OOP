@@ -18,7 +18,5 @@ public interface ItemInterface extends IDAble, Costly {
 
     void setImage(ImageWithID image);
 
-    void setCost(Double cost);
-
     void setOriginalPrice(Double originalPrice);
 }

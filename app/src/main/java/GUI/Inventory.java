@@ -338,7 +338,7 @@ public class Inventory extends JPanel {
                     int idx = list1.getSelectedIndex();
                     if (idx!=-1) {
                         QuantifiableItem x = items.get(idx);
-                        setItemProperty(x.getName(),x.getItem().getCost(), x.getOriginalPrice(),x.getQuantity(),x.getCategory());
+                        setItemProperty(x.getName(),x.getSingularCost(), x.getOriginalPrice(),x.getQuantity(),x.getCategory());
                     }
                 }
             }
@@ -404,7 +404,7 @@ public class Inventory extends JPanel {
                     int idx = list1.getSelectedIndex();
                     QuantifiableItem editedItemDisplay = items.get(idx);
                     editedItemDisplay.setName(textField1.getText());
-                    editedItemDisplay.setCost(Double.valueOf((textField2.getText())));
+                    editedItemDisplay.setSingularCost(Double.valueOf((textField2.getText())));
                     editedItemDisplay.setOriginalPrice(Double.valueOf(textField3.getText()));
                     editedItemDisplay.setQuantity(Integer.parseInt(textField4.getText()));
                     editedItemDisplay.setCategory(textField5.getText());
@@ -457,7 +457,7 @@ public class Inventory extends JPanel {
         label8.setText(name);
         label9.setText(String.valueOf(sell_price));
         label10.setText(String.valueOf(buy_price));
-        label11.setText(Integer.valueOf(stock).toString());
+        label11.setText(stock.toString());
         label12.setText(category);
     }
 

@@ -140,10 +140,15 @@ public class QuantifiableItem implements ItemInterface {
         this.item.setImage(image);
     }
 
-    @Override
-    public void setCost(Double cost) {
+    public void setSingularCost(Double cost) {
         this.item.setCost(cost);
     }
+
+    public Double getSingularCost() {
+        return this.item.getCost();
+    }
+
+
 
     @Override
     public void setOriginalPrice(Double originalPrice) {
