@@ -160,5 +160,16 @@ new FormModel {
 			"location": new java.awt.Point( 145, 610 )
 			"size": new java.awt.Dimension( 495, 240 )
 		} )
+		add( new FormWindow( "javax.swing.JDialog", new FormLayoutManager( class java.awt.FlowLayout ) ) {
+			name: "dialog2"
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label17"
+				"text": "Error: Item Already Deleted"
+				"foreground": sfield java.awt.Color red
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 660, 625 )
+			"size": new java.awt.Dimension( 200, 65 )
+		} )
 	}
 }

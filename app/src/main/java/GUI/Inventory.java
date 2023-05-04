@@ -61,13 +61,18 @@ public class Inventory extends JPanel {
         textField6 = new JTextField();
         label18 = new JLabel();
         label20 = new JLabel();
+        dialog2 = new JDialog();
+        label17 = new JLabel();
 
         //======== this ========
-        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border. EmptyBorder( 0
-        , 0, 0, 0) , "JF\u006frm\u0044es\u0069gn\u0065r \u0045va\u006cua\u0074io\u006e", javax. swing. border. TitledBorder. CENTER, javax. swing. border. TitledBorder. BOTTOM
-        , new java .awt .Font ("D\u0069al\u006fg" ,java .awt .Font .BOLD ,12 ), java. awt. Color. red) ,
-         getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java .beans .PropertyChangeEvent e
-        ) {if ("\u0062or\u0064er" .equals (e .getPropertyName () )) throw new RuntimeException( ); }} );
+        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (
+        new javax. swing. border. EmptyBorder( 0, 0, 0, 0) , "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn"
+        , javax. swing. border. TitledBorder. CENTER, javax. swing. border. TitledBorder. BOTTOM
+        , new java .awt .Font ("Dia\u006cog" ,java .awt .Font .BOLD ,12 )
+        , java. awt. Color. red) , getBorder( )) );  addPropertyChangeListener (
+        new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java .beans .PropertyChangeEvent e
+        ) {if ("\u0062ord\u0065r" .equals (e .getPropertyName () )) throw new RuntimeException( )
+        ; }} );
 
         //---- label1 ----
         label1.setText("Items");
@@ -116,23 +121,23 @@ public class Inventory extends JPanel {
         button3.setText("add");
 
         //---- label8 ----
-        label8.setText(" ");
+        label8.setText("dummy1");
         label8.setFont(label8.getFont().deriveFont(14f));
 
         //---- label9 ----
-        label9.setText(" ");
+        label9.setText("9999");
         label9.setFont(label9.getFont().deriveFont(14f));
 
         //---- label10 ----
-        label10.setText(" ");
+        label10.setText("8888");
         label10.setFont(label10.getFont().deriveFont(14f));
 
         //---- label11 ----
-        label11.setText(" ");
+        label11.setText("7777");
         label11.setFont(label11.getFont().deriveFont(14f));
 
         //---- label12 ----
-        label12.setText(" ");
+        label12.setText("dummy2");
         label12.setFont(label12.getFont().deriveFont(14f));
 
         GroupLayout layout = new GroupLayout(this);
@@ -329,6 +334,19 @@ public class Inventory extends JPanel {
             dialog1.pack();
             dialog1.setLocationRelativeTo(dialog1.getOwner());
         }
+
+        //======== dialog2 ========
+        {
+            var dialog2ContentPane = dialog2.getContentPane();
+            dialog2ContentPane.setLayout(new FlowLayout());
+
+            //---- label17 ----
+            label17.setText("Error: Item Already Deleted");
+            label17.setForeground(Color.red);
+            dialog2ContentPane.add(label17);
+            dialog2.pack();
+            dialog2.setLocationRelativeTo(dialog2.getOwner());
+        }
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
 
         list1.addListSelectionListener(new ListSelectionListener() {
@@ -349,8 +367,12 @@ public class Inventory extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 int index = list1.getSelectedIndex();
                 if (index != -1){
-                    clearItemProperty();
-                    items.get(index).getItem().setAsDeleted();
+                    if (items.get(list1.getSelectedIndex()).getItem().isDeleted()){
+                        dialog2.setVisible(true);
+                    } else {
+                        clearItemProperty();
+                        items.get(index).getItem().setAsDeleted();
+                    }
                 }
             }
         });
@@ -359,10 +381,14 @@ public class Inventory extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (list1.getSelectedIndex()!=-1) {
-                    dialog1.setTitle("Edit Item");
-                    QuantifiableItem x = items.get(list1.getSelectedIndex());
-                    setTextField(x.getName(),String.valueOf(x.getSingularCost()),String.valueOf(x.getOriginalPrice()),String.valueOf(x.getQuantity()),x.getCategory()," ");
-                    dialog1.setVisible(true);
+                    if (items.get(list1.getSelectedIndex()).getItem().isDeleted()){
+                        dialog2.setVisible(true);
+                    } else {
+                        dialog1.setTitle("Edit Item");
+                        QuantifiableItem x = items.get(list1.getSelectedIndex());
+                        setTextField(x.getName(), String.valueOf(x.getSingularCost()), String.valueOf(x.getOriginalPrice()), String.valueOf(x.getQuantity()), x.getCategory(), " ");
+                        dialog1.setVisible(true);
+                    }
                 }
             }
         });
@@ -452,6 +478,8 @@ public class Inventory extends JPanel {
     private JTextField textField6;
     private JLabel label18;
     private JLabel label20;
+    private JDialog dialog2;
+    private JLabel label17;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:of
     private void setItemProperty(String name, Double sell_price, Double buy_price, Integer stock,String category){
         label8.setText(name);
