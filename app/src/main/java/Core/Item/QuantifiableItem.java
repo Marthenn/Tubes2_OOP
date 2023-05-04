@@ -1,6 +1,7 @@
 package Core.Item;
 
 import Core.IDAble;
+import Core.Item.Bill.Image.ImageWithID;
 import Core.Item.Exception.NegativeQuantityException;
 import Core.Item.Exception.NegativeQuantityModifierException;
 import lombok.Getter;
@@ -8,7 +9,7 @@ import lombok.Setter;
 import lombok.SneakyThrows;
 
 @Getter
-public class QuantifiableItem implements IDAble {
+public class QuantifiableItem implements ItemInterface {
     @Setter
     private int quantity = 0;
 
@@ -102,5 +103,40 @@ public class QuantifiableItem implements IDAble {
     @Override
     public Integer getID() {
         return item.getID();
+    }
+
+    @Override
+    public String getName() {
+        return item.getName();
+    }
+
+    @Override
+    public String getCategory() {
+        return item.getCategory();
+    }
+
+    @Override
+    public ImageWithID getImage() {
+        return item.getImage();
+    }
+
+    @Override
+    public void setName(String name) {
+        this.item.setName(name);
+    }
+
+    @Override
+    public void setCategory(String category) {
+        this.item.setCategory(category);
+    }
+
+    @Override
+    public void setImage(ImageWithID image) {
+        this.item.setImage(image);
+    }
+
+    @Override
+    public void setCost(Double cost) {
+        this.item.setCost(cost);
     }
 }

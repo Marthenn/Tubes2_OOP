@@ -1,5 +1,9 @@
 package GUI;
 
+import Core.DataStore.DataStore;
+import Core.Item.Item;
+import Core.Item.QuantifiableItem;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -9,60 +13,26 @@ import javax.swing.event.ListSelectionListener;
 import java.util.*;
 import java.util.List;
 
-//to-do:
-// blm bisa per-image an, validasi edit & add item
-// di spek inventory yg di delete ga sepenuhnya hilang
-
-//class item buat ngetest aja
-class Item{
-    private String name;
-    private int sell_price;
-    private int buy_price;
-    private int stock;
-    private String category;
-    public Item(String name,int sell_price,int buy_price,int stock,String category){
-        this.name = name; this.sell_price=sell_price;
-        this.buy_price = buy_price; this.stock=stock; this.category=category;
-    }
-    public Item(String name){
-        this.name = name; sell_price=999;
-        buy_price = 888; stock=10; category="ayam";
-    }
-    public String getName(){return name;}
-    public int getSellPrice(){return sell_price;}
-    public int getBuyPrice() {return buy_price;}
-    public int getStock(){return stock;}
-    public String getCategory(){return category;}
-    public void setName(String name){this.name=name;}
-    public void setSellPrice(int sell_price){this.sell_price=sell_price;}
-    public void setBuyPrice(int buy_price){this.buy_price=buy_price;}
-    public void setStock(int stock){this.stock=stock;}
-    public void setCategory(String category){this.category=category;}
-}
 public class Inventory extends JPanel {
-    private List<Item> items;
+    private List<QuantifiableItem> items;
 
     private String[] getItemsName(){
         String[] item_name = new String[items.size()];
-        for (int i=0;i<items.size();i++){
-            item_name[i]=items.get(i).getName();
+        for (int i = 0; i< items.size(); i++){
+            item_name[i]= items.get(i).getItem().getName();
         }
         return item_name;
     }
 
     public Inventory() {
-        this.items = new ArrayList<Item>();
+        this.items = DataStore.getInstance().getItems();
         initComponents();
     }
 
     private void initComponents() {
-        String items_name[] = {"dummy1","dummy2","dummy3","dummy4","dummy5"};
-        for (int i=0;i<items_name.length;i++){
-            items.add(new Item(items_name[i]));
-        }
         DefaultListModel<String> items_list = new DefaultListModel();
-        for (int i=0;i<this.items.size();i++){
-            items_list.addElement(items.get(i).getName());
+        for (int i = 0; i<this.items.size(); i++){
+            items_list.addElement(items.get(i).getItem().getName());
         }
 
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
@@ -375,8 +345,8 @@ public class Inventory extends JPanel {
                 if (e.getValueIsAdjusting() == false) {
                     int idx = list1.getSelectedIndex();
                     if (idx!=-1) {
-                        Item x = items.get(idx);
-                        setItemProperty(x.getName(),x.getSellPrice(),x.getBuyPrice(),x.getStock(),x.getCategory());
+                        QuantifiableItem x = items.get(idx);
+                        setItemProperty(x.getName(),x.getCost(),0,x.getQuantity(),x.getCategory());
                     }
                 }
             }
@@ -399,8 +369,8 @@ public class Inventory extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (list1.getSelectedIndex()!=-1) {
                     dialog1.setTitle("Edit Item");
-                    Item x = items.get(list1.getSelectedIndex());
-                    setTextField(x.getName(),String.valueOf(x.getSellPrice()),String.valueOf(x.getBuyPrice()),String.valueOf(x.getStock()),x.getCategory()," ");
+                    QuantifiableItem x = items.get(list1.getSelectedIndex());
+                    setTextField(x.getName(),String.valueOf(x.getCost()),String.valueOf(0),String.valueOf(x.getQuantity()),x.getCategory()," ");
                     dialog1.setVisible(true);
                 }
             }
@@ -418,19 +388,36 @@ public class Inventory extends JPanel {
         button4.addActionListener(new ActionListener() { //save
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (dialog1.getTitle()=="Add Item"){
-                    Item newItem = new Item(textField1.getText(),Integer.parseInt(textField2.getText()),Integer.parseInt(textField3.getText()),Integer.parseInt(textField4.getText()),textField5.getText());
-                    items.add(newItem);
-                    items_list.addElement(newItem.getName());
-                    dialog1.setVisible(false);
+                if (Objects.equals(dialog1.getTitle(), "Add Item")){
+                    String newName = textField1.getText();
+                    Double newPrice = Double.parseDouble(textField2.getText());
+                    System.out.println(textField2.getText());
+                    System.out.println(newPrice);
+                    Integer newQuantity = Integer.parseInt(textField4.getText());
+                    String newCategory = textField5.getText();
+                    QuantifiableItem newItem = null;
+                    boolean addingSuccess = false;
+                    try {
+                        newItem = DataStore.getInstance().addNewItem(newName, newPrice, newCategory, newQuantity);
+                        addingSuccess = true;
+                    } catch (Exception error) {
+                        System.out.println(error.getMessage());
+                    }
+
+                    if (addingSuccess){
+                        assert (newItem != null);
+                        items.add(newItem);
+                        items_list.addElement(newItem.getName());
+                        dialog1.setVisible(false);
+                    }
                 } else { //edit
                     int idx = list1.getSelectedIndex();
-                    Item editedItem = items.get(idx);
-                    editedItem.setName(textField1.getText());
-                    editedItem.setSellPrice(Integer.parseInt(textField2.getText()));
-                    editedItem.setBuyPrice(Integer.parseInt(textField3.getText()));
-                    editedItem.setStock(Integer.parseInt(textField4.getText()));
-                    editedItem.setCategory(textField5.getText());
+                    QuantifiableItem editedItemDisplay = items.get(idx);
+                    editedItemDisplay.setName(textField1.getText());
+                    editedItemDisplay.setCost(Double.parseDouble(textField2.getText()));
+//                    editedItemDisplay.setBuyPrice(Integer.parseInt(textField3.getText()));
+                    editedItemDisplay.setQuantity(Integer.parseInt(textField4.getText()));
+                    editedItemDisplay.setCategory(textField5.getText());
                     items_list.setElementAt(textField1.getText(),idx);
                     setItemProperty(textField1.getText(),Integer.parseInt(textField2.getText()),Integer.parseInt(textField3.getText()),Integer.parseInt(textField4.getText()),textField5.getText());
                     dialog1.setVisible(false);
@@ -476,9 +463,9 @@ public class Inventory extends JPanel {
     private JLabel label18;
     private JLabel label20;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:of
-    private void setItemProperty(String name, int sell_price, int buy_price, int stock,String category){
+    private void setItemProperty(String name, double sell_price, int buy_price, int stock,String category){
         label8.setText(name);
-        label9.setText(Integer.valueOf(sell_price).toString());
+        label9.setText(Double.valueOf(sell_price).toString());
         label10.setText(Integer.valueOf(buy_price).toString());
         label11.setText(Integer.valueOf(stock).toString());
         label12.setText(category);

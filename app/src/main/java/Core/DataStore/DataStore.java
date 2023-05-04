@@ -12,8 +12,12 @@ import Core.DataStore.StorerData.StorerImage;
 import Core.DataStore.StorerData.StorerItem;
 import Core.DataStore.StorerData.StorerPremiumCustomer;
 import Core.Item.Bill.Image.ImageWithID;
+import Core.Item.Exception.NegativeQuantityException;
 import Core.Item.Item;
+import Core.Item.QuantifiableItem;
 import lombok.SneakyThrows;
+
+import java.util.ArrayList;
 
 public class DataStore {
     private static DataStore instance = null;
@@ -101,6 +105,16 @@ public class DataStore {
      */
     public ImageWithID getImageWithID(int id) throws SearchedItemNotExist {
         return images.getItem(id);
+    }
+
+    public ArrayList<QuantifiableItem> getItems() {
+        return items.getItemList();
+    }
+
+    public QuantifiableItem addNewItem(String name, Double price, String category, Integer quantity) throws ItemWithIDAlreadyExist, NegativeQuantityException {
+        QuantifiableItem newQItem = new QuantifiableItem(new Item(items.getNewID(), name, price, category, new ImageWithID(), false), quantity);
+        items.addItem(newQItem);
+        return newQItem;
     }
 
 

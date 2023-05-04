@@ -121,6 +121,10 @@ public class StorerData<T extends IDAble> {
         return highestID;
     }
 
+    public int getNewID() {
+        return  getHighestID() + 1;
+    }
+
     public ArrayList<Integer> getIDList() {
         return new ArrayList<Integer>(store.keySet());
     }
@@ -148,6 +152,10 @@ public class StorerData<T extends IDAble> {
      */
     public T getItem(T item) throws SearchedItemNotExist {
         return getItem(item.getID());
+    }
+
+    public ArrayList<T> getItemList() {
+        return new ArrayList<T>(store.values());
     }
 
 
