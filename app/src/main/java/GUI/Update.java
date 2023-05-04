@@ -8,12 +8,37 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
+
+import Core.Customer.Customer;
+import Core.Customer.MembershipState.MembershipStateName;
+import Core.Customer.PremiumCustomer;
+import Core.DataStore.DataStore;
+
 /**
  * @author Marthen
  */
 public class Update extends JPanel {
+
+    DataStore ds = DataStore.getInstance();
     public Update() {
         initComponents();
+
+        Thread updateThread = new Thread(() -> {
+            try {
+
+
+                Thread.sleep(300);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        updateThread.start();
     }
 
     private void nameFieldKeyReleased(KeyEvent e) {
@@ -65,7 +90,7 @@ public class Update extends JPanel {
         if(input.length() > 12){
             phoneField.setText(input.substring(0, 12));
         }
-        if(input.length() == 12){
+        if(input.length() >= 12){
             phoneVerifLabel.setText("VALID");
         } else {
             phoneVerifLabel.setText("INVALID");
@@ -108,7 +133,43 @@ public class Update extends JPanel {
         } else if (nameVerifLabel.getText().equals("INVALID") || phoneVerifLabel.getText().equals("INVALID") || emailVerifLabel.getText().equals("INVALID")){
             JOptionPane.showMessageDialog(null, "Please fill all fields correctly");
         } else {
+//            try{
+//                String name = nameField.getText();
+//                String phone = phoneField.getText();
+//                String email = emailField.getText();
+//                MembershipStateName status;
+//                if (regularRadio.isSelected()){
+//                    status = MembershipStateName.MEMBER;
+//                } else if (vipRadio.isSelected()){
+//                    status = MembershipStateName.VIP;
+//                } else {
+//                    status = MembershipStateName.DEACTIVATED;
+//                }
+//                // TODO : update customer
+//            } catch{
+//
+//            }
+            nameField.setText("");
+            phoneField.setText("must be 12 digits");
+            emailField.setText("");
+            regularRadio.setSelected(true);
+            nameVerifLabel.setText("");
+            phoneVerifLabel.setText("");
+            emailVerifLabel.setText("");
+            memberDropDown.setSelectedIndex(-1);
             JOptionPane.showMessageDialog(null, "Update Success");
+        }
+    }
+
+    private void memberDropDown(ActionEvent e) {
+        // TODO: change to get from id instead of index
+        nameField.setText(ds.getPremiumCustomers().get(memberDropDown.getSelectedIndex()).getName());
+        phoneField.setText(ds.getPremiumCustomers().get(memberDropDown.getSelectedIndex()).getPhoneNumber());
+        emailField.setText(ds.getPremiumCustomers().get(memberDropDown.getSelectedIndex()).getEmail());
+        if(ds.getPremiumCustomers().get(memberDropDown.getSelectedIndex()).getStatus().equals("Regular")){
+            regularRadio.setSelected(true);
+        } else {
+            vipRadio.setSelected(true);
         }
     }
 
@@ -136,13 +197,12 @@ public class Update extends JPanel {
         vipRadio2 = new JRadioButton();
 
         //======== this ========
-        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax.
-        swing. border. EmptyBorder( 0, 0, 0, 0) , "JF\u006frmDesi\u0067ner Ev\u0061luatio\u006e", javax. swing. border
-        . TitledBorder. CENTER, javax. swing. border. TitledBorder. BOTTOM, new java .awt .Font ("Dialo\u0067"
-        ,java .awt .Font .BOLD ,12 ), java. awt. Color. red) , getBorder
-        ( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java
-        .beans .PropertyChangeEvent e) {if ("borde\u0072" .equals (e .getPropertyName () )) throw new RuntimeException
-        ( ); }} );
+        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border. EmptyBorder
+        ( 0, 0, 0, 0) , "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn", javax. swing. border. TitledBorder. CENTER, javax. swing. border
+        . TitledBorder. BOTTOM, new java .awt .Font ("Dia\u006cog" ,java .awt .Font .BOLD ,12 ), java. awt
+        . Color. red) , getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void
+        propertyChange (java .beans .PropertyChangeEvent e) {if ("\u0062ord\u0065r" .equals (e .getPropertyName () )) throw new RuntimeException( )
+        ; }} );
         setLayout(new BorderLayout());
 
         //---- headerLabel ----
@@ -294,6 +354,7 @@ public class Update extends JPanel {
 
             //---- memberDropDown ----
             memberDropDown.setFont(new Font("Verdana", Font.PLAIN, 30));
+            memberDropDown.addActionListener(e -> memberDropDown(e));
             panel1.add(memberDropDown);
             memberDropDown.setBounds(245, 30, 440, 60);
 

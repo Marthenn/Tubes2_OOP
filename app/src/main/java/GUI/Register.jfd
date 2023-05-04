@@ -166,8 +166,8 @@ new FormModel {
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 					"width": 250
 					"height": 60
-					"x": 45
-					"y": 25
+					"x": 50
+					"y": 30
 				} )
 				add( new FormComponent( "javax.swing.JComboBox" ) {
 					name: "idDropDown"

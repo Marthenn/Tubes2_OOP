@@ -6,16 +6,50 @@ package GUI;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.beans.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import javax.swing.*;
-import javax.swing.event.DocumentListener;
+
+import Core.Customer.MembershipState.MembershipStateName;
+import Core.DataStore.*;
+import Core.Customer.*;
+import Core.DataStore.Exception.CustomerNotExistException;
+import Core.DataStore.Exception.PromotedCustomerAlreadyExist;
 
 /**
  * @author Marthen
  */
 public class Register extends JPanel {
+    DataStore ds = DataStore.getInstance();
+
     public Register() {
         initComponents();
+
+        Thread updateThread = new Thread(() -> {
+            try {
+                while (true) {
+                    List<Customer> customers = ds.getCustomers();
+                    Set<Integer> currentIDs = new HashSet<>();
+                    for (int i = 0; i < idDropDown.getItemCount(); i++) {
+                        currentIDs.add((Integer) idDropDown.getItemAt(i));
+                    }
+                    Set<Integer> newIDs = customers.stream().map(Customer::getID).collect(Collectors.toSet());
+
+                    // Add new items
+                    newIDs.stream().filter(id -> !currentIDs.contains(id)).forEach(idDropDown::addItem);
+
+                    // Remove old items
+                    currentIDs.stream().filter(id -> !newIDs.contains(id)).forEach(idDropDown::removeItem);
+
+                    Thread.sleep(300);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        updateThread.start();
     }
 
     private void cancelButtonMousePressed(MouseEvent e) {
@@ -72,7 +106,7 @@ public class Register extends JPanel {
         if(input.length() > 12){
             phoneField.setText(input.substring(0, 12));
         }
-        if(input.length() == 12){
+        if(input.length() >= 12){
             phoneVerifLabel.setText("VALID");
         } else {
             phoneVerifLabel.setText("INVALID");
@@ -109,6 +143,26 @@ public class Register extends JPanel {
         } else if (nameVerifLabel.getText().equals("INVALID") || phoneVerifLabel.getText().equals("INVALID") || emailVerifLabel.getText().equals("INVALID")){
             JOptionPane.showMessageDialog(null, "Please fill all fields correctly");
         } else {
+            Integer id = (Integer) idDropDown.getSelectedItem();
+            String name = nameField.getText();
+            String phone = phoneField.getText();
+            String email = emailField.getText();
+            MembershipStateName membership = regularRadio.isSelected() ? MembershipStateName.MEMBER : MembershipStateName.VIP;
+            try{
+                ds.promoteCustomer(id, name, phone, email, membership);
+            } catch (PromotedCustomerAlreadyExist e1){
+                JOptionPane.showMessageDialog(null, "Customer already promoted");
+            } catch (CustomerNotExistException e1){
+                JOptionPane.showMessageDialog(null, "Customer not exist");
+            }
+            nameField.setText("");
+            phoneField.setText("must be 12 digits");
+            emailField.setText("");
+            regularRadio.setSelected(true);
+            nameVerifLabel.setText("");
+            phoneVerifLabel.setText("");
+            emailVerifLabel.setText("");
+            idDropDown.setSelectedIndex(-1);
             JOptionPane.showMessageDialog(null, "Register Success");
         }
     }
@@ -136,12 +190,11 @@ public class Register extends JPanel {
         idDropDown = new JComboBox();
 
         //======== this ========
-        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border
-        . EmptyBorder( 0, 0, 0, 0) , "JF\u006frmDes\u0069gner \u0045valua\u0074ion", javax. swing. border. TitledBorder. CENTER, javax
-        . swing. border. TitledBorder. BOTTOM, new java .awt .Font ("D\u0069alog" ,java .awt .Font .BOLD ,
-        12 ), java. awt. Color. red) , getBorder( )) );  addPropertyChangeListener (new java. beans
-        . PropertyChangeListener( ){ @Override public void propertyChange (java .beans .PropertyChangeEvent e) {if ("\u0062order" .equals (e .
-        getPropertyName () )) throw new RuntimeException( ); }} );
+        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border. EmptyBorder( 0
+        , 0, 0, 0) , "JF\u006frmDes\u0069gner \u0045valua\u0074ion", javax. swing. border. TitledBorder. CENTER, javax. swing. border. TitledBorder. BOTTOM
+        , new java .awt .Font ("D\u0069alog" ,java .awt .Font .BOLD ,12 ), java. awt. Color. red) ,
+         getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java .beans .PropertyChangeEvent e
+        ) {if ("\u0062order" .equals (e .getPropertyName () )) throw new RuntimeException( ); }} );
         setLayout(new BorderLayout());
 
         //---- headerLabel ----
@@ -289,7 +342,7 @@ public class Register extends JPanel {
             memberLabel.setText("ID");
             memberLabel.setFont(new Font("Verdana", Font.BOLD, 36));
             panel1.add(memberLabel);
-            memberLabel.setBounds(45, 25, 250, 60);
+            memberLabel.setBounds(50, 30, 250, 60);
 
             //---- idDropDown ----
             idDropDown.setFont(new Font("Verdana", Font.PLAIN, 30));
