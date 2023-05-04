@@ -6,10 +6,7 @@ import Core.Customer.Exception.ZeroPointException;
 import Core.Customer.MembershipState.*;
 import Core.Item.Bill.FixedBill.FixedBill;
 import Core.Item.Bill.FixedBill.FixedBillModifier.FixedBillModifier;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.SneakyThrows;
+import lombok.*;
 
 import java.util.ArrayList;
 
@@ -19,14 +16,17 @@ public class PremiumCustomer extends Customer implements MembershipStateInterfac
 
     @Getter(AccessLevel.PUBLIC)
     @NonNull
+    @Setter
     private String name;
 
     @Getter(AccessLevel.PUBLIC)
     @NonNull
+    @Setter
     private String email;
 
     @Getter(AccessLevel.PUBLIC)
     @NonNull
+    @Setter
     private String phoneNumber;
 
     @Getter(AccessLevel.PUBLIC)
