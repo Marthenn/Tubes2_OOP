@@ -65,7 +65,7 @@ public class Cashier extends JPanel {
         subtotalAmount = new JLabel();
         saveBill = new JButton();
         printBill = new JButton();
-        additem = new JButton();
+        addItem = new JButton();
 
         //---- title ----
         title.setText("Cashier");
@@ -110,7 +110,7 @@ public class Cashier extends JPanel {
         //---- printBill ----
         printBill.setText("print");
 
-        additem.setText("add");
+        addItem.setText("add");
 
         GroupLayout layout = new GroupLayout(this);
         setLayout(layout);
@@ -221,6 +221,6 @@ public class Cashier extends JPanel {
     private JLabel subtotalAmount;
     private JButton saveBill;
     private JButton printBill;
-    private JButton additem;
+    private JButton addItem;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }
