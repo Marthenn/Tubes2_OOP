@@ -358,8 +358,7 @@ public class Inventory extends JPanel {
                 int index = list1.getSelectedIndex();
                 if (index != -1){
                     clearItemProperty();
-                    items_list.remove(index);
-                    items.remove(index);
+                    items.get(index).getItem().setAsDeleted();
                 }
             }
         });
