@@ -361,7 +361,7 @@ public class Inventory extends JPanel {
                 if (list1.getSelectedIndex()!=-1) {
                     dialog1.setTitle("Edit Item");
                     QuantifiableItem x = items.get(list1.getSelectedIndex());
-                    setTextField(x.getName(),String.valueOf(x.getCost()),String.valueOf(x.getOriginalPrice()),String.valueOf(x.getQuantity()),x.getCategory()," ");
+                    setTextField(x.getName(),String.valueOf(x.getSingularCost()),String.valueOf(x.getOriginalPrice()),String.valueOf(x.getQuantity()),x.getCategory()," ");
                     dialog1.setVisible(true);
                 }
             }
