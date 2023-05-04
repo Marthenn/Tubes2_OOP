@@ -7,6 +7,8 @@ package GUI;
 import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 class BrowseObject {
     String name;
@@ -165,7 +167,33 @@ public class Cashier extends JPanel {
                         .addComponent(subtotalAmount))
                     .addGap(0, 124, Short.MAX_VALUE))
         );
+
+
+
+
+        browseTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        ListSelectionModel browseTableSM = browseTable.getSelectionModel();
+
+        browseTableSM.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (e.getValueIsAdjusting()) return;
+
+                ListSelectionModel listSelectionModel = (ListSelectionModel) e.getSource();
+                if(!listSelectionModel.isSelectionEmpty()) {
+                    setSelectedBrowseObject(browseObjects.get(listSelectionModel.getMinSelectionIndex()));
+                }
+            }
+        });
+
+
+
+
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
+    }
+    BrowseObject selectedBrowseObject;
+    void setSelectedBrowseObject(BrowseObject obj) {
+        selectedBrowseObject = obj;
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
