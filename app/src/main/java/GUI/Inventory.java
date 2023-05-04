@@ -9,12 +9,17 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.io.File;
+import java.awt.Image;
+
 
 import java.util.*;
 import java.util.List;
 
 public class Inventory extends JPanel {
     private List<QuantifiableItem> items;
+    private String imgPath;
 
     public Inventory() {
         this.items = DataStore.getInstance().getItems();
@@ -58,21 +63,19 @@ public class Inventory extends JPanel {
         label19 = new JLabel();
         button4 = new JButton();
         textField5 = new JTextField();
-        textField6 = new JTextField();
         label18 = new JLabel();
         label20 = new JLabel();
+        button5 = new JButton();
         dialog2 = new JDialog();
         label17 = new JLabel();
 
         //======== this ========
-        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (
-        new javax. swing. border. EmptyBorder( 0, 0, 0, 0) , "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn"
-        , javax. swing. border. TitledBorder. CENTER, javax. swing. border. TitledBorder. BOTTOM
-        , new java .awt .Font ("Dia\u006cog" ,java .awt .Font .BOLD ,12 )
-        , java. awt. Color. red) , getBorder( )) );  addPropertyChangeListener (
-        new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java .beans .PropertyChangeEvent e
-        ) {if ("\u0062ord\u0065r" .equals (e .getPropertyName () )) throw new RuntimeException( )
-        ; }} );
+        setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax . swing.
+        border .EmptyBorder ( 0, 0 ,0 , 0) ,  "JFor\u006dDesi\u0067ner \u0045valu\u0061tion" , javax. swing .border . TitledBorder. CENTER
+        ,javax . swing. border .TitledBorder . BOTTOM, new java. awt .Font ( "Dia\u006cog", java .awt . Font
+        . BOLD ,12 ) ,java . awt. Color .red ) , getBorder () ) );  addPropertyChangeListener(
+        new java. beans .PropertyChangeListener ( ){ @Override public void propertyChange (java . beans. PropertyChangeEvent e) { if( "bord\u0065r"
+        .equals ( e. getPropertyName () ) )throw new RuntimeException( ) ;} } );
 
         //---- label1 ----
         label1.setText("Items");
@@ -260,32 +263,37 @@ public class Inventory extends JPanel {
             label20.setText("Category");
             label20.setFont(label20.getFont().deriveFont(label20.getFont().getSize() + 2f));
 
+            //---- button5 ----
+            button5.setText("add image");
+
             GroupLayout dialog1ContentPaneLayout = new GroupLayout(dialog1ContentPane);
             dialog1ContentPane.setLayout(dialog1ContentPaneLayout);
             dialog1ContentPaneLayout.setHorizontalGroup(
                 dialog1ContentPaneLayout.createParallelGroup()
                     .addGroup(dialog1ContentPaneLayout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addGroup(dialog1ContentPaneLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                        .addGroup(dialog1ContentPaneLayout.createParallelGroup()
+                            .addGroup(GroupLayout.Alignment.TRAILING, dialog1ContentPaneLayout.createSequentialGroup()
+                                .addGap(17, 17, 17)
+                                .addGroup(dialog1ContentPaneLayout.createParallelGroup()
+                                    .addComponent(label18)
+                                    .addGroup(dialog1ContentPaneLayout.createSequentialGroup()
+                                        .addGroup(dialog1ContentPaneLayout.createParallelGroup()
+                                            .addComponent(label13)
+                                            .addComponent(label14)
+                                            .addComponent(label15)
+                                            .addComponent(label16)
+                                            .addComponent(label20))
+                                        .addGap(32, 32, 32)
+                                        .addGroup(dialog1ContentPaneLayout.createParallelGroup()
+                                            .addComponent(textField4, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(textField3, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(textField2, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(textField1, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE)))))
                             .addGroup(dialog1ContentPaneLayout.createSequentialGroup()
+                                .addGap(113, 113, 113)
                                 .addGroup(dialog1ContentPaneLayout.createParallelGroup()
-                                    .addComponent(label13)
-                                    .addComponent(label14)
-                                    .addComponent(label15)
-                                    .addComponent(label16)
-                                    .addComponent(label20)
-                                    .addComponent(label18))
-                                .addGap(32, 32, 32)
-                                .addGroup(dialog1ContentPaneLayout.createParallelGroup()
-                                    .addComponent(textField4, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(textField3, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(textField2, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(textField1, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(dialog1ContentPaneLayout.createParallelGroup()
-                                .addGroup(dialog1ContentPaneLayout.createSequentialGroup()
-                                    .addGap(96, 96, 96)
-                                    .addComponent(textField5, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE))
-                                .addComponent(textField6, GroupLayout.Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(button5)
+                                    .addComponent(textField5, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE))))
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                         .addGroup(dialog1ContentPaneLayout.createParallelGroup()
                             .addGroup(GroupLayout.Alignment.TRAILING, dialog1ContentPaneLayout.createSequentialGroup()
@@ -320,10 +328,10 @@ public class Inventory extends JPanel {
                                 .addGroup(dialog1ContentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                     .addComponent(textField5, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                     .addComponent(label20))
-                                .addGap(6, 6, 6)
+                                .addGap(18, 18, 18)
                                 .addGroup(dialog1ContentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                    .addComponent(textField6, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(label18)))
+                                    .addComponent(label18)
+                                    .addComponent(button5)))
                             .addGroup(dialog1ContentPaneLayout.createSequentialGroup()
                                 .addGap(24, 24, 24)
                                 .addComponent(label19, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE)
@@ -357,6 +365,7 @@ public class Inventory extends JPanel {
                     if (idx!=-1) {
                         QuantifiableItem x = items.get(idx);
                         setItemProperty(x.getName(),x.getSingularCost(), x.getOriginalPrice(),x.getQuantity(),x.getCategory());
+                        label2.setIcon(ResizeImage(imgPath,true));
                     }
                 }
             }
@@ -386,7 +395,7 @@ public class Inventory extends JPanel {
                     } else {
                         dialog1.setTitle("Edit Item");
                         QuantifiableItem x = items.get(list1.getSelectedIndex());
-                        setTextField(x.getName(), String.valueOf(x.getSingularCost()), String.valueOf(x.getOriginalPrice()), String.valueOf(x.getQuantity()), x.getCategory(), " ");
+                        setTextField(x.getName(), String.valueOf(x.getSingularCost()), String.valueOf(x.getOriginalPrice()), String.valueOf(x.getQuantity()), x.getCategory());
                         dialog1.setVisible(true);
                     }
                 }
@@ -441,7 +450,28 @@ public class Inventory extends JPanel {
             }
         });
 
+        button5.addActionListener(new ActionListener() { //add image
+            public void actionPerformed(ActionEvent e) {
 
+                JFileChooser file = new JFileChooser();
+                file.setCurrentDirectory(new File(System.getProperty("user.home")));
+                //filter the files
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("*.Images", "jpg","gif","png");
+                file.addChoosableFileFilter(filter);
+                int result = file.showSaveDialog(null);
+                //if the user click on save in Jfilechooser
+                if(result == JFileChooser.APPROVE_OPTION){
+                    File selectedFile = file.getSelectedFile();
+                    String path = selectedFile.getAbsolutePath();
+                    label19.setIcon(ResizeImage(path,false));
+                    imgPath = path;
+                }
+                //if the user click on save in Jfilechooser
+                else if(result == JFileChooser.CANCEL_OPTION){
+                    System.out.println("No File Select");
+                }
+            }
+        });
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
@@ -475,9 +505,9 @@ public class Inventory extends JPanel {
     private JLabel label19;
     private JButton button4;
     private JTextField textField5;
-    private JTextField textField6;
     private JLabel label18;
     private JLabel label20;
+    private JButton button5;
     private JDialog dialog2;
     private JLabel label17;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:of
@@ -497,16 +527,34 @@ public class Inventory extends JPanel {
         label12.setText(" ");
     }
 
-    private void setTextField(String name, String sell_price, String buy_price, String stock, String category, String image){
+    private void setTextField(String name, String sell_price, String buy_price, String stock, String category){
         textField1.setText(name);
         textField2.setText(sell_price);
         textField3.setText(buy_price);
         textField4.setText(stock);
         textField5.setText(category);
-        textField6.setText(image);
+    }
+
+    public ImageIcon ResizeImage(String ImagePath,Boolean isLabel2)
+    {
+        ImageIcon MyImage = new ImageIcon(ImagePath);
+        Image img = MyImage.getImage();
+        Image newImg;
+        if (isLabel2){
+            newImg = img.getScaledInstance(label2.getWidth(), label2.getHeight(), Image.SCALE_SMOOTH);
+        } else {
+            newImg = img.getScaledInstance(label19.getWidth(), label19.getHeight(), Image.SCALE_SMOOTH);
+        }
+        ImageIcon image = new ImageIcon(newImg);
+        return image;
     }
 
     private void clearTextField(){
-        setTextField("","","","","","");
+        setTextField("","","","","");
     }
+
+
+
+
 }
+
