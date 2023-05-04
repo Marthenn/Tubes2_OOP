@@ -11,9 +11,13 @@ import javax.swing.*;
  * @author Fakih A
  */
 public class CashierItemAdd extends JDialog {
-    public CashierItemAdd() {
+    String itemName;
+    int itemPrice;
+    public CashierItemAdd(String itemName, int itemPrice) {
+        this.itemName = itemName;
+        this.itemPrice = itemPrice;
+
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-//        this.setSize(1000, 1200);
         this.setTitle("add new item");
         this.setLocationRelativeTo(null);
 
@@ -43,8 +47,8 @@ public class CashierItemAdd extends JDialog {
         ((GridBagLayout)contentPane.getLayout()).columnWeights = new double[] {0.2, 2.0, 0.0, 1.0, 1.0, 0.2};
         ((GridBagLayout)contentPane.getLayout()).rowWeights = new double[] {1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0E-4};
 
-        //---- label3 ----
-        itemDesc.setText("ItemName - ItemPrice");
+        //---- itemDesc ----
+        itemDesc.setText(this.itemName + " - " + Integer.toString(this.itemPrice));
         itemDesc.setHorizontalAlignment(SwingConstants.CENTER);
         contentPane.add(itemDesc, new GridBagConstraints(1, 0, 4, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,

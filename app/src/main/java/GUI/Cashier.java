@@ -204,8 +204,9 @@ public class Cashier extends JPanel {
         addItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new CashierItemAdd();
-                System.out.println("sds");
+                if (browseTableSM.isSelectionEmpty()) return;
+
+                new CashierItemAdd(selectedBrowseObject.name, selectedBrowseObject.price);
             }
         });
 
