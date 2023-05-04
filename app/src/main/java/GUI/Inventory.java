@@ -16,14 +16,6 @@ import java.util.List;
 public class Inventory extends JPanel {
     private List<QuantifiableItem> items;
 
-    private String[] getItemsName(){
-        String[] item_name = new String[items.size()];
-        for (int i = 0; i< items.size(); i++){
-            item_name[i]= items.get(i).getItem().getName();
-        }
-        return item_name;
-    }
-
     public Inventory() {
         this.items = DataStore.getInstance().getItems();
         initComponents();
@@ -346,7 +338,7 @@ public class Inventory extends JPanel {
                     int idx = list1.getSelectedIndex();
                     if (idx!=-1) {
                         QuantifiableItem x = items.get(idx);
-                        setItemProperty(x.getName(),x.getCost(), x.getOriginalPrice(),x.getQuantity(),x.getCategory());
+                        setItemProperty(x.getName(),x.getItem().getCost(), x.getOriginalPrice(),x.getQuantity(),x.getCategory());
                     }
                 }
             }
@@ -369,7 +361,7 @@ public class Inventory extends JPanel {
                 if (list1.getSelectedIndex()!=-1) {
                     dialog1.setTitle("Edit Item");
                     QuantifiableItem x = items.get(list1.getSelectedIndex());
-                    setTextField(x.getName(),String.valueOf(x.getCost()),String.valueOf(0),String.valueOf(x.getQuantity()),x.getCategory()," ");
+                    setTextField(x.getName(),String.valueOf(x.getCost()),String.valueOf(x.getOriginalPrice()),String.valueOf(x.getQuantity()),x.getCategory()," ");
                     dialog1.setVisible(true);
                 }
             }
@@ -389,8 +381,8 @@ public class Inventory extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (Objects.equals(dialog1.getTitle(), "Add Item")){
                     String newName = textField1.getText();
-                    Double newPrice = Double.parseDouble(textField2.getText());
-                    Double newOriginalPrice = Double.parseDouble(textField3.getText());
+                    Double newPrice = Double.valueOf(textField2.getText());
+                    Double newOriginalPrice = Double.valueOf(textField3.getText());
                     Integer newQuantity = Integer.parseInt(textField4.getText());
                     String newCategory = textField5.getText();
                     QuantifiableItem newItem = null;
@@ -412,12 +404,12 @@ public class Inventory extends JPanel {
                     int idx = list1.getSelectedIndex();
                     QuantifiableItem editedItemDisplay = items.get(idx);
                     editedItemDisplay.setName(textField1.getText());
-                    editedItemDisplay.setCost(Double.parseDouble(textField2.getText()));
-                    editedItemDisplay.setOriginalPrice(Double.parseDouble(textField3.getText()));
+                    editedItemDisplay.setCost(Double.valueOf((textField2.getText())));
+                    editedItemDisplay.setOriginalPrice(Double.valueOf(textField3.getText()));
                     editedItemDisplay.setQuantity(Integer.parseInt(textField4.getText()));
                     editedItemDisplay.setCategory(textField5.getText());
                     items_list.setElementAt(textField1.getText(),idx);
-                    setItemProperty(textField1.getText(),Integer.parseInt(textField2.getText()),Integer.parseInt(textField3.getText()),Integer.parseInt(textField4.getText()),textField5.getText());
+                    setItemProperty(textField1.getText(),Double.parseDouble(textField2.getText()),Double.parseDouble(textField3.getText()),Integer.parseInt(textField4.getText()),textField5.getText());
                     dialog1.setVisible(false);
                 }
             }
@@ -461,7 +453,7 @@ public class Inventory extends JPanel {
     private JLabel label18;
     private JLabel label20;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:of
-    private void setItemProperty(String name, double sell_price, double buy_price, int stock,String category){
+    private void setItemProperty(String name, Double sell_price, Double buy_price, Integer stock,String category){
         label8.setText(name);
         label9.setText(String.valueOf(sell_price));
         label10.setText(String.valueOf(buy_price));
