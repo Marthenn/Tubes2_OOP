@@ -391,8 +391,6 @@ public class Inventory extends JPanel {
                 if (Objects.equals(dialog1.getTitle(), "Add Item")){
                     String newName = textField1.getText();
                     Double newPrice = Double.parseDouble(textField2.getText());
-                    System.out.println(textField2.getText());
-                    System.out.println(newPrice);
                     Integer newQuantity = Integer.parseInt(textField4.getText());
                     String newCategory = textField5.getText();
                     QuantifiableItem newItem = null;
