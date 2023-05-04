@@ -469,7 +469,6 @@ public class Inventory extends JPanel {
         label12.setText(" ");
     }
 
-
     private void setTextField(String name, String sell_price, String buy_price, String stock, String category, String image){
         textField1.setText(name);
         textField2.setText(sell_price);
