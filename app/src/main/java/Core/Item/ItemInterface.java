@@ -6,6 +6,8 @@ import Core.Item.Bill.Image.ImageWithID;
 public interface ItemInterface extends IDAble, Costly {
     String getName();
 
+    Double getOriginalPrice();
+
     String getCategory();
 
     ImageWithID getImage();
@@ -17,4 +19,6 @@ public interface ItemInterface extends IDAble, Costly {
     void setImage(ImageWithID image);
 
     void setCost(Double cost);
+
+    void setOriginalPrice(Double originalPrice);
 }

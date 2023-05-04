@@ -111,6 +111,11 @@ public class QuantifiableItem implements ItemInterface {
     }
 
     @Override
+    public Double getOriginalPrice() {
+        return item.getOriginalPrice();
+    }
+
+    @Override
     public String getCategory() {
         return item.getCategory();
     }
@@ -138,5 +143,10 @@ public class QuantifiableItem implements ItemInterface {
     @Override
     public void setCost(Double cost) {
         this.item.setCost(cost);
+    }
+
+    @Override
+    public void setOriginalPrice(Double originalPrice) {
+        item.setOriginalPrice(originalPrice);
     }
 }

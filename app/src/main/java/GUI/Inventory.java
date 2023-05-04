@@ -346,7 +346,7 @@ public class Inventory extends JPanel {
                     int idx = list1.getSelectedIndex();
                     if (idx!=-1) {
                         QuantifiableItem x = items.get(idx);
-                        setItemProperty(x.getName(),x.getCost(),0,x.getQuantity(),x.getCategory());
+                        setItemProperty(x.getName(),x.getCost(), x.getOriginalPrice(),x.getQuantity(),x.getCategory());
                     }
                 }
             }
@@ -390,12 +390,13 @@ public class Inventory extends JPanel {
                 if (Objects.equals(dialog1.getTitle(), "Add Item")){
                     String newName = textField1.getText();
                     Double newPrice = Double.parseDouble(textField2.getText());
+                    Double newOriginalPrice = Double.parseDouble(textField3.getText());
                     Integer newQuantity = Integer.parseInt(textField4.getText());
                     String newCategory = textField5.getText();
                     QuantifiableItem newItem = null;
                     boolean addingSuccess = false;
                     try {
-                        newItem = DataStore.getInstance().addNewItem(newName, newPrice, newCategory, newQuantity);
+                        newItem = DataStore.getInstance().addNewItem(newName, newPrice, newOriginalPrice, newCategory, newQuantity);
                         addingSuccess = true;
                     } catch (Exception error) {
                         System.out.println(error.getMessage());
@@ -412,7 +413,7 @@ public class Inventory extends JPanel {
                     QuantifiableItem editedItemDisplay = items.get(idx);
                     editedItemDisplay.setName(textField1.getText());
                     editedItemDisplay.setCost(Double.parseDouble(textField2.getText()));
-//                    editedItemDisplay.setBuyPrice(Integer.parseInt(textField3.getText()));
+                    editedItemDisplay.setOriginalPrice(Double.parseDouble(textField3.getText()));
                     editedItemDisplay.setQuantity(Integer.parseInt(textField4.getText()));
                     editedItemDisplay.setCategory(textField5.getText());
                     items_list.setElementAt(textField1.getText(),idx);
@@ -460,10 +461,10 @@ public class Inventory extends JPanel {
     private JLabel label18;
     private JLabel label20;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:of
-    private void setItemProperty(String name, double sell_price, int buy_price, int stock,String category){
+    private void setItemProperty(String name, double sell_price, double buy_price, int stock,String category){
         label8.setText(name);
-        label9.setText(Double.valueOf(sell_price).toString());
-        label10.setText(Integer.valueOf(buy_price).toString());
+        label9.setText(String.valueOf(sell_price));
+        label10.setText(String.valueOf(buy_price));
         label11.setText(Integer.valueOf(stock).toString());
         label12.setText(category);
     }

@@ -11,7 +11,6 @@ import javax.annotation.Nullable;
 @NoArgsConstructor
 @SuperBuilder
 @EqualsAndHashCode
-@Setter
 public class Item implements Cloneable, ItemInterface {
 
     @Nullable
@@ -21,7 +20,13 @@ public class Item implements Cloneable, ItemInterface {
     @Setter
     private String name;
     @Nullable
+    @Setter
     private Double price;
+
+    @Nullable
+    @Getter
+    @Setter
+    private Double originalPrice;
 
     @Nullable
     @Getter
@@ -34,6 +39,7 @@ public class Item implements Cloneable, ItemInterface {
 
     @NonNull
     @Getter
+    @Setter
     @Builder.Default
     private boolean deleted = false;
 
