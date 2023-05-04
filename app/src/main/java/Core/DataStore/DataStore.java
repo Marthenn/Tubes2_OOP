@@ -43,7 +43,7 @@ public class DataStore {
      */
     @SneakyThrows
     public Customer createNewCustomer() {
-        int newID = Math.max(customers.getHighestID(), premiumCustomers.getHighestID());
+        int newID = Math.max(customers.getHighestID(), premiumCustomers.getHighestID()) + 1;
         Customer newCustomer = new Customer(newID);
         customers.addItem(newCustomer);
         return newCustomer;
