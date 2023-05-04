@@ -23,16 +23,21 @@ public class PremiumCustomer extends Customer implements MembershipStateInterfac
 
     @Getter(AccessLevel.PUBLIC)
     @NonNull
+    private String email;
+
+    @Getter(AccessLevel.PUBLIC)
+    @NonNull
     private String phoneNumber;
 
     @Getter(AccessLevel.PUBLIC)
     @NonNull
     private int point = 0;
 
-    public PremiumCustomer(Customer customer, String name, String phoneNumber){
+    public PremiumCustomer(Customer customer, String name, String phoneNumber, String email){
         super(customer);
         this.name = name;
         this.phoneNumber = phoneNumber;
+        this.email = email;
         this.state = new Deactivated(this);
     }
 

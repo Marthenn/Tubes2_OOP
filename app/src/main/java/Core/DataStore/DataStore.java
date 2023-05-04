@@ -58,7 +58,7 @@ public class DataStore {
      * @throws CustomerNotExistException No Customer with the given ID exists in the DataStore
      * @throws PromotedCustomerAlreadyExist PremiumCustomer with the given ID already exists
      */
-    public PremiumCustomer promoteCustomer(int id, String name, String phoneNumber) throws CustomerNotExistException, PromotedCustomerAlreadyExist {
+    public PremiumCustomer promoteCustomer(int id, String name, String phoneNumber, String email) throws CustomerNotExistException, PromotedCustomerAlreadyExist {
         Customer promotedCustomer;
         try {
             promotedCustomer = customers.removeItem(id);
@@ -68,7 +68,7 @@ public class DataStore {
 
         assert(promotedCustomer != null);
 
-        PremiumCustomer newPremiumCustomer = new PremiumCustomer(promotedCustomer, name, phoneNumber);
+        PremiumCustomer newPremiumCustomer = new PremiumCustomer(promotedCustomer, name, phoneNumber, email);
 
         try {
             premiumCustomers.addItem(newPremiumCustomer);
