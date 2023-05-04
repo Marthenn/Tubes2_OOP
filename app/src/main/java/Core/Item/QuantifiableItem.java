@@ -1,5 +1,6 @@
 package Core.Item;
 
+import Core.IDAble;
 import Core.Item.Exception.NegativeQuantityException;
 import Core.Item.Exception.NegativeQuantityModifierException;
 import lombok.Getter;
@@ -7,7 +8,7 @@ import lombok.Setter;
 import lombok.SneakyThrows;
 
 @Getter
-public class QuantifiableItem {
+public class QuantifiableItem implements IDAble {
     @Setter
     private int quantity = 0;
 
@@ -98,4 +99,8 @@ public class QuantifiableItem {
         return quantity * item.getCost();
     }
 
+    @Override
+    public Integer getID() {
+        return item.getID();
+    }
 }

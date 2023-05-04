@@ -76,7 +76,7 @@ public class DataStore {
     }
 
     public Item getItemWithID(int id) throws SearchedItemNotExist {
-        return items.getItem(id);
+        return items.getItem(id).getItem();
     }
 
     /**
