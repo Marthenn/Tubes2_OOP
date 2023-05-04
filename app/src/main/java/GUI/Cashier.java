@@ -5,8 +5,29 @@
 package GUI;
 
 import java.awt.*;
+import java.util.ArrayList;
 import javax.swing.*;
-import javax.swing.table.TableModel;
+
+class BrowseObject {
+    String name;
+    String category;
+    int price;
+    public BrowseObject(String name, String category, int price) {
+        this.name = name;
+        this.category = category;
+        this.price = price;
+    }
+
+    public BrowseObject(String[] data) {
+        this.name = data[0];
+        this.category = data[1];
+        this.price = Integer.parseInt(data[2]);
+    }
+
+    public String[] getText() {
+        return new String[] {this.name, this.category, Integer.toString(this.price)};
+    }
+}
 
 public class Cashier extends JPanel {
     public Cashier() {
@@ -16,9 +37,23 @@ public class Cashier extends JPanel {
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner Evaluation license - Fakih Anugerah Pratama
+        String[][] dummyData = new String[][] {
+                {"fafakjdlkjfalkj", "makanaan", "100000"},
+                {"fairvielad", "makanan", "9911"},
+                {"aqua", "minuman", "10000"},
+                {"doesitsowell", "sayyou", "90"}
+        };
+
+        ArrayList<BrowseObject> browseObjects = new ArrayList();
+
+        for(int i = 0; i < dummyData.length; i++) {
+            browseObjects.add(new BrowseObject(dummyData[i]));
+        }
+
+
         title = new JLabel();
         browsePane = new JScrollPane();
-        browseList = new JList();
+        browseTable = new JTable(dummyData, new String[]{"Nama", "Kategori", "Harga"});
         searchText = new JTextField();
         searchButton = new JButton();
         billTabPane = new JTabbedPane();
@@ -29,13 +64,6 @@ public class Cashier extends JPanel {
         saveBill = new JButton();
         printBill = new JButton();
 
-        //======== this ========
-        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border. EmptyBorder(
-        0, 0, 0, 0) , "JF\u006frm\u0044es\u0069gn\u0065r \u0045va\u006cua\u0074io\u006e", javax. swing. border. TitledBorder. CENTER, javax. swing. border. TitledBorder
-        . BOTTOM, new java .awt .Font ("D\u0069al\u006fg" ,java .awt .Font .BOLD ,12 ), java. awt. Color.
-        red) , getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java .
-        beans .PropertyChangeEvent e) {if ("\u0062or\u0064er" .equals (e .getPropertyName () )) throw new RuntimeException( ); }} );
-
         //---- title ----
         title.setText("Cashier");
         title.setFont(title.getFont().deriveFont(title.getFont().getSize() + 4f));
@@ -44,8 +72,8 @@ public class Cashier extends JPanel {
         {
 
             //---- browseList ----
-            browseList.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-            browsePane.setViewportView(browseList);
+            browseTable.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+            browsePane.setViewportView(browseTable);
         }
 
         //---- searchText ----
@@ -144,7 +172,7 @@ public class Cashier extends JPanel {
     // Generated using JFormDesigner Evaluation license - Fakih Anugerah Pratama
     private JLabel title;
     private JScrollPane browsePane;
-    private JList browseList;
+    private JTable browseTable;
     private JTextField searchText;
     private JButton searchButton;
     private JTabbedPane billTabPane;

@@ -15,7 +15,7 @@ new FormModel {
 			} )
 			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
 				name: "browsePane"
-				add( new FormComponent( "javax.swing.JList" ) {
+				add( new FormComponent( "javax.swing.JTable" ) {
 					name: "browseList"
 					"font": &Font0 new java.awt.Font( "Segoe UI", 0, 16 )
 				} )
