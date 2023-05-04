@@ -5,6 +5,8 @@
 package GUI;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -66,6 +68,8 @@ public class Cashier extends JPanel {
         saveBill = new JButton();
         printBill = new JButton();
         addItem = new JButton();
+
+
 
         //---- title ----
         title.setText("Cashier");
@@ -184,7 +188,6 @@ public class Cashier extends JPanel {
 
         browseTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         ListSelectionModel browseTableSM = browseTable.getSelectionModel();
-
         browseTableSM.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -194,6 +197,15 @@ public class Cashier extends JPanel {
                 if(!listSelectionModel.isSelectionEmpty()) {
                     setSelectedBrowseObject(browseObjects.get(listSelectionModel.getMinSelectionIndex()));
                 }
+            }
+        });
+
+
+        addItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new CashierItemAdd();
+                System.out.println("sds");
             }
         });
 
