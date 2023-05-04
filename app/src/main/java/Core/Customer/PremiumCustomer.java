@@ -34,11 +34,15 @@ public class PremiumCustomer extends Customer implements MembershipStateInterfac
     private int point = 0;
 
     public PremiumCustomer(Customer customer, String name, String phoneNumber, String email){
+        this(customer, name, phoneNumber, email, MembershipStateName.MEMBER);
+    }
+
+    public PremiumCustomer(Customer customer, String name, String phoneNumber, String email, MembershipStateName stateName){
         super(customer);
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.state = new Deactivated(this);
+        this.state = MembershipStateFactory.getInstance().createState(stateName, this);
     }
 
     /**
