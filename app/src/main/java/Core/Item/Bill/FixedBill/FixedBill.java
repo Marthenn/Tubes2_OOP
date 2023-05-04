@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 @NoArgsConstructor
 public class FixedBill implements Costly {
+    @Getter(AccessLevel.PUBLIC)
     private ArrayList<QuantifiableItem> items = new ArrayList<>();
 
     @Getter(AccessLevel.PUBLIC)
