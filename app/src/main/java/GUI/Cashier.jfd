@@ -4,36 +4,36 @@ new FormModel {
 	contentType: "form/swing"
 	root: new FormRoot {
 		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
-			"$horizontalGroup": "par l {seq t {space :p:18:p, par l {seq {comp label1:::p:296:p, space :0:0:x}, seq {par l {seq {comp scrollPane1:::p:433:p, space :0:0:x}, seq {comp textField1:::p:369:p, space :::p, comp button1:::::x}}, space :::p}}, par l {comp tabbedPane1:::p:290:p, par l:::p {seq t {comp button2:::p:140:p, space :::x, comp button3:::p:140:p}, seq l {comp label4:::p:55:p, space :::p, comp label5:::::x}}}, space :p:33:p}}"
-			"$verticalGroup": "par l {seq l {space :::p, comp label1:::p:37:p, space s:::p, par b {comp textField1::b:p::p, comp button1::b:p::p}, space s:::p, comp scrollPane1::::355:x, space ::136:x}, seq l {space :p:86:p, comp tabbedPane1:::p:320:p, space u:::p, par b {comp button3::b:p::p, comp button2::b:p::p}, space u:::p, par b {comp label4::b:p::p, comp label5::b:p::p}, space :0:124:x}}"
+			"$horizontalGroup": "par l {seq t {space :p:18:p, par l {seq {comp title:::p:296:p, space :0:0:x}, seq {par l {seq {comp browsePane:::p:433:p, space :0:0:x}, seq {comp searchText:::p:369:p, space :::p, comp searchButton:::::x}}, space :::p}}, par l {comp billTabPane:::p:290:p, par l:::p {seq t {comp saveBill:::p:140:p, space :::x, comp printBill:::p:140:p}, seq l {comp subtotalTitle:::p:55:p, space :::p, comp subtotalAmount:::::x}}}, space :p:33:p}}"
+			"$verticalGroup": "par l {seq l {space :::p, comp title:::p:37:p, space s:::p, par b {comp searchText::b:p::p, comp searchButton::b:p::p}, space s:::p, comp browsePane::::355:x, space ::136:x}, seq l {space :p:86:p, comp billTabPane:::p:320:p, space u:::p, par b {comp printBill::b:p::p, comp saveBill::b:p::p}, space u:::p, par b {comp subtotalTitle::b:p::p, comp subtotalAmount::b:p::p}, space :0:124:x}}"
 		} ) {
 			name: "this"
 			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "label1"
+				name: "title"
 				"text": "Cashier"
 				"font": new com.jformdesigner.model.SwingDerivedFont( null, 0, 4, false )
 			} )
 			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
-				name: "scrollPane1"
+				name: "browsePane"
 				add( new FormComponent( "javax.swing.JList" ) {
-					name: "list3"
+					name: "browseList"
 					"font": &Font0 new java.awt.Font( "Segoe UI", 0, 16 )
 				} )
 			} )
 			add( new FormComponent( "javax.swing.JTextField" ) {
-				name: "textField1"
+				name: "searchText"
 				"margin": new java.awt.Insets( 0, 0, 0, 0 )
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
-				name: "button1"
+				name: "searchButton"
 				"text": "search"
 			} )
 			add( new FormContainer( "javax.swing.JTabbedPane", new FormLayoutManager( class javax.swing.JTabbedPane ) ) {
-				name: "tabbedPane1"
+				name: "billTabPane"
 				add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
-					name: "scrollPane2"
+					name: "billDetailPane"
 					add( new FormComponent( "javax.swing.JList" ) {
-						name: "list4"
+						name: "billItemList"
 						"font": #Font0
 					} )
 				}, new FormLayoutConstraints( null ) {
@@ -41,20 +41,20 @@ new FormModel {
 				} )
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "label4"
+				name: "subtotalTitle"
 				"text": "subtotal"
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "label5"
+				name: "subtotalAmount"
 				"text": "0"
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
-				name: "button2"
-				"text": "search"
+				name: "saveBill"
+				"text": "save"
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
-				name: "button3"
-				"text": "search"
+				name: "printBill"
+				"text": "print"
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 546 )
