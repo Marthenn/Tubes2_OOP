@@ -25,7 +25,9 @@ import Core.DataStore.DataStore;
  */
 public class Update extends JPanel {
 
-    DataStore ds = DataStore.getInstance();
+    private DataStore ds = DataStore.getInstance();
+    private ArrayList<PremiumCustomer> premiumCustomers = ds.getPremiumCustomers();
+
     public Update() {
         initComponents();
 

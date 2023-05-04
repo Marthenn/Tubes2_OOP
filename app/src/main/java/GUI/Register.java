@@ -22,7 +22,7 @@ import Core.DataStore.Exception.PromotedCustomerAlreadyExist;
  * @author Marthen
  */
 public class Register extends JPanel {
-    DataStore ds = DataStore.getInstance();
+    private DataStore ds = DataStore.getInstance();
 
     public Register() {
         initComponents();
