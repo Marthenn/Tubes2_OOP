@@ -82,13 +82,6 @@ public class MainMenu extends JPanel {
         tabbedPane.setSelectedIndex(tabbedPane.indexOfTab("Update"));
     }
 
-    private void historyMenuMousePressed(MouseEvent e) {
-        if(tabbedPane.indexOfTab("History") == -1){
-            tabbedPane.addTab("History", new History());
-        }
-        tabbedPane.setSelectedIndex(tabbedPane.indexOfTab("History"));
-    }
-
     private void settingMenuMousePressed(MouseEvent e) {
         if(tabbedPane.indexOfTab("Setting") == -1){
             tabbedPane.addTab("Setting", new Setting());
@@ -115,7 +108,6 @@ public class MainMenu extends JPanel {
         memberMenu = new JMenu();
         registerMenu = new JMenuItem();
         updateMenu = new JMenuItem();
-        historyMenu = new JMenuItem();
         settingMenu = new JMenu();
         exitMenu = new JMenu();
         tabbedPane = new JTabbedPane();
@@ -206,15 +198,7 @@ public class MainMenu extends JPanel {
                 });
                 memberMenu.add(updateMenu);
 
-                //---- historyMenu ----
-                historyMenu.setText("History");
-                historyMenu.addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mousePressed(MouseEvent e) {
-                        historyMenuMousePressed(e);
-                    }
-                });
-                memberMenu.add(historyMenu);
+
             }
             menuBar.add(memberMenu);
 
@@ -272,7 +256,6 @@ public class MainMenu extends JPanel {
     private JMenuItem historyMenu;
     private JMenu memberMenu;
     private JMenuItem registerMenu;
-    private JMenuItem historyMenu;
     private JMenuItem updateMenu;
     private JMenu settingMenu;
     private JMenu exitMenu;
