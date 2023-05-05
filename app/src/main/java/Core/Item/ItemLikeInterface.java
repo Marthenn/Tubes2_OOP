@@ -9,12 +9,12 @@ interface ItemLikeInterface extends IDAble, Profitable {
 
     String getCategory();
 
-    ImageWithID getImage();
+    String getImage();
 
     void setName(String name);
 
     void setCategory(String category);
 
-    void setImage(ImageWithID image);
+    void setImage(String image);
 
 }

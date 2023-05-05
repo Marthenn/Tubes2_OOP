@@ -115,7 +115,7 @@ public class QuantifiableItem implements ItemLikeInterface {
     }
 
     @Override
-    public ImageWithID getImage() {
+    public String getImage() {
         return item.getImage();
     }
 
@@ -130,7 +130,7 @@ public class QuantifiableItem implements ItemLikeInterface {
     }
 
     @Override
-    public void setImage(ImageWithID image) {
+    public void setImage(String image) {
         this.item.setImage(image);
     }
 

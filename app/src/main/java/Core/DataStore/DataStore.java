@@ -173,8 +173,8 @@ public class DataStore {
         return premiumCustomers.getItemList();
     }
 
-    public QuantifiableItem addNewItem(String name, Double price, Double originalPrice, String category, Integer quantity) throws ItemWithIDAlreadyExist, NegativeQuantityException {
-        QuantifiableItem newQItem = new QuantifiableItem(new Item(items.getNewID(), name, price, originalPrice, category, new ImageWithID(), false), quantity);
+    public QuantifiableItem addNewItem(String name, Double price, Double originalPrice, String category, Integer quantity, String img) throws ItemWithIDAlreadyExist, NegativeQuantityException {
+        QuantifiableItem newQItem = new QuantifiableItem(new Item(items.getNewID(), name, price, originalPrice, category, img, false), quantity);
         items.addItem(newQItem);
         return newQItem;
     }

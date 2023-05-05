@@ -39,7 +39,7 @@ public class Item implements Cloneable, ItemInterface {
     @Nullable
     @Getter
     @Setter
-    private ImageWithID image;
+    private String image;
 
     @Getter
     @Setter
