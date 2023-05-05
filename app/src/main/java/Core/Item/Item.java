@@ -11,26 +11,35 @@ import javax.annotation.Nullable;
 @NoArgsConstructor
 @SuperBuilder
 @EqualsAndHashCode
-@Setter
-public class Item implements IDAble, Cloneable, Costly {
+public class Item implements Cloneable, ItemInterface {
 
     @Nullable
     private Integer id;
     @Nullable
     @Getter
+    @Setter
     private String name;
     @Nullable
+    @Setter
     private Double price;
 
     @Nullable
     @Getter
+    @Setter
+    private Double originalPrice;
+
+    @Nullable
+    @Getter
+    @Setter
     private String category;
     @Nullable
     @Getter
+    @Setter
     private ImageWithID image;
 
     @NonNull
     @Getter
+    @Setter
     @Builder.Default
     private boolean deleted = false;
 
@@ -70,12 +79,16 @@ public class Item implements IDAble, Cloneable, Costly {
     /**
      * Set the Item's deleted attribute to true
      */
-    public void setDeleted() {
+    public void setAsDeleted() {
         this.deleted = true;
     }
 
     @Override
     public double getCost() {
         return price;
+    }
+
+    public void setCost(Double cost) {
+        this.price = cost;
     }
 }

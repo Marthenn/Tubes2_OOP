@@ -96,6 +96,13 @@ public class MainMenu extends JPanel {
         tabbedPane.setSelectedIndex(tabbedPane.indexOfTab("Setting"));
     }
 
+    private void historyMenuMousePressed(MouseEvent e) {
+        if(tabbedPane.indexOfTab("History") == -1){
+            tabbedPane.addTab("History", new History());
+        }
+        tabbedPane.setSelectedIndex(tabbedPane.indexOfTab("History"));
+    }
+
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner Evaluation license - Bintang Dwi Marthen
@@ -104,6 +111,7 @@ public class MainMenu extends JPanel {
         storeMenu = new JMenu();
         cashierMenu = new JMenuItem();
         inventoryMenu = new JMenuItem();
+        historyMenu = new JMenuItem();
         memberMenu = new JMenu();
         registerMenu = new JMenuItem();
         updateMenu = new JMenuItem();
@@ -115,12 +123,12 @@ public class MainMenu extends JPanel {
 
         //======== this ========
         setPreferredSize(new Dimension(800, 600));
-        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border.
-        EmptyBorder( 0, 0, 0, 0) , "JF\u006frm\u0044es\u0069gn\u0065r \u0045va\u006cua\u0074io\u006e", javax. swing. border. TitledBorder. CENTER, javax. swing
-        . border. TitledBorder. BOTTOM, new java .awt .Font ("D\u0069al\u006fg" ,java .awt .Font .BOLD ,12 ),
-        java. awt. Color. red) , getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( )
-        { @Override public void propertyChange (java .beans .PropertyChangeEvent e) {if ("\u0062or\u0064er" .equals (e .getPropertyName () ))
-        throw new RuntimeException( ); }} );
+        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border. EmptyBorder
+        ( 0, 0, 0, 0) , "JF\u006frm\u0044es\u0069gn\u0065r \u0045va\u006cua\u0074io\u006e", javax. swing. border. TitledBorder. CENTER, javax. swing. border
+        . TitledBorder. BOTTOM, new java .awt .Font ("D\u0069al\u006fg" ,java .awt .Font .BOLD ,12 ), java. awt
+        . Color. red) , getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void
+        propertyChange (java .beans .PropertyChangeEvent e) {if ("\u0062or\u0064er" .equals (e .getPropertyName () )) throw new RuntimeException( )
+        ; }} );
         setLayout(new BorderLayout());
 
         //======== menuBar ========
@@ -161,6 +169,16 @@ public class MainMenu extends JPanel {
                     }
                 });
                 storeMenu.add(inventoryMenu);
+
+                //---- historyMenu ----
+                historyMenu.setText("History");
+                historyMenu.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+                        historyMenuMousePressed(e);
+                    }
+                });
+                storeMenu.add(historyMenu);
             }
             menuBar.add(storeMenu);
 
@@ -251,6 +269,7 @@ public class MainMenu extends JPanel {
     private JMenu storeMenu;
     private JMenuItem cashierMenu;
     private JMenuItem inventoryMenu;
+    private JMenuItem historyMenu;
     private JMenu memberMenu;
     private JMenuItem registerMenu;
     private JMenuItem historyMenu;

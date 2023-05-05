@@ -93,8 +93,8 @@ new FormModel {
 			"size": new java.awt.Dimension( 800, 600 )
 		} )
 		add( new FormWindow( "javax.swing.JDialog", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
-			"$horizontalGroup": "par l {seq l {space :p:17:p, par t {seq {par l {comp label13::l:p::p, comp label14::l:p::p, comp label15::l:p::p, comp label16::l:p::p, comp label20::l:p::p, comp label18::l:p::p}, space :p:32:p, par l {comp textField4:::p:171:p, comp textField3:::p:171:p, comp textField2::l:p:171:p, comp textField1::l:p:171:p}}, par l {seq {space :p:96:p, comp textField5:::p:171:p}, comp textField6::t:p:171:p}}, space ::34:x, par l {seq t {comp label19:::p:136:p, space :p:39:p}, seq t {comp button4:::p::p, space :p:70:p}}}}"
-			"$verticalGroup": "par l {seq {par l {seq {space :p:15:p, par b {comp label13::b:p::p, comp textField1::b:p::p}, space :::p, par b {comp label14::b:p::p, comp textField2::b:p::p}, space :::p, par b {comp label15::b:p::p, comp textField3::b:p::p}, space :::p, par b {comp label16::b:p::p, comp textField4::b:p::p}, space :::p, par b {comp textField5::b:p::p, comp label20::b:p::p}, space :6:6:p, par b {comp textField6::b:p::p, comp label18::b:p::p}}, seq l {space :p:24:p, comp label19:::p:133:p, space s:::p, comp button4:::p::p}}, space ::12:x}}"
+			"$horizontalGroup": "par l {seq l {par l {seq t {space :p:17:p, par l {comp label18:::p::p, seq {par l {comp label13::l:p::p, comp label14::l:p::p, comp label15::l:p::p, comp label16::l:p::p, comp label20::l:p::p}, space :32:32:p, par l {comp textField4:::p:171:p, comp textField3:::p:171:p, comp textField2::l:p:171:p, comp textField1::l:p:171:p}}}}, seq l {space :p:113:p, par l {comp button5:::p::p, comp textField5:::p:171:p}}}, space ::34:x, par l {seq t {comp label19:::p:136:p, space :p:39:p}, seq t {comp button4:::p::p, space :p:70:p}}}}"
+			"$verticalGroup": "par l {seq {par l {seq {space :p:15:p, par b {comp label13::b:p::p, comp textField1::b:p::p}, space :::p, par b {comp label14::b:p::p, comp textField2::b:p::p}, space :::p, par b {comp label15::b:p::p, comp textField3::b:p::p}, space :::p, par b {comp label16::b:p::p, comp textField4::b:p::p}, space :::p, par b {comp textField5::b:p::p, comp label20::b:p::p}, space s:::p, par b {comp label18::b:p::p, comp button5::b:p::p}}, seq l {space :p:24:p, comp label19:::p:133:p, space s:::p, comp button4:::p::p}}, space ::12:x}}"
 		} ) {
 			name: "dialog1"
 			"title": "Item Property"
@@ -143,9 +143,6 @@ new FormModel {
 			add( new FormComponent( "javax.swing.JTextField" ) {
 				name: "textField5"
 			} )
-			add( new FormComponent( "javax.swing.JTextField" ) {
-				name: "textField6"
-			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "label18"
 				"text": "Image"
@@ -156,9 +153,24 @@ new FormModel {
 				"text": "Category"
 				"font": new com.jformdesigner.model.SwingDerivedFont( null, 0, 2, false )
 			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "button5"
+				"text": "add image"
+			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 145, 610 )
 			"size": new java.awt.Dimension( 495, 240 )
+		} )
+		add( new FormWindow( "javax.swing.JDialog", new FormLayoutManager( class java.awt.FlowLayout ) ) {
+			name: "dialog2"
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label17"
+				"text": "Error: Item Already Deleted"
+				"foreground": sfield java.awt.Color red
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 660, 625 )
+			"size": new java.awt.Dimension( 200, 65 )
 		} )
 	}
 }

@@ -8,12 +8,77 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
+
+import Core.Customer.Customer;
+import Core.Customer.MembershipState.MembershipStateName;
+import Core.Customer.PremiumCustomer;
+import Core.DataStore.DataStore;
+import Core.DataStore.Exception.CustomerNotExistException;
+import Core.DataStore.Exception.PromotedCustomerAlreadyExist;
+import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
+
 /**
  * @author Marthen
  */
 public class Update extends JPanel {
+
+    private DataStore ds = DataStore.getInstance();
+    private ArrayList<PremiumCustomer> premiumCustomers = new ArrayList<>();
+
     public Update() {
         initComponents();
+        for (PremiumCustomer pc : premiumCustomers) {
+            String name = pc.getName();
+            Integer id = pc.getID();
+            memberDropDown.addItem(name + " (" + id + ")");
+        }
+        Thread updateThread = new Thread(() -> {
+            try {
+                while(true){
+                    ArrayList<PremiumCustomer> tempCustomer = ds.getPremiumCustomers();
+
+                    for (PremiumCustomer pc : tempCustomer) {
+                        if (!premiumCustomers.contains(pc)) {
+                            premiumCustomers.add(pc);
+                            String name = pc.getName();
+                            Integer id = pc.getID();
+                            memberDropDown.addItem(name + " (" + id + ")");
+                        } else{
+                            // find the index of the pc in drop down by id
+                            int index = -1;
+                            for (int i = 0 ; i < memberDropDown.getItemCount() ; i++){
+                                if (memberDropDown.getItemAt(i).toString().contains(pc.getID().toString())){
+                                    String name = "";
+                                    for(String s : memberDropDown.getItemAt(i).toString().split(" ")){
+                                        if (s.contains("(")){
+                                            break;
+                                        }
+                                        name += s + " ";
+                                    }
+                                    // remove the last space
+                                    name = name.substring(0, name.length() - 1);
+                                    if (!name.equals(pc.getName())){
+                                        memberDropDown.removeItemAt(i);
+                                        memberDropDown.addItem(pc.getName() + " (" + pc.getID() + ")");
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    Thread.sleep(300);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        updateThread.start();
     }
 
     private void nameFieldKeyReleased(KeyEvent e) {
@@ -30,7 +95,7 @@ public class Update extends JPanel {
     }
 
     private void nameFieldFocusGained(FocusEvent e) {
-        if(nameField.getText().length() == 0){
+        if(nameField.getText().isEmpty()){
             nameVerifLabel.setText("INVALID");
         }
     }
@@ -65,7 +130,7 @@ public class Update extends JPanel {
         if(input.length() > 12){
             phoneField.setText(input.substring(0, 12));
         }
-        if(input.length() == 12){
+        if(input.length() >= 12){
             phoneVerifLabel.setText("VALID");
         } else {
             phoneVerifLabel.setText("INVALID");
@@ -90,25 +155,79 @@ public class Update extends JPanel {
 
     private void cancelButtonMousePressed(MouseEvent e) {
         memberDropDown.setSelectedIndex(-1);
-        nameField.setText("");
-        phoneField.setText("");
-        emailField.setText("");
-        regularRadio.setSelected(true);
-        nameVerifLabel.setText("");
-        phoneVerifLabel.setText("");
-        emailVerifLabel.setText("");
+    }
+
+
+    private Integer getSelectedID(){
+        String selected = memberDropDown.getSelectedItem().toString();
+        String[] split = selected.split(" ");
+        return Integer.parseInt(split[split.length-1].substring(1, split[split.length-1].length()-1));
     }
 
     private void updateButtonMousePressed(MouseEvent e) {
+        // pause the update thread
         if (memberDropDown.getSelectedIndex() == -1){
             JOptionPane.showMessageDialog(null, "Please select a member");
-
         } else if(nameField.getText().equals("") || phoneField.getText().equals("") || emailField.getText().equals("") || phoneField.getText().equals("must be 12 digits")){
             JOptionPane.showMessageDialog(null, "Please fill all fields");
         } else if (nameVerifLabel.getText().equals("INVALID") || phoneVerifLabel.getText().equals("INVALID") || emailVerifLabel.getText().equals("INVALID")){
             JOptionPane.showMessageDialog(null, "Please fill all fields correctly");
         } else {
+            try{
+                Integer id = getSelectedID();
+                System.out.println(id);
+                String name = nameField.getText();
+                String phone = phoneField.getText();
+                String email = emailField.getText();
+                MembershipStateName status;
+                if (regularRadio.isSelected()){
+                    status = MembershipStateName.MEMBER;
+                } else if (vipRadio.isSelected()){
+                    status = MembershipStateName.VIP;
+                } else {
+                    status = MembershipStateName.DEACTIVATED;
+                }
+                PremiumCustomer pc = ds.getPremiumCustomerWithID(id);
+                pc.setName(name);
+                pc.setPhoneNumber(phone);
+                pc.setEmail(email);
+                pc.transitionToState(status);
+            } catch (SearchedItemNotExist ex) {
+                throw new RuntimeException(ex);
+            }
+            nameField.setText("");
+            phoneField.setText("must be 12 digits");
+            emailField.setText("");
+            regularRadio.setSelected(true);
+            nameVerifLabel.setText("");
+            phoneVerifLabel.setText("");
+            emailVerifLabel.setText("");
+            memberDropDown.setSelectedIndex(-1);
             JOptionPane.showMessageDialog(null, "Update Success");
+        }
+    }
+
+    private void memberDropDown(ActionEvent e) {
+        // TODO: change to get from id instead of index
+        if (memberDropDown.getSelectedIndex() == -1){
+            nameField.setText("");
+            phoneField.setText("must be 12 digits");
+            emailField.setText("");
+            regularRadio.setSelected(true);
+            nameVerifLabel.setText("");
+            phoneVerifLabel.setText("");
+            emailVerifLabel.setText("");
+            return;
+        }
+        nameField.setText(ds.getPremiumCustomers().get(memberDropDown.getSelectedIndex()).getName());
+        phoneField.setText(ds.getPremiumCustomers().get(memberDropDown.getSelectedIndex()).getPhoneNumber());
+        emailField.setText(ds.getPremiumCustomers().get(memberDropDown.getSelectedIndex()).getEmail());
+        if(ds.getPremiumCustomers().get(memberDropDown.getSelectedIndex()).getStatus().equals(MembershipStateName.MEMBER)){
+            regularRadio.setSelected(true);
+        } else if (ds.getPremiumCustomers().get(memberDropDown.getSelectedIndex()).getStatus().equals(MembershipStateName.VIP)){
+            vipRadio.setSelected(true);
+        } else {
+            offRadio.setSelected(true);
         }
     }
 
@@ -133,16 +252,15 @@ public class Update extends JPanel {
         emailVerifLabel = new JLabel();
         memberLabel = new JLabel();
         memberDropDown = new JComboBox();
-        vipRadio2 = new JRadioButton();
+        offRadio = new JRadioButton();
 
         //======== this ========
-        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax.
-        swing. border. EmptyBorder( 0, 0, 0, 0) , "JF\u006frmDesi\u0067ner Ev\u0061luatio\u006e", javax. swing. border
-        . TitledBorder. CENTER, javax. swing. border. TitledBorder. BOTTOM, new java .awt .Font ("Dialo\u0067"
-        ,java .awt .Font .BOLD ,12 ), java. awt. Color. red) , getBorder
-        ( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java
-        .beans .PropertyChangeEvent e) {if ("borde\u0072" .equals (e .getPropertyName () )) throw new RuntimeException
-        ( ); }} );
+        setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.
+        border.EmptyBorder(0,0,0,0), "JF\u006frm\u0044es\u0069gn\u0065r \u0045va\u006cua\u0074io\u006e",javax.swing.border.TitledBorder.CENTER
+        ,javax.swing.border.TitledBorder.BOTTOM,new java.awt.Font("D\u0069al\u006fg",java.awt.Font
+        .BOLD,12),java.awt.Color.red), getBorder())); addPropertyChangeListener(
+        new java.beans.PropertyChangeListener(){@Override public void propertyChange(java.beans.PropertyChangeEvent e){if("\u0062or\u0064er"
+        .equals(e.getPropertyName()))throw new RuntimeException();}});
         setLayout(new BorderLayout());
 
         //---- headerLabel ----
@@ -294,14 +412,15 @@ public class Update extends JPanel {
 
             //---- memberDropDown ----
             memberDropDown.setFont(new Font("Verdana", Font.PLAIN, 30));
+            memberDropDown.addActionListener(e -> memberDropDown(e));
             panel1.add(memberDropDown);
             memberDropDown.setBounds(245, 30, 440, 60);
 
-            //---- vipRadio2 ----
-            vipRadio2.setText("Off");
-            vipRadio2.setFont(new Font("Verdana", Font.BOLD, 34));
-            panel1.add(vipRadio2);
-            vipRadio2.setBounds(660, 310, 105, 40);
+            //---- offRadio ----
+            offRadio.setText("Off");
+            offRadio.setFont(new Font("Verdana", Font.BOLD, 34));
+            panel1.add(offRadio);
+            offRadio.setBounds(660, 310, 105, 40);
 
             {
                 // compute preferred size
@@ -324,7 +443,7 @@ public class Update extends JPanel {
         var buttonGroup1 = new ButtonGroup();
         buttonGroup1.add(vipRadio);
         buttonGroup1.add(regularRadio);
-        buttonGroup1.add(vipRadio2);
+        buttonGroup1.add(offRadio);
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
 
@@ -348,6 +467,6 @@ public class Update extends JPanel {
     private JLabel emailVerifLabel;
     private JLabel memberLabel;
     private JComboBox memberDropDown;
-    private JRadioButton vipRadio2;
+    private JRadioButton offRadio;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }

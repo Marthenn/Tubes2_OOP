@@ -26,6 +26,11 @@ new FormModel {
 						"text": "Inventory"
 						addEvent( new FormEvent( "java.awt.event.MouseListener", "mousePressed", "inventoryMenuMousePressed", true ) )
 					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "historyMenu"
+						"text": "History"
+						addEvent( new FormEvent( "java.awt.event.MouseListener", "mousePressed", "historyMenuMousePressed", true ) )
+					} )
 				} )
 				add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
 					name: "memberMenu"

@@ -1,68 +1,35 @@
 package GUI;
 
+import Core.DataStore.DataStore;
+import Core.Item.Item;
+import Core.Item.QuantifiableItem;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.io.File;
+import java.awt.Image;
+
 
 import java.util.*;
 import java.util.List;
 
-//to-do:
-// blm bisa per-image an, validasi edit & add item
-// di spek inventory yg di delete ga sepenuhnya hilang
-
-//class item buat ngetest aja
-class Item{
-    private String name;
-    private int sell_price;
-    private int buy_price;
-    private int stock;
-    private String category;
-    public Item(String name,int sell_price,int buy_price,int stock,String category){
-        this.name = name; this.sell_price=sell_price;
-        this.buy_price = buy_price; this.stock=stock; this.category=category;
-    }
-    public Item(String name){
-        this.name = name; sell_price=999;
-        buy_price = 888; stock=10; category="ayam";
-    }
-    public String getName(){return name;}
-    public int getSellPrice(){return sell_price;}
-    public int getBuyPrice() {return buy_price;}
-    public int getStock(){return stock;}
-    public String getCategory(){return category;}
-    public void setName(String name){this.name=name;}
-    public void setSellPrice(int sell_price){this.sell_price=sell_price;}
-    public void setBuyPrice(int buy_price){this.buy_price=buy_price;}
-    public void setStock(int stock){this.stock=stock;}
-    public void setCategory(String category){this.category=category;}
-}
 public class Inventory extends JPanel {
-    private List<Item> items;
-
-    private String[] getItemsName(){
-        String[] item_name = new String[items.size()];
-        for (int i=0;i<items.size();i++){
-            item_name[i]=items.get(i).getName();
-        }
-        return item_name;
-    }
+    private List<QuantifiableItem> items;
+    private String imgPath;
 
     public Inventory() {
-        this.items = new ArrayList<Item>();
+        this.items = DataStore.getInstance().getItems();
         initComponents();
     }
 
     private void initComponents() {
-        String items_name[] = {"dummy1","dummy2","dummy3","dummy4","dummy5"};
-        for (int i=0;i<items_name.length;i++){
-            items.add(new Item(items_name[i]));
-        }
         DefaultListModel<String> items_list = new DefaultListModel();
-        for (int i=0;i<this.items.size();i++){
-            items_list.addElement(items.get(i).getName());
+        for (int i = 0; i<this.items.size(); i++){
+            items_list.addElement(items.get(i).getItem().getName());
         }
 
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
@@ -96,16 +63,19 @@ public class Inventory extends JPanel {
         label19 = new JLabel();
         button4 = new JButton();
         textField5 = new JTextField();
-        textField6 = new JTextField();
         label18 = new JLabel();
         label20 = new JLabel();
+        button5 = new JButton();
+        dialog2 = new JDialog();
+        label17 = new JLabel();
 
         //======== this ========
-        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border. EmptyBorder( 0
-        , 0, 0, 0) , "JF\u006frm\u0044es\u0069gn\u0065r \u0045va\u006cua\u0074io\u006e", javax. swing. border. TitledBorder. CENTER, javax. swing. border. TitledBorder. BOTTOM
-        , new java .awt .Font ("D\u0069al\u006fg" ,java .awt .Font .BOLD ,12 ), java. awt. Color. red) ,
-         getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java .beans .PropertyChangeEvent e
-        ) {if ("\u0062or\u0064er" .equals (e .getPropertyName () )) throw new RuntimeException( ); }} );
+        setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax . swing.
+        border .EmptyBorder ( 0, 0 ,0 , 0) ,  "JFor\u006dDesi\u0067ner \u0045valu\u0061tion" , javax. swing .border . TitledBorder. CENTER
+        ,javax . swing. border .TitledBorder . BOTTOM, new java. awt .Font ( "Dia\u006cog", java .awt . Font
+        . BOLD ,12 ) ,java . awt. Color .red ) , getBorder () ) );  addPropertyChangeListener(
+        new java. beans .PropertyChangeListener ( ){ @Override public void propertyChange (java . beans. PropertyChangeEvent e) { if( "bord\u0065r"
+        .equals ( e. getPropertyName () ) )throw new RuntimeException( ) ;} } );
 
         //---- label1 ----
         label1.setText("Items");
@@ -154,23 +124,23 @@ public class Inventory extends JPanel {
         button3.setText("add");
 
         //---- label8 ----
-        label8.setText(" ");
+        label8.setText("dummy1");
         label8.setFont(label8.getFont().deriveFont(14f));
 
         //---- label9 ----
-        label9.setText(" ");
+        label9.setText("9999");
         label9.setFont(label9.getFont().deriveFont(14f));
 
         //---- label10 ----
-        label10.setText(" ");
+        label10.setText("8888");
         label10.setFont(label10.getFont().deriveFont(14f));
 
         //---- label11 ----
-        label11.setText(" ");
+        label11.setText("7777");
         label11.setFont(label11.getFont().deriveFont(14f));
 
         //---- label12 ----
-        label12.setText(" ");
+        label12.setText("dummy2");
         label12.setFont(label12.getFont().deriveFont(14f));
 
         GroupLayout layout = new GroupLayout(this);
@@ -293,32 +263,37 @@ public class Inventory extends JPanel {
             label20.setText("Category");
             label20.setFont(label20.getFont().deriveFont(label20.getFont().getSize() + 2f));
 
+            //---- button5 ----
+            button5.setText("add image");
+
             GroupLayout dialog1ContentPaneLayout = new GroupLayout(dialog1ContentPane);
             dialog1ContentPane.setLayout(dialog1ContentPaneLayout);
             dialog1ContentPaneLayout.setHorizontalGroup(
                 dialog1ContentPaneLayout.createParallelGroup()
                     .addGroup(dialog1ContentPaneLayout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addGroup(dialog1ContentPaneLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                        .addGroup(dialog1ContentPaneLayout.createParallelGroup()
+                            .addGroup(GroupLayout.Alignment.TRAILING, dialog1ContentPaneLayout.createSequentialGroup()
+                                .addGap(17, 17, 17)
+                                .addGroup(dialog1ContentPaneLayout.createParallelGroup()
+                                    .addComponent(label18)
+                                    .addGroup(dialog1ContentPaneLayout.createSequentialGroup()
+                                        .addGroup(dialog1ContentPaneLayout.createParallelGroup()
+                                            .addComponent(label13)
+                                            .addComponent(label14)
+                                            .addComponent(label15)
+                                            .addComponent(label16)
+                                            .addComponent(label20))
+                                        .addGap(32, 32, 32)
+                                        .addGroup(dialog1ContentPaneLayout.createParallelGroup()
+                                            .addComponent(textField4, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(textField3, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(textField2, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(textField1, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE)))))
                             .addGroup(dialog1ContentPaneLayout.createSequentialGroup()
+                                .addGap(113, 113, 113)
                                 .addGroup(dialog1ContentPaneLayout.createParallelGroup()
-                                    .addComponent(label13)
-                                    .addComponent(label14)
-                                    .addComponent(label15)
-                                    .addComponent(label16)
-                                    .addComponent(label20)
-                                    .addComponent(label18))
-                                .addGap(32, 32, 32)
-                                .addGroup(dialog1ContentPaneLayout.createParallelGroup()
-                                    .addComponent(textField4, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(textField3, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(textField2, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(textField1, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(dialog1ContentPaneLayout.createParallelGroup()
-                                .addGroup(dialog1ContentPaneLayout.createSequentialGroup()
-                                    .addGap(96, 96, 96)
-                                    .addComponent(textField5, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE))
-                                .addComponent(textField6, GroupLayout.Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(button5)
+                                    .addComponent(textField5, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE))))
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                         .addGroup(dialog1ContentPaneLayout.createParallelGroup()
                             .addGroup(GroupLayout.Alignment.TRAILING, dialog1ContentPaneLayout.createSequentialGroup()
@@ -353,10 +328,10 @@ public class Inventory extends JPanel {
                                 .addGroup(dialog1ContentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                     .addComponent(textField5, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                     .addComponent(label20))
-                                .addGap(6, 6, 6)
+                                .addGap(18, 18, 18)
                                 .addGroup(dialog1ContentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                    .addComponent(textField6, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(label18)))
+                                    .addComponent(label18)
+                                    .addComponent(button5)))
                             .addGroup(dialog1ContentPaneLayout.createSequentialGroup()
                                 .addGap(24, 24, 24)
                                 .addComponent(label19, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE)
@@ -367,6 +342,19 @@ public class Inventory extends JPanel {
             dialog1.pack();
             dialog1.setLocationRelativeTo(dialog1.getOwner());
         }
+
+        //======== dialog2 ========
+        {
+            var dialog2ContentPane = dialog2.getContentPane();
+            dialog2ContentPane.setLayout(new FlowLayout());
+
+            //---- label17 ----
+            label17.setText("Error: Item Already Deleted");
+            label17.setForeground(Color.red);
+            dialog2ContentPane.add(label17);
+            dialog2.pack();
+            dialog2.setLocationRelativeTo(dialog2.getOwner());
+        }
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
 
         list1.addListSelectionListener(new ListSelectionListener() {
@@ -375,8 +363,9 @@ public class Inventory extends JPanel {
                 if (e.getValueIsAdjusting() == false) {
                     int idx = list1.getSelectedIndex();
                     if (idx!=-1) {
-                        Item x = items.get(idx);
-                        setItemProperty(x.getName(),x.getSellPrice(),x.getBuyPrice(),x.getStock(),x.getCategory());
+                        QuantifiableItem x = items.get(idx);
+                        setItemProperty(x.getName(),x.getSingularCost(), x.getOriginalPrice(),x.getQuantity(),x.getCategory());
+                        label2.setIcon(ResizeImage(imgPath,true));
                     }
                 }
             }
@@ -387,9 +376,12 @@ public class Inventory extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 int index = list1.getSelectedIndex();
                 if (index != -1){
-                    clearItemProperty();
-                    items_list.remove(index);
-                    items.remove(index);
+                    if (items.get(list1.getSelectedIndex()).getItem().isDeleted()){
+                        dialog2.setVisible(true);
+                    } else {
+                        clearItemProperty();
+                        items.get(index).getItem().setAsDeleted();
+                    }
                 }
             }
         });
@@ -398,10 +390,14 @@ public class Inventory extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (list1.getSelectedIndex()!=-1) {
-                    dialog1.setTitle("Edit Item");
-                    Item x = items.get(list1.getSelectedIndex());
-                    setTextField(x.getName(),String.valueOf(x.getSellPrice()),String.valueOf(x.getBuyPrice()),String.valueOf(x.getStock()),x.getCategory()," ");
-                    dialog1.setVisible(true);
+                    if (items.get(list1.getSelectedIndex()).getItem().isDeleted()){
+                        dialog2.setVisible(true);
+                    } else {
+                        dialog1.setTitle("Edit Item");
+                        QuantifiableItem x = items.get(list1.getSelectedIndex());
+                        setTextField(x.getName(), String.valueOf(x.getSingularCost()), String.valueOf(x.getOriginalPrice()), String.valueOf(x.getQuantity()), x.getCategory());
+                        dialog1.setVisible(true);
+                    }
                 }
             }
         });
@@ -418,27 +414,64 @@ public class Inventory extends JPanel {
         button4.addActionListener(new ActionListener() { //save
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (dialog1.getTitle()=="Add Item"){
-                    Item newItem = new Item(textField1.getText(),Integer.parseInt(textField2.getText()),Integer.parseInt(textField3.getText()),Integer.parseInt(textField4.getText()),textField5.getText());
-                    items.add(newItem);
-                    items_list.addElement(newItem.getName());
-                    dialog1.setVisible(false);
+                if (Objects.equals(dialog1.getTitle(), "Add Item")){
+                    String newName = textField1.getText();
+                    Double newPrice = Double.valueOf(textField2.getText());
+                    Double newOriginalPrice = Double.valueOf(textField3.getText());
+                    Integer newQuantity = Integer.parseInt(textField4.getText());
+                    String newCategory = textField5.getText();
+                    QuantifiableItem newItem = null;
+                    boolean addingSuccess = false;
+                    try {
+                        newItem = DataStore.getInstance().addNewItem(newName, newPrice, newOriginalPrice, newCategory, newQuantity);
+                        addingSuccess = true;
+                    } catch (Exception error) {
+                        System.out.println(error.getMessage());
+                    }
+
+                    if (addingSuccess){
+                        assert (newItem != null);
+                        items.add(newItem);
+                        items_list.addElement(newItem.getName());
+                        dialog1.setVisible(false);
+                    }
                 } else { //edit
                     int idx = list1.getSelectedIndex();
-                    Item editedItem = items.get(idx);
-                    editedItem.setName(textField1.getText());
-                    editedItem.setSellPrice(Integer.parseInt(textField2.getText()));
-                    editedItem.setBuyPrice(Integer.parseInt(textField3.getText()));
-                    editedItem.setStock(Integer.parseInt(textField4.getText()));
-                    editedItem.setCategory(textField5.getText());
+                    QuantifiableItem editedItemDisplay = items.get(idx);
+                    editedItemDisplay.setName(textField1.getText());
+                    editedItemDisplay.setSingularCost(Double.valueOf((textField2.getText())));
+                    editedItemDisplay.setOriginalPrice(Double.valueOf(textField3.getText()));
+                    editedItemDisplay.setQuantity(Integer.parseInt(textField4.getText()));
+                    editedItemDisplay.setCategory(textField5.getText());
                     items_list.setElementAt(textField1.getText(),idx);
-                    setItemProperty(textField1.getText(),Integer.parseInt(textField2.getText()),Integer.parseInt(textField3.getText()),Integer.parseInt(textField4.getText()),textField5.getText());
+                    setItemProperty(textField1.getText(),Double.parseDouble(textField2.getText()),Double.parseDouble(textField3.getText()),Integer.parseInt(textField4.getText()),textField5.getText());
                     dialog1.setVisible(false);
                 }
             }
         });
 
+        button5.addActionListener(new ActionListener() { //add image
+            public void actionPerformed(ActionEvent e) {
 
+                JFileChooser file = new JFileChooser();
+                file.setCurrentDirectory(new File(System.getProperty("user.home")));
+                //filter the files
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("*.Images", "jpg","gif","png");
+                file.addChoosableFileFilter(filter);
+                int result = file.showSaveDialog(null);
+                //if the user click on save in Jfilechooser
+                if(result == JFileChooser.APPROVE_OPTION){
+                    File selectedFile = file.getSelectedFile();
+                    String path = selectedFile.getAbsolutePath();
+                    label19.setIcon(ResizeImage(path,false));
+                    imgPath = path;
+                }
+                //if the user click on save in Jfilechooser
+                else if(result == JFileChooser.CANCEL_OPTION){
+                    System.out.println("No File Select");
+                }
+            }
+        });
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
@@ -472,15 +505,17 @@ public class Inventory extends JPanel {
     private JLabel label19;
     private JButton button4;
     private JTextField textField5;
-    private JTextField textField6;
     private JLabel label18;
     private JLabel label20;
+    private JButton button5;
+    private JDialog dialog2;
+    private JLabel label17;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:of
-    private void setItemProperty(String name, int sell_price, int buy_price, int stock,String category){
+    private void setItemProperty(String name, Double sell_price, Double buy_price, Integer stock,String category){
         label8.setText(name);
-        label9.setText(Integer.valueOf(sell_price).toString());
-        label10.setText(Integer.valueOf(buy_price).toString());
-        label11.setText(Integer.valueOf(stock).toString());
+        label9.setText(String.valueOf(sell_price));
+        label10.setText(String.valueOf(buy_price));
+        label11.setText(stock.toString());
         label12.setText(category);
     }
 
@@ -492,17 +527,34 @@ public class Inventory extends JPanel {
         label12.setText(" ");
     }
 
-
-    private void setTextField(String name, String sell_price, String buy_price, String stock, String category, String image){
+    private void setTextField(String name, String sell_price, String buy_price, String stock, String category){
         textField1.setText(name);
         textField2.setText(sell_price);
         textField3.setText(buy_price);
         textField4.setText(stock);
         textField5.setText(category);
-        textField6.setText(image);
+    }
+
+    public ImageIcon ResizeImage(String ImagePath,Boolean isLabel2)
+    {
+        ImageIcon MyImage = new ImageIcon(ImagePath);
+        Image img = MyImage.getImage();
+        Image newImg;
+        if (isLabel2){
+            newImg = img.getScaledInstance(label2.getWidth(), label2.getHeight(), Image.SCALE_SMOOTH);
+        } else {
+            newImg = img.getScaledInstance(label19.getWidth(), label19.getHeight(), Image.SCALE_SMOOTH);
+        }
+        ImageIcon image = new ImageIcon(newImg);
+        return image;
     }
 
     private void clearTextField(){
-        setTextField("","","","","","");
+        setTextField("","","","","");
     }
+
+
+
+
 }
+
