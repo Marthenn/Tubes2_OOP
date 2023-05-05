@@ -26,7 +26,6 @@ public class PremiumCustomer extends Customer implements MembershipStateInterfac
     private String phoneNumber;
 
     @Getter(AccessLevel.PUBLIC)
-    @NonNull
     private int point = 0;
 
     public PremiumCustomer(Customer customer, String name, String phoneNumber){
