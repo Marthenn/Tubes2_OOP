@@ -4,6 +4,7 @@ import Core.Customer.Exception.NoOngoingPurchaseException;
 import Core.Customer.Exception.PointInaccessibleIfNotMemberException;
 import Core.Customer.Exception.ZeroPointException;
 import Core.Customer.PremiumCustomer;
+import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
 import Core.Item.Bill.FixedBill.FixedBill;
 import Core.Item.Bill.FixedBill.FixedBillModifier.FixedBillModifier;
 
@@ -14,13 +15,13 @@ public class Deactivated extends MembershipState{
         super(context);
     }
     @Override
-    public FixedBill pay() throws NoOngoingPurchaseException {
+    public FixedBill pay() throws NoOngoingPurchaseException, SearchedItemNotExist {
         return pay(new ArrayList<FixedBillModifier>());
 
     }
 
     @Override
-    public FixedBill pay(ArrayList<FixedBillModifier> externalModifier) throws NoOngoingPurchaseException {
+    public FixedBill pay(ArrayList<FixedBillModifier> externalModifier) throws NoOngoingPurchaseException, SearchedItemNotExist {
         return getContext().finalizeOngoingPurchase();
     }
 

@@ -3,6 +3,7 @@ package Core.Customer;
 import Core.Customer.Exception.NoOngoingPurchaseException;
 import Core.Customer.Exception.PointInaccessibleIfNotMemberException;
 import Core.Customer.Exception.ZeroPointException;
+import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
 import Core.Item.Bill.FixedBill.FixedBill;
 import Core.Item.Bill.FixedBill.FixedBillModifier.FixedBillModifier;
 
@@ -16,7 +17,7 @@ public interface CanPayWithPoint {
      * @throws PointInaccessibleIfNotMemberException The PremiumCustomer cannot pay with point due to their membership being deactivated
      * @throws NoOngoingPurchaseException The PremiumCustomer has no current Bill
      */
-    public FixedBill payWithPoint() throws ZeroPointException, PointInaccessibleIfNotMemberException, NoOngoingPurchaseException;
+    public FixedBill payWithPoint() throws ZeroPointException, PointInaccessibleIfNotMemberException, NoOngoingPurchaseException, SearchedItemNotExist;
 
     /**
      * Finalize the current bill held by the PremiumCustomer. External modifier will be applied first before the PremiumCustomer's own modifier
@@ -26,6 +27,6 @@ public interface CanPayWithPoint {
      * @throws PointInaccessibleIfNotMemberException The PremiumCustomer cannot pay with point due to their membership being deactivated
      * @throws NoOngoingPurchaseException The PremiumCustomer has no current Bill
      */
-    public FixedBill payWithPoint(ArrayList<FixedBillModifier> externalModifier) throws ZeroPointException, PointInaccessibleIfNotMemberException, NoOngoingPurchaseException;
+    public FixedBill payWithPoint(ArrayList<FixedBillModifier> externalModifier) throws ZeroPointException, PointInaccessibleIfNotMemberException, NoOngoingPurchaseException, SearchedItemNotExist;
 
 }

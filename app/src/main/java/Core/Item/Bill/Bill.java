@@ -106,7 +106,9 @@ public class Bill implements Costly, IDAble {
     }
 
     public FixedBill getFixedBill() {
-        return new FixedBill(this.id, getItemList(), new ArrayList<>());
+
+        return new FixedBill(this.id, getItemList(), new ArrayList<>()
+        );
     }
 
     public void setOwner(Customer customer) {
