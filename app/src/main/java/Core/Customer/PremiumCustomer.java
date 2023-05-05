@@ -15,6 +15,8 @@ import java.util.ArrayList;
 public class PremiumCustomer extends Customer implements MembershipStateInterface {
     private MembershipState state;
 
+    private MembershipStateName stateName;
+
     @Getter(AccessLevel.PUBLIC)
     @NonNull
     @Setter
@@ -42,7 +44,7 @@ public class PremiumCustomer extends Customer implements MembershipStateInterfac
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.state = MembershipStateFactory.getInstance().createState(stateName, this);
+        this.transitionToState(stateName);
     }
 
     /**
@@ -55,6 +57,7 @@ public class PremiumCustomer extends Customer implements MembershipStateInterfac
         }
 
         this.state = MembershipStateFactory.getInstance().createState(state, this);
+        this.stateName = this.state.getStatus();
     }
 
     /**
