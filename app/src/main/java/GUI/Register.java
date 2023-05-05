@@ -6,19 +6,54 @@ package GUI;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.beans.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import javax.swing.*;
-import javax.swing.event.DocumentListener;
+
+import Core.Customer.MembershipState.MembershipStateName;
+import Core.DataStore.*;
+import Core.Customer.*;
+import Core.DataStore.Exception.CustomerNotExistException;
+import Core.DataStore.Exception.PromotedCustomerAlreadyExist;
 
 /**
  * @author Marthen
  */
 public class Register extends JPanel {
+    private DataStore ds = DataStore.getInstance();
+
     public Register() {
         initComponents();
+
+        Thread updateThread = new Thread(() -> {
+            try {
+                while (true) {
+                    List<Customer> customers = ds.getCustomers();
+                    Set<Integer> currentIDs = new HashSet<>();
+                    for (int i = 0; i < idDropDown.getItemCount(); i++) {
+                        currentIDs.add((Integer) idDropDown.getItemAt(i));
+                    }
+                    Set<Integer> newIDs = customers.stream().map(Customer::getID).collect(Collectors.toSet());
+
+                    // Add new items
+                    newIDs.stream().filter(id -> !currentIDs.contains(id)).forEach(idDropDown::addItem);
+
+                    // Remove old items
+                    currentIDs.stream().filter(id -> !newIDs.contains(id)).forEach(idDropDown::removeItem);
+
+                    Thread.sleep(300);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        updateThread.start();
     }
 
     private void cancelButtonMousePressed(MouseEvent e) {
+        idDropDown.setSelectedIndex(-1);
         nameField.setText("");
         phoneField.setText("");
         emailField.setText("");
@@ -26,16 +61,6 @@ public class Register extends JPanel {
         nameVerifLabel.setText("");
         phoneVerifLabel.setText("");
         emailVerifLabel.setText("");
-    }
-
-    private void registerButtonMousePressed(MouseEvent e) {
-        if(nameField.getText().equals("") || phoneField.getText().equals("") || emailField.getText().equals("") || phoneField.getText().equals("must be 12 digits")){
-            JOptionPane.showMessageDialog(null, "Please fill all fields");
-        } else if (nameVerifLabel.getText().equals("INVALID") || phoneVerifLabel.getText().equals("INVALID") || emailVerifLabel.getText().equals("INVALID")){
-            JOptionPane.showMessageDialog(null, "Please fill all fields correctly");
-        } else {
-            JOptionPane.showMessageDialog(null, "Register Success");
-        }
     }
 
     private void phoneFieldFocusGained(FocusEvent e) {
@@ -81,7 +106,7 @@ public class Register extends JPanel {
         if(input.length() > 12){
             phoneField.setText(input.substring(0, 12));
         }
-        if(input.length() == 12){
+        if(input.length() >= 12){
             phoneVerifLabel.setText("VALID");
         } else {
             phoneVerifLabel.setText("INVALID");
@@ -110,6 +135,38 @@ public class Register extends JPanel {
         }
     }
 
+    private void registerButtonMousePressed(MouseEvent e) {
+        if (idDropDown.getSelectedIndex() == -1) {
+            JOptionPane.showMessageDialog(null, "Please select ID");
+        } else if(nameField.getText().equals("") || phoneField.getText().equals("") || emailField.getText().equals("") || phoneField.getText().equals("must be 12 digits")){
+            JOptionPane.showMessageDialog(null, "Please fill all fields");
+        } else if (nameVerifLabel.getText().equals("INVALID") || phoneVerifLabel.getText().equals("INVALID") || emailVerifLabel.getText().equals("INVALID")){
+            JOptionPane.showMessageDialog(null, "Please fill all fields correctly");
+        } else {
+            Integer id = (Integer) idDropDown.getSelectedItem();
+            String name = nameField.getText();
+            String phone = phoneField.getText();
+            String email = emailField.getText();
+            MembershipStateName membership = regularRadio.isSelected() ? MembershipStateName.MEMBER : MembershipStateName.VIP;
+            try{
+                ds.promoteCustomer(id, name, phone, email, membership);
+            } catch (PromotedCustomerAlreadyExist e1){
+                JOptionPane.showMessageDialog(null, "Customer already promoted");
+            } catch (CustomerNotExistException e1){
+                JOptionPane.showMessageDialog(null, "Customer not exist");
+            }
+            nameField.setText("");
+            phoneField.setText("must be 12 digits");
+            emailField.setText("");
+            regularRadio.setSelected(true);
+            nameVerifLabel.setText("");
+            phoneVerifLabel.setText("");
+            emailVerifLabel.setText("");
+            idDropDown.setSelectedIndex(-1);
+            JOptionPane.showMessageDialog(null, "Register Success");
+        }
+    }
+
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner Evaluation license - Bintang Dwi Marthen
@@ -129,14 +186,15 @@ public class Register extends JPanel {
         nameVerifLabel = new JLabel();
         phoneVerifLabel = new JLabel();
         emailVerifLabel = new JLabel();
+        memberLabel = new JLabel();
+        idDropDown = new JComboBox();
 
         //======== this ========
-        setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.
-        border.EmptyBorder(0,0,0,0), "JFor\u006dDesi\u0067ner \u0045valu\u0061tion",javax.swing.border.TitledBorder.CENTER
-        ,javax.swing.border.TitledBorder.BOTTOM,new java.awt.Font("Dia\u006cog",java.awt.Font
-        .BOLD,12),java.awt.Color.red), getBorder())); addPropertyChangeListener(
-        new java.beans.PropertyChangeListener(){@Override public void propertyChange(java.beans.PropertyChangeEvent e){if("bord\u0065r"
-        .equals(e.getPropertyName()))throw new RuntimeException();}});
+        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border. EmptyBorder( 0
+        , 0, 0, 0) , "JF\u006frmDes\u0069gner \u0045valua\u0074ion", javax. swing. border. TitledBorder. CENTER, javax. swing. border. TitledBorder. BOTTOM
+        , new java .awt .Font ("D\u0069alog" ,java .awt .Font .BOLD ,12 ), java. awt. Color. red) ,
+         getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java .beans .PropertyChangeEvent e
+        ) {if ("\u0062order" .equals (e .getPropertyName () )) throw new RuntimeException( ); }} );
         setLayout(new BorderLayout());
 
         //---- headerLabel ----
@@ -152,25 +210,25 @@ public class Register extends JPanel {
             namelabel.setText("Name");
             namelabel.setFont(new Font("Verdana", Font.BOLD, 36));
             panel1.add(namelabel);
-            namelabel.setBounds(50, 65, 250, 60);
+            namelabel.setBounds(50, 100, 250, 60);
 
             //---- phoneLabel ----
             phoneLabel.setText("Phone");
             phoneLabel.setFont(new Font("Verdana", Font.BOLD, 36));
             panel1.add(phoneLabel);
-            phoneLabel.setBounds(50, 130, 250, 60);
+            phoneLabel.setBounds(50, 165, 250, 60);
 
             //---- emailLabel ----
             emailLabel.setText("Email");
             emailLabel.setFont(new Font("Verdana", Font.BOLD, 36));
             panel1.add(emailLabel);
-            emailLabel.setBounds(50, 200, 250, 60);
+            emailLabel.setBounds(50, 235, 250, 60);
 
             //---- vipRadio ----
             vipRadio.setText("VIP");
             vipRadio.setFont(new Font("Verdana", Font.BOLD, 34));
             panel1.add(vipRadio);
-            vipRadio.setBounds(530, 270, 105, 40);
+            vipRadio.setBounds(530, 310, 105, 40);
 
             //---- nameField ----
             nameField.setFont(new Font("Verdana", Font.PLAIN, 30));
@@ -187,7 +245,7 @@ public class Register extends JPanel {
                 }
             });
             panel1.add(nameField);
-            nameField.setBounds(245, 65, 440, 60);
+            nameField.setBounds(245, 100, 440, 60);
 
             //---- phoneField ----
             phoneField.setFont(new Font("Verdana", Font.PLAIN, 30));
@@ -209,7 +267,7 @@ public class Register extends JPanel {
                 }
             });
             panel1.add(phoneField);
-            phoneField.setBounds(245, 130, 440, 60);
+            phoneField.setBounds(245, 165, 440, 60);
 
             //---- emailField ----
             emailField.setFont(new Font("Verdana", Font.PLAIN, 30));
@@ -226,7 +284,7 @@ public class Register extends JPanel {
                 }
             });
             panel1.add(emailField);
-            emailField.setBounds(245, 200, 440, 60);
+            emailField.setBounds(245, 235, 440, 60);
 
             //---- cancelButton ----
             cancelButton.setText("Cancel");
@@ -238,7 +296,7 @@ public class Register extends JPanel {
                 }
             });
             panel1.add(cancelButton);
-            cancelButton.setBounds(154, 360, 185, 55);
+            cancelButton.setBounds(155, 365, 185, 55);
 
             //---- registerButton ----
             registerButton.setText("Register");
@@ -250,35 +308,46 @@ public class Register extends JPanel {
                 }
             });
             panel1.add(registerButton);
-            registerButton.setBounds(461, 360, 185, 55);
+            registerButton.setBounds(460, 365, 185, 55);
 
             //---- membershipLabel ----
             membershipLabel.setText("Membership");
             membershipLabel.setFont(new Font("Verdana", Font.BOLD, 36));
             panel1.add(membershipLabel);
-            membershipLabel.setBounds(50, 260, 250, 60);
+            membershipLabel.setBounds(50, 300, 250, 60);
 
             //---- regularRadio ----
             regularRadio.setText("Regular");
             regularRadio.setFont(new Font("Verdana", Font.BOLD, 34));
             regularRadio.setSelected(true);
             panel1.add(regularRadio);
-            regularRadio.setBounds(new Rectangle(new Point(320, 265), regularRadio.getPreferredSize()));
+            regularRadio.setBounds(new Rectangle(new Point(320, 305), regularRadio.getPreferredSize()));
 
             //---- nameVerifLabel ----
             nameVerifLabel.setFont(new Font("Verdana", Font.PLAIN, 20));
             panel1.add(nameVerifLabel);
-            nameVerifLabel.setBounds(690, 75, 90, 38);
+            nameVerifLabel.setBounds(690, 110, 90, 38);
 
             //---- phoneVerifLabel ----
             phoneVerifLabel.setFont(new Font("Verdana", Font.PLAIN, 20));
             panel1.add(phoneVerifLabel);
-            phoneVerifLabel.setBounds(690, 140, 90, 38);
+            phoneVerifLabel.setBounds(690, 175, 90, 38);
 
             //---- emailVerifLabel ----
             emailVerifLabel.setFont(new Font("Verdana", Font.PLAIN, 20));
             panel1.add(emailVerifLabel);
-            emailVerifLabel.setBounds(690, 210, 90, 38);
+            emailVerifLabel.setBounds(690, 245, 90, 38);
+
+            //---- memberLabel ----
+            memberLabel.setText("ID");
+            memberLabel.setFont(new Font("Verdana", Font.BOLD, 36));
+            panel1.add(memberLabel);
+            memberLabel.setBounds(50, 30, 250, 60);
+
+            //---- idDropDown ----
+            idDropDown.setFont(new Font("Verdana", Font.PLAIN, 30));
+            panel1.add(idDropDown);
+            idDropDown.setBounds(245, 30, 440, 60);
 
             {
                 // compute preferred size
@@ -295,7 +364,7 @@ public class Register extends JPanel {
                 panel1.setPreferredSize(preferredSize);
             }
         }
-        add(panel1, BorderLayout.WEST);
+        add(panel1, BorderLayout.CENTER);
 
         //---- buttonGroup1 ----
         var buttonGroup1 = new ButtonGroup();
@@ -322,5 +391,7 @@ public class Register extends JPanel {
     private JLabel nameVerifLabel;
     private JLabel phoneVerifLabel;
     private JLabel emailVerifLabel;
+    private JLabel memberLabel;
+    private JComboBox idDropDown;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }

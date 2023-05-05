@@ -6,10 +6,7 @@ import Core.Customer.Exception.ZeroPointException;
 import Core.Customer.MembershipState.*;
 import Core.Item.Bill.FixedBill.FixedBill;
 import Core.Item.Bill.FixedBill.FixedBillModifier.FixedBillModifier;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.SneakyThrows;
+import lombok.*;
 
 import java.util.ArrayList;
 
@@ -19,20 +16,32 @@ public class PremiumCustomer extends Customer implements MembershipStateInterfac
 
     @Getter(AccessLevel.PUBLIC)
     @NonNull
+    @Setter
     private String name;
 
     @Getter(AccessLevel.PUBLIC)
     @NonNull
+    @Setter
+    private String email;
+
+    @Getter(AccessLevel.PUBLIC)
+    @NonNull
+    @Setter
     private String phoneNumber;
 
     @Getter(AccessLevel.PUBLIC)
     private int point = 0;
 
-    public PremiumCustomer(Customer customer, String name, String phoneNumber){
+    public PremiumCustomer(Customer customer, String name, String phoneNumber, String email){
+        this(customer, name, phoneNumber, email, MembershipStateName.MEMBER);
+    }
+
+    public PremiumCustomer(Customer customer, String name, String phoneNumber, String email, MembershipStateName stateName){
         super(customer);
         this.name = name;
         this.phoneNumber = phoneNumber;
-        this.state = new Deactivated(this);
+        this.email = email;
+        this.state = MembershipStateFactory.getInstance().createState(stateName, this);
     }
 
     /**

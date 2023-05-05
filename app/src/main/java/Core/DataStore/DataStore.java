@@ -1,6 +1,7 @@
 package Core.DataStore;
 
 import Core.Customer.Customer;
+import Core.Customer.MembershipState.MembershipStateName;
 import Core.Customer.PremiumCustomer;
 import Core.DataStore.Exception.CustomerNotExistException;
 import Core.DataStore.Exception.PromotedCustomerAlreadyExist;
@@ -43,7 +44,7 @@ public class DataStore {
      */
     @SneakyThrows
     public Customer createNewCustomer() {
-        int newID = Math.max(customers.getHighestID(), premiumCustomers.getHighestID());
+        int newID = Math.max(customers.getHighestID(), premiumCustomers.getHighestID()) + 1;
         Customer newCustomer = new Customer(newID);
         customers.addItem(newCustomer);
         return newCustomer;
@@ -58,7 +59,7 @@ public class DataStore {
      * @throws CustomerNotExistException No Customer with the given ID exists in the DataStore
      * @throws PromotedCustomerAlreadyExist PremiumCustomer with the given ID already exists
      */
-    public PremiumCustomer promoteCustomer(int id, String name, String phoneNumber) throws CustomerNotExistException, PromotedCustomerAlreadyExist {
+    public PremiumCustomer promoteCustomer(int id, String name, String phoneNumber, String email, MembershipStateName stateName) throws CustomerNotExistException, PromotedCustomerAlreadyExist {
         Customer promotedCustomer;
         try {
             promotedCustomer = customers.removeItem(id);
@@ -68,7 +69,7 @@ public class DataStore {
 
         assert(promotedCustomer != null);
 
-        PremiumCustomer newPremiumCustomer = new PremiumCustomer(promotedCustomer, name, phoneNumber);
+        PremiumCustomer newPremiumCustomer = new PremiumCustomer(promotedCustomer, name, phoneNumber, email, stateName);
 
         try {
             premiumCustomers.addItem(newPremiumCustomer);
@@ -78,6 +79,12 @@ public class DataStore {
         return newPremiumCustomer;
 
     }
+
+    public PremiumCustomer promoteCustomer(int id, String name, String phoneNumber, String email) throws CustomerNotExistException, PromotedCustomerAlreadyExist {
+        return promoteCustomer(id, name, phoneNumber, email, MembershipStateName.MEMBER);
+    }
+
+
 
     public Item getItemWithID(int id) throws SearchedItemNotExist {
         return items.getItem(id).getItem();
@@ -90,12 +97,19 @@ public class DataStore {
      * @throws SearchedItemNotExist The Customer with the given ID does not exist
      */
     public Customer getCustomerWithID(int id) throws SearchedItemNotExist {
-        try {
-            return premiumCustomers.getItem(id);
-        } catch (SearchedItemNotExist e) {
-            return customers.getItem(id);
-        }
+        return customers.getItem(id);
     }
+
+    /**
+     * Get a PremiumCustomer with the given ID
+     * @param id
+     * @return PremiumCustomer
+     * @throws SearchedItemNotExist The Customer with the given ID does not exist
+     */
+    public PremiumCustomer getPremiumCustomerWithID(int id) throws SearchedItemNotExist {
+        return premiumCustomers.getItem(id);
+    }
+
 
     /**
      * Get an ImageWithID with the given ID
@@ -111,11 +125,21 @@ public class DataStore {
         return items.getItemList();
     }
 
+    public ArrayList<Customer> getCustomers() {
+        return customers.getItemList();
+    }
+
+    public ArrayList<PremiumCustomer> getPremiumCustomers() {
+        return premiumCustomers.getItemList();
+    }
+
     public QuantifiableItem addNewItem(String name, Double price, Double originalPrice, String category, Integer quantity) throws ItemWithIDAlreadyExist, NegativeQuantityException {
         QuantifiableItem newQItem = new QuantifiableItem(new Item(items.getNewID(), name, price, originalPrice, category, new ImageWithID(), false), quantity);
         items.addItem(newQItem);
         return newQItem;
     }
+
+
 
 
 

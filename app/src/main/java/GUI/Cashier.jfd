@@ -1,13 +1,64 @@
-JFDML JFormDesigner: "8.0.3.0.246" Java: "17.0.6" encoding: "UTF-8"
+JFDML JFormDesigner: "8.0.3.0.246" Java: "17.0.5" encoding: "UTF-8"
 
 new FormModel {
 	contentType: "form/swing"
 	root: new FormRoot {
-		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
+			"$horizontalGroup": "par l {seq t {space :p:18:p, par l {seq {comp title:::p:296:p, space :0:0:x}, seq {par l {seq {comp browsePane:::p:433:p, space :0:0:x}, seq {comp searchText:::p:369:p, space :::p, comp searchButton:::::x}}, space :::p}}, par l {comp billTabPane:::p:290:p, par l:::p {seq t {comp saveBill:::p:140:p, space :::x, comp printBill:::p:140:p}, seq l {comp subtotalTitle:::p:55:p, space :::p, comp subtotalAmount:::::x}}}, space :p:33:p}}"
+			"$verticalGroup": "par l {seq l {space :::p, comp title:::p:37:p, space s:::p, par b {comp searchText::b:p::p, comp searchButton::b:p::p}, space s:::p, comp browsePane::::355:x, space ::136:x}, seq l {space :p:86:p, comp billTabPane:::p:320:p, space u:::p, par b {comp printBill::b:p::p, comp saveBill::b:p::p}, space u:::p, par b {comp subtotalTitle::b:p::p, comp subtotalAmount::b:p::p}, space :0:124:x}}"
+		} ) {
 			name: "this"
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "title"
+				"text": "Cashier"
+				"font": new com.jformdesigner.model.SwingDerivedFont( null, 0, 4, false )
+			} )
+			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+				name: "browsePane"
+				add( new FormComponent( "javax.swing.JTable" ) {
+					name: "browseList"
+					"font": &Font0 new java.awt.Font( "Segoe UI", 0, 16 )
+				} )
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "searchText"
+				"margin": new java.awt.Insets( 0, 0, 0, 0 )
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "searchButton"
+				"text": "search"
+			} )
+			add( new FormContainer( "javax.swing.JTabbedPane", new FormLayoutManager( class javax.swing.JTabbedPane ) ) {
+				name: "billTabPane"
+				add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+					name: "billDetailPane"
+					add( new FormComponent( "javax.swing.JList" ) {
+						name: "billItemList"
+						"font": #Font0
+					} )
+				}, new FormLayoutConstraints( null ) {
+					"title": "text"
+				} )
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "subtotalTitle"
+				"text": "subtotal"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "subtotalAmount"
+				"text": "0"
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "saveBill"
+				"text": "save"
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "printBill"
+				"text": "print"
+			} )
 		}, new FormLayoutConstraints( null ) {
-			"location": new java.awt.Point( 0, 0 )
-			"size": new java.awt.Dimension( 400, 300 )
+			"location": new java.awt.Point( 0, 546 )
+			"size": new java.awt.Dimension( 800, 600 )
 		} )
 	}
 }

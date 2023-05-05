@@ -5,11 +5,35 @@
 package GUI;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
 
-/**
- * @author Marthen
- */
+class BrowseObject {
+    String name;
+    String category;
+    int price;
+    public BrowseObject(String name, String category, int price) {
+        this.name = name;
+        this.category = category;
+        this.price = price;
+    }
+
+    public BrowseObject(String[] data) {
+        this.name = data[0];
+        this.category = data[1];
+        this.price = Integer.parseInt(data[2]);
+    }
+
+    public String[] getText() {
+        return new String[] {this.name, this.category, Integer.toString(this.price)};
+    }
+}
+
 public class Cashier extends JPanel {
     public Cashier() {
         initComponents();
@@ -17,20 +41,207 @@ public class Cashier extends JPanel {
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
-        // Generated using JFormDesigner Evaluation license - Bintang Dwi Marthen
+        // Generated using JFormDesigner Evaluation license - Fakih Anugerah Pratama
+        String[][] dummyData = new String[][] {
+                {"fafakjdlkjfalkj", "makanaan", "100000"},
+                {"fairvielad", "makanan", "9911"},
+                {"aqua", "minuman", "10000"},
+                {"doesitsowell", "sayyou", "90"}
+        };
 
-        //======== this ========
-        setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.border
-        .EmptyBorder(0,0,0,0), "JFor\u006dDesi\u0067ner \u0045valu\u0061tion",javax.swing.border.TitledBorder.CENTER,javax
-        .swing.border.TitledBorder.BOTTOM,new java.awt.Font("Dia\u006cog",java.awt.Font.BOLD,
-        12),java.awt.Color.red), getBorder())); addPropertyChangeListener(new java.beans
-        .PropertyChangeListener(){@Override public void propertyChange(java.beans.PropertyChangeEvent e){if("bord\u0065r".equals(e.
-        getPropertyName()))throw new RuntimeException();}});
-        setLayout(new BorderLayout());
+        ArrayList<BrowseObject> browseObjects = new ArrayList();
+
+        for(int i = 0; i < dummyData.length; i++) {
+            browseObjects.add(new BrowseObject(dummyData[i]));
+        }
+
+        DefaultTableModel billItemTableModel = new DefaultTableModel();
+        billItemTableModel.addColumn("nama");
+        billItemTableModel.addColumn("quantity");
+        billItemTableModel.addColumn("subtotal");
+
+
+        title = new JLabel();
+        browsePane = new JScrollPane();
+        browseTable = new JTable(dummyData, new String[]{"Nama", "Kategori", "Harga"});
+        searchText = new JTextField();
+        searchButton = new JButton();
+        billTabPane = new JTabbedPane();
+        billDetailPane = new JScrollPane();
+        billItemTable = new JTable(billItemTableModel);
+        subtotalTitle = new JLabel();
+        subtotalAmount = new JLabel();
+        saveBill = new JButton();
+        printBill = new JButton();
+        addItem = new JButton();
+
+
+
+        //---- title ----
+        title.setText("Cashier");
+        title.setFont(title.getFont().deriveFont(title.getFont().getSize() + 4f));
+
+        //======== browsePane ========
+        {
+
+            //---- browseList ----
+            browseTable.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+            browsePane.setViewportView(browseTable);
+        }
+
+        //---- searchText ----
+        searchText.setMargin(new Insets(0, 0, 0, 0));
+
+        //---- searchButton ----
+        searchButton.setText("search");
+
+        //======== billTabPane ========
+        {
+
+            //======== billDetailPane ========
+            {
+
+                //---- billItemList ----
+                billItemTable.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+                billDetailPane.setViewportView(billItemTable);
+            }
+            billTabPane.addTab("text", billDetailPane);
+        }
+
+        //---- subtotalTitle ----
+        subtotalTitle.setText("subtotal");
+
+        //---- subtotalAmount ----
+        subtotalAmount.setText("0");
+
+        //---- saveBill ----
+        saveBill.setText("save");
+
+        //---- printBill ----
+        printBill.setText("print");
+
+        addItem.setText("add");
+
+        GroupLayout layout = new GroupLayout(this);
+        setLayout(layout);
+        layout.setHorizontalGroup(
+                layout.createParallelGroup()
+                        .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup()
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(title, GroupLayout.PREFERRED_SIZE, 296, GroupLayout.PREFERRED_SIZE)
+                                                .addGap(0, 0, Short.MAX_VALUE))
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup()
+                                                        .addGroup(layout.createSequentialGroup()
+                                                                .addComponent(searchText, GroupLayout.PREFERRED_SIZE, 369, GroupLayout.PREFERRED_SIZE)
+                                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                                                .addComponent(searchButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                        .addGroup(layout.createSequentialGroup()
+                                                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                                                                        .addComponent(browsePane, GroupLayout.DEFAULT_SIZE, 433, Short.MAX_VALUE)
+                                                                        .addComponent(addItem, GroupLayout.DEFAULT_SIZE, 433, Short.MAX_VALUE))
+                                                                .addGap(0, 0, Short.MAX_VALUE)))
+                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)))
+                                .addGroup(layout.createParallelGroup()
+                                        .addComponent(billTabPane, GroupLayout.PREFERRED_SIZE, 290, GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                                                .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                        .addComponent(saveBill, GroupLayout.PREFERRED_SIZE, 140, GroupLayout.PREFERRED_SIZE)
+                                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(printBill, GroupLayout.PREFERRED_SIZE, 140, GroupLayout.PREFERRED_SIZE))
+                                                .addGroup(layout.createSequentialGroup()
+                                                        .addComponent(subtotalTitle, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE)
+                                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                                        .addComponent(subtotalAmount, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addGap(33, 33, 33))
+        );
+        layout.setVerticalGroup(
+                layout.createParallelGroup()
+                        .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addContainerGap()
+                                                .addComponent(title, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(searchText, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(searchButton))
+                                                .addGap(18, 18, 18)
+                                                .addComponent(browsePane, GroupLayout.PREFERRED_SIZE, 339, GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                                .addGap(86, 86, 86)
+                                                .addComponent(billTabPane, GroupLayout.PREFERRED_SIZE, 320, GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(printBill)
+                                                        .addComponent(saveBill))))
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup()
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(subtotalTitle)
+                                                        .addComponent(subtotalAmount))
+                                                .addGap(0, 124, Short.MAX_VALUE))
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(addItem)
+                                                .addContainerGap(110, Short.MAX_VALUE))))
+        );
+
+
+
+
+        browseTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        ListSelectionModel browseTableSM = browseTable.getSelectionModel();
+        browseTableSM.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (e.getValueIsAdjusting()) return;
+
+                ListSelectionModel listSelectionModel = (ListSelectionModel) e.getSource();
+                if(!listSelectionModel.isSelectionEmpty()) {
+                    setSelectedBrowseObject(browseObjects.get(listSelectionModel.getMinSelectionIndex()));
+                }
+            }
+        });
+
+
+        addItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (browseTableSM.isSelectionEmpty()) return;
+
+                CashierItemAdd cashierItemAddDialog = new CashierItemAdd(selectedBrowseObject.name, selectedBrowseObject.price, billItemTableModel);
+
+
+            }
+        });
+
+
+
+
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
+    }
+    BrowseObject selectedBrowseObject;
+    void setSelectedBrowseObject(BrowseObject obj) {
+        selectedBrowseObject = obj;
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
-    // Generated using JFormDesigner Evaluation license - Bintang Dwi Marthen
+    // Generated using JFormDesigner Evaluation license - Fakih Anugerah Pratama
+    private JLabel title;
+    private JScrollPane browsePane;
+    private JTable browseTable;
+    private JTextField searchText;
+    private JButton searchButton;
+    private JTabbedPane billTabPane;
+    private JScrollPane billDetailPane;
+    private JTable billItemTable;
+    private JLabel subtotalTitle;
+    private JLabel subtotalAmount;
+    private JButton saveBill;
+    private JButton printBill;
+    private JButton addItem;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }
