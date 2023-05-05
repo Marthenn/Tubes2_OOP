@@ -18,20 +18,18 @@ public class History extends JPanel {
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner Evaluation license - Fakih Anugerah Pratama
+        DefaultComboBoxModel memberListModel = new DefaultComboBoxModel();
+        
+
+
         NameLabel = new JLabel();
-        Name = new JLabel();
+        Name = new JComboBox(memberListModel);
         MembershipLabel = new JLabel();
         Membership = new JLabel();
         SearchBox = new JTextField();
         HistoryTablePane = new JScrollPane();
         HistoryTable = new JTable();
 
-        //======== this ========
-        setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.border.EmptyBorder(
-        0,0,0,0), "JF\u006frmDes\u0069gner \u0045valua\u0074ion",javax.swing.border.TitledBorder.CENTER,javax.swing.border.TitledBorder
-        .BOTTOM,new java.awt.Font("D\u0069alog",java.awt.Font.BOLD,12),java.awt.Color.
-        red), getBorder())); addPropertyChangeListener(new java.beans.PropertyChangeListener(){@Override public void propertyChange(java.
-        beans.PropertyChangeEvent e){if("\u0062order".equals(e.getPropertyName()))throw new RuntimeException();}});
         setLayout(new GridBagLayout());
         ((GridBagLayout)getLayout()).columnWidths = new int[] {0, 0, 0, 0, 0};
         ((GridBagLayout)getLayout()).rowHeights = new int[] {0, 0, 0, 0, 0};
@@ -45,7 +43,6 @@ public class History extends JPanel {
             new Insets(0, 0, 5, 5), 0, 0));
 
         //---- Name ----
-        Name.setText("DefaultName");
         add(Name, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 5), 0, 0));
@@ -81,7 +78,7 @@ public class History extends JPanel {
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
     // Generated using JFormDesigner Evaluation license - Fakih Anugerah Pratama
     private JLabel NameLabel;
-    private JLabel Name;
+    private JComboBox Name;
     private JLabel MembershipLabel;
     private JLabel Membership;
     private JTextField SearchBox;

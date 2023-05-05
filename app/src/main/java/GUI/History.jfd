@@ -16,9 +16,8 @@ new FormModel {
 				name: "NameLabel"
 				"text": "Name"
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
-			add( new FormComponent( "javax.swing.JLabel" ) {
+			add( new FormComponent( "javax.swing.JComboBox" ) {
 				name: "Name"
-				"text": "DefaultName"
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridx": 1
 			} )
