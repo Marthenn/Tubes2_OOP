@@ -54,6 +54,8 @@ public class Cashier extends JPanel {
             browseObjects.add(new BrowseObject(dummyData[i]));
         }
 
+        DefaultListModel<String> billItemListModel = new DefaultListModel();
+
 
         title = new JLabel();
         browsePane = new JScrollPane();
@@ -62,7 +64,7 @@ public class Cashier extends JPanel {
         searchButton = new JButton();
         billTabPane = new JTabbedPane();
         billDetailPane = new JScrollPane();
-        billItemList = new JList();
+        billItemList = new JList(billItemListModel);
         subtotalTitle = new JLabel();
         subtotalAmount = new JLabel();
         saveBill = new JButton();
@@ -206,7 +208,9 @@ public class Cashier extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (browseTableSM.isSelectionEmpty()) return;
 
-                new CashierItemAdd(selectedBrowseObject.name, selectedBrowseObject.price);
+                CashierItemAdd cashierItemAddDialog = new CashierItemAdd(selectedBrowseObject.name, selectedBrowseObject.price, billItemListModel);
+
+
             }
         });
 

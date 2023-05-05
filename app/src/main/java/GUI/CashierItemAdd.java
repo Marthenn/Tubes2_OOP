@@ -5,6 +5,8 @@
 package GUI;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 
 /**
@@ -13,9 +15,12 @@ import javax.swing.*;
 public class CashierItemAdd extends JDialog {
     String itemName;
     int itemPrice;
-    public CashierItemAdd(String itemName, int itemPrice) {
+    DefaultListModel listModel;
+    public CashierItemAdd(String itemName, int itemPrice, DefaultListModel listModel) {
         this.itemName = itemName;
         this.itemPrice = itemPrice;
+        this.listModel = listModel;
+
 
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setTitle("add new item");
@@ -25,8 +30,9 @@ public class CashierItemAdd extends JDialog {
 
         this.setVisible(true);
         this.setSize(new Dimension(800, 600));
-
     }
+
+
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
@@ -85,6 +91,13 @@ public class CashierItemAdd extends JDialog {
             new Insets(0, 0, 5, 5), 0, 0));
         pack();
         setLocationRelativeTo(getOwner());
+
+        saveItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                listModel.addElement(itemName);
+            }
+        });
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
 
