@@ -31,7 +31,7 @@ public class FixedBillPrinter {
             QuantifiableItem item = this.fixedBill.getItems().get(i);
             String text2 = String.format("%d. Item ID: %d, Name: %s, Category: %s, Cost: $%.2f, OriginalPrice: $%.2f",
                     i + 1, item.getItem().getID(), item.getItem().getName(), item.getItem().getCategory(),
-                    item.getItem().getCost(), item.getItem().getOriginalPrice() );
+                    item.getItem().getCost(), item.getItem().getCost() );
             pdfPrinter.addText(text2);
         }
         // wait for the PDF thread to finish

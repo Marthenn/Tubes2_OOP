@@ -2,7 +2,7 @@ package Core.Item.Bill.FixedBill;
 
 import Core.IDAble;
 import Core.Item.Bill.FixedBill.FixedBillModifier.FixedBillModifier;
-import Core.Item.Costly;
+import Core.Item.Price.Priceable;
 import Core.Item.QuantifiableItem;
 import lombok.*;
 
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class FixedBill implements Costly, IDAble {
+public class FixedBill implements Priceable, IDAble {
 
     @NonNull
     private Integer id;
@@ -41,12 +41,13 @@ public class FixedBill implements Costly, IDAble {
 
 
     @Override
-    public double getCost() {
-        double cost = getUnmodifiedCost();
+    public Double getPrice() {
+        double price = getUnmodifiedCost();
         for (FixedBillModifier modifier : modifiers){
-            cost = modifier.applyModifier(cost);
+            price = modifier.applyModifier(price);
         }
-        return cost;
+        return price;
+
     }
 
 

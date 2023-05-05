@@ -5,11 +5,9 @@ import Core.DataStore.DataStore;
 import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
 import Core.IDAble;
 import Core.Item.Bill.Exception.ItemInBillNotExist;
-import Core.Item.Bill.Exception.ItemIsNotInBillException;
 import Core.Item.Bill.FixedBill.FixedBill;
-import Core.Item.Costly;
+import Core.Item.Price.Priceable;
 import Core.Item.Exception.NegativeQuantityException;
-import Core.Item.Item;
 import Core.Item.QuantifiableItem;
 import lombok.*;
 
@@ -18,7 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 @RequiredArgsConstructor
-public class Bill implements Costly, IDAble {
+public class Bill implements Priceable, IDAble {
 
     @NonNull
     private Integer id;
@@ -67,16 +65,16 @@ public class Bill implements Costly, IDAble {
     }
 
     @Override
-    public double getCost() throws ItemInBillNotExist {
-        double cost = 0;
+    public Double getPrice() throws ItemInBillNotExist {
+        double price = 0;
         for (int id : itemsQuantity.keySet()) {
             try {
-                cost += DataStore.getInstance().getItemWithID(id).getCost();
+                price += DataStore.getInstance().getItemWithID(id).getPrice();
             } catch (SearchedItemNotExist e) {
                 throw new ItemInBillNotExist(id);
             }
         }
-        return cost;
+        return price;
     }
 
     /**

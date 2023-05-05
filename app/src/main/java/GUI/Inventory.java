@@ -364,7 +364,7 @@ public class Inventory extends JPanel {
                     int idx = list1.getSelectedIndex();
                     if (idx!=-1) {
                         QuantifiableItem x = items.get(idx);
-                        setItemProperty(x.getName(),x.getSingularCost(), x.getOriginalPrice(),x.getQuantity(),x.getCategory());
+                        setItemProperty(x.getName(),x.getSingularCost(), x.getCost(),x.getQuantity(),x.getCategory());
                         label2.setIcon(ResizeImage(imgPath,true));
                     }
                 }
@@ -395,7 +395,7 @@ public class Inventory extends JPanel {
                     } else {
                         dialog1.setTitle("Edit Item");
                         QuantifiableItem x = items.get(list1.getSelectedIndex());
-                        setTextField(x.getName(), String.valueOf(x.getSingularCost()), String.valueOf(x.getOriginalPrice()), String.valueOf(x.getQuantity()), x.getCategory());
+                        setTextField(x.getName(), String.valueOf(x.getSingularCost()), String.valueOf(x.getCost()), String.valueOf(x.getQuantity()), x.getCategory());
                         dialog1.setVisible(true);
                     }
                 }
@@ -439,8 +439,8 @@ public class Inventory extends JPanel {
                     int idx = list1.getSelectedIndex();
                     QuantifiableItem editedItemDisplay = items.get(idx);
                     editedItemDisplay.setName(textField1.getText());
-                    editedItemDisplay.setSingularCost(Double.valueOf((textField2.getText())));
-                    editedItemDisplay.setOriginalPrice(Double.valueOf(textField3.getText()));
+                    editedItemDisplay.setSingularPrice(Double.valueOf((textField2.getText())));
+                    editedItemDisplay.setSingularCost(Double.valueOf(textField3.getText()));
                     editedItemDisplay.setQuantity(Integer.parseInt(textField4.getText()));
                     editedItemDisplay.setCategory(textField5.getText());
                     items_list.setElementAt(textField1.getText(),idx);

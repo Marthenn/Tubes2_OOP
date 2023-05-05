@@ -1,9 +1,9 @@
-package Core.Item;
+package Core.Item.Price;
 
 import Core.Item.Bill.Exception.ItemInBillNotExist;
 import Core.Item.Bill.Exception.ItemIsNotInBillException;
 
-public interface Costly {
+public interface Priceable {
 
     /**
      *
@@ -11,5 +11,5 @@ public interface Costly {
      * @throws ItemIsNotInBillException Certain item does not exist in the Bill
      * @throws ItemInBillNotExist Certain item does not exist in the DataStore
      */
-    double getCost() throws ItemIsNotInBillException, ItemInBillNotExist;
+    Double getPrice() throws ItemIsNotInBillException, ItemInBillNotExist;
 }

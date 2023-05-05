@@ -1,12 +1,12 @@
 package Core.Item;
 
-import Core.IDAble;
+import Core.Item.Bill.Exception.ItemInBillNotExist;
+import Core.Item.Bill.Exception.ItemIsNotInBillException;
 import Core.Item.Bill.Image.ImageWithID;
 import Core.Item.Exception.NegativeQuantityException;
 import Core.Item.Exception.NegativeQuantityModifierException;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.SneakyThrows;
 
 @Getter
 public class QuantifiableItem implements ItemLikeInterface {
@@ -96,7 +96,7 @@ public class QuantifiableItem implements ItemLikeInterface {
         return this.quantity == 0;
     }
 
-    public double getCost() {
+    public Double getCost() {
         return quantity * item.getCost();
     }
 
@@ -108,11 +108,6 @@ public class QuantifiableItem implements ItemLikeInterface {
     @Override
     public String getName() {
         return item.getName();
-    }
-
-    @Override
-    public Double getOriginalPrice() {
-        return item.getOriginalPrice();
     }
 
     @Override
@@ -148,10 +143,22 @@ public class QuantifiableItem implements ItemLikeInterface {
         return this.item.getCost();
     }
 
+    public void setSingularPrice(Double price) {
+        this.item.setPrice(price);
+    }
+
+    public Double setSingularPrice() {
+        return this.item.getPrice();
+    }
 
 
+    /**
+     * @return The cost of the item(s)
+     * @throws ItemIsNotInBillException Certain item does not exist in the Bill
+     * @throws ItemInBillNotExist       Certain item does not exist in the DataStore
+     */
     @Override
-    public void setOriginalPrice(Double originalPrice) {
-        item.setOriginalPrice(originalPrice);
+    public Double getPrice() throws ItemIsNotInBillException, ItemInBillNotExist {
+        return quantity * item.getPrice();
     }
 }

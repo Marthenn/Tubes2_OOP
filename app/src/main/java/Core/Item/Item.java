@@ -1,6 +1,5 @@
 package Core.Item;
 
-import Core.IDAble;
 import Core.Item.Bill.Image.ImageWithID;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -15,29 +14,32 @@ public class Item implements Cloneable, ItemInterface {
 
     @Nullable
     private Integer id;
+
     @Nullable
     @Getter
     @Setter
     private String name;
+
     @Nullable
     @Setter
+    @Getter
     private Double price;
 
     @Nullable
     @Getter
     @Setter
-    private Double originalPrice;
+    private Double cost;
 
     @Nullable
     @Getter
     @Setter
     private String category;
+
     @Nullable
     @Getter
     @Setter
     private ImageWithID image;
 
-    @NonNull
     @Getter
     @Setter
     @Builder.Default
@@ -81,14 +83,5 @@ public class Item implements Cloneable, ItemInterface {
      */
     public void setAsDeleted() {
         this.deleted = true;
-    }
-
-    @Override
-    public double getCost() {
-        return price;
-    }
-
-    public void setCost(Double cost) {
-        this.price = cost;
     }
 }

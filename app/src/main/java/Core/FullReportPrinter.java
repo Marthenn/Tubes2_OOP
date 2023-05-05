@@ -3,7 +3,6 @@ package Core;
 import Core.Customer.Customer;
 import Core.DataStore.DataStore;
 import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
-import Core.Item.Bill.FixedBill.FixedBill;
 import Core.Item.QuantifiableItem;
 
 import java.util.ArrayList;
@@ -28,7 +27,7 @@ public class FullReportPrinter {
                 QuantifiableItem item = this.customers.get(j).getHistory().get(j).getItems().get(i);
                 String text2 = String.format("%d. Item ID: %d, Name: %s, Category: %s, Cost: $%.2f, OriginalPrice: $%.2f",
                         j + 1, item.getItem().getID(), item.getItem().getName(), item.getItem().getCategory(),
-                        item.getItem().getCost(), item.getItem().getOriginalPrice());
+                        item.getItem().getCost(), item.getItem().getCost());
                 pdfPrinter.addText(text2);
             }
         }
