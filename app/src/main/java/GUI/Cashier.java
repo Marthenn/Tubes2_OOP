@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
 
 class BrowseObject {
     String name;
@@ -54,7 +55,10 @@ public class Cashier extends JPanel {
             browseObjects.add(new BrowseObject(dummyData[i]));
         }
 
-        DefaultListModel<String> billItemListModel = new DefaultListModel();
+        DefaultTableModel billItemTableModel = new DefaultTableModel();
+        billItemTableModel.addColumn("nama");
+        billItemTableModel.addColumn("quantity");
+        billItemTableModel.addColumn("subtotal");
 
 
         title = new JLabel();
@@ -64,7 +68,7 @@ public class Cashier extends JPanel {
         searchButton = new JButton();
         billTabPane = new JTabbedPane();
         billDetailPane = new JScrollPane();
-        billItemList = new JList(billItemListModel);
+        billItemTable = new JTable(billItemTableModel);
         subtotalTitle = new JLabel();
         subtotalAmount = new JLabel();
         saveBill = new JButton();
@@ -98,8 +102,8 @@ public class Cashier extends JPanel {
             {
 
                 //---- billItemList ----
-                billItemList.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-                billDetailPane.setViewportView(billItemList);
+                billItemTable.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+                billDetailPane.setViewportView(billItemTable);
             }
             billTabPane.addTab("text", billDetailPane);
         }
@@ -208,7 +212,7 @@ public class Cashier extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (browseTableSM.isSelectionEmpty()) return;
 
-                CashierItemAdd cashierItemAddDialog = new CashierItemAdd(selectedBrowseObject.name, selectedBrowseObject.price, billItemListModel);
+                CashierItemAdd cashierItemAddDialog = new CashierItemAdd(selectedBrowseObject.name, selectedBrowseObject.price, billItemTableModel);
 
 
             }
@@ -233,7 +237,7 @@ public class Cashier extends JPanel {
     private JButton searchButton;
     private JTabbedPane billTabPane;
     private JScrollPane billDetailPane;
-    private JList billItemList;
+    private JTable billItemTable;
     private JLabel subtotalTitle;
     private JLabel subtotalAmount;
     private JButton saveBill;

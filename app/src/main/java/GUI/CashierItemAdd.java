@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 /**
  * @author Fakih A
@@ -15,10 +16,13 @@ import javax.swing.*;
 public class CashierItemAdd extends JDialog {
     String itemName;
     int itemPrice;
-    DefaultListModel listModel;
-    public CashierItemAdd(String itemName, int itemPrice, DefaultListModel listModel) {
+    int itemQuantity;
+    DefaultTableModel listModel;
+    public CashierItemAdd(String itemName, int itemPrice, DefaultTableModel listModel) {
         this.itemName = itemName;
         this.itemPrice = itemPrice;
+        this.itemQuantity = 1;
+
         this.listModel = listModel;
 
 
@@ -95,7 +99,10 @@ public class CashierItemAdd extends JDialog {
         saveItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                listModel.addElement(itemName);
+                listModel.addRow(new Object[]{itemName, itemQuantity, itemQuantity * itemPrice});
+
+                // exit dialog
+                dispose();
             }
         });
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
