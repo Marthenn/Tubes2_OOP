@@ -4,6 +4,9 @@
 
 package GUI;
 
+import Core.DataStore.DataStore;
+import Core.Item.QuantifiableItem;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,27 +16,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
-class BrowseObject {
-    String name;
-    String category;
-    int price;
-    public BrowseObject(String name, String category, int price) {
-        this.name = name;
-        this.category = category;
-        this.price = price;
-    }
-
-    public BrowseObject(String[] data) {
-        this.name = data[0];
-        this.category = data[1];
-        this.price = Integer.parseInt(data[2]);
-    }
-
-    public String[] getText() {
-        return new String[] {this.name, this.category, Integer.toString(this.price)};
-    }
-}
-
 public class Cashier extends JPanel {
     public Cashier() {
         initComponents();
@@ -42,18 +24,9 @@ public class Cashier extends JPanel {
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner Evaluation license - Fakih Anugerah Pratama
-        String[][] dummyData = new String[][] {
-                {"fafakjdlkjfalkj", "makanaan", "100000"},
-                {"fairvielad", "makanan", "9911"},
-                {"aqua", "minuman", "10000"},
-                {"doesitsowell", "sayyou", "90"}
-        };
 
-        ArrayList<BrowseObject> browseObjects = new ArrayList();
+        ArrayList<QuantifiableItem> browseObjects = DataStore.getInstance().getItems();
 
-        for(int i = 0; i < dummyData.length; i++) {
-            browseObjects.add(new BrowseObject(dummyData[i]));
-        }
 
         DefaultTableModel billItemTableModel = new DefaultTableModel();
         billItemTableModel.addColumn("nama");
@@ -63,7 +36,8 @@ public class Cashier extends JPanel {
 
         title = new JLabel();
         browsePane = new JScrollPane();
-        browseTable = new JTable(dummyData, new String[]{"Nama", "Kategori", "Harga"});
+        // Benerin ini
+        //browseTable = new JTable(browseObjects, new String[]{"Nama", "Kategori", "Harga"});
         searchText = new JTextField();
         searchButton = new JButton();
         billTabPane = new JTabbedPane();
@@ -211,8 +185,8 @@ public class Cashier extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (browseTableSM.isSelectionEmpty()) return;
-
-                CashierItemAdd cashierItemAddDialog = new CashierItemAdd(selectedBrowseObject.name, selectedBrowseObject.price, billItemTableModel);
+// Benerin ini
+//                CashierItemAdd cashierItemAddDialog = new CashierItemAdd(selectedSoldItem.getName(), selectedSoldItem.getCost(), billItemTableModel);
 
 
             }
@@ -223,9 +197,9 @@ public class Cashier extends JPanel {
 
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
-    BrowseObject selectedBrowseObject;
-    void setSelectedBrowseObject(BrowseObject obj) {
-        selectedBrowseObject = obj;
+    QuantifiableItem selectedSoldItem;
+    void setSelectedBrowseObject(QuantifiableItem soldItem) {
+        selectedSoldItem = soldItem;
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
