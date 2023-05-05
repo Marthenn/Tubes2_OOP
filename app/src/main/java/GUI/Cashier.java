@@ -29,7 +29,7 @@ public class Cashier extends JPanel {
         ArrayList<QuantifiableItem> browseObjects = DataStore.getInstance().getItems();
         ArrayList<Object[]> browseObjectAsString = new ArrayList<>();
         for(QuantifiableItem item : browseObjects) {
-            browseObjectAsString.add(new String[]{item.getItem().getName(), item.getItem().getName(), item.getItem().getName()}))
+            browseObjectAsString.add(new String[]{item.getItem().getName(), item.getItem().getName(), item.getItem().getName()});
         }
 
         DefaultTableModel billItemTableModel = new DefaultTableModel();
