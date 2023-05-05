@@ -4,6 +4,9 @@
 
 package GUI;
 
+import Core.DataStore.DataStore;
+import Core.Customer.Customer;
+
 import java.awt.*;
 import javax.swing.*;
 
@@ -11,7 +14,10 @@ import javax.swing.*;
  * @author Marthen
  */
 public class History extends JPanel {
+    DataStore dataStore;
     public History() {
+        this.dataStore = DataStore.getInstance();
+
         initComponents();
     }
 
@@ -19,8 +25,10 @@ public class History extends JPanel {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner Evaluation license - Fakih Anugerah Pratama
         DefaultComboBoxModel memberListModel = new DefaultComboBoxModel();
-        
 
+        for (Customer customer : dataStore.getCustomers()) {
+            memberListModel.addElement(customer.getID());
+        }
 
         NameLabel = new JLabel();
         Name = new JComboBox(memberListModel);
