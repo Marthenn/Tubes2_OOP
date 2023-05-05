@@ -11,6 +11,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -26,18 +27,21 @@ public class Cashier extends JPanel {
         // Generated using JFormDesigner Evaluation license - Fakih Anugerah Pratama
 
         ArrayList<QuantifiableItem> browseObjects = DataStore.getInstance().getItems();
-
+        ArrayList<Object[]> browseObjectAsString = new ArrayList<>();
+        for(QuantifiableItem item : browseObjects) {
+            browseObjectAsString.add(new String[]{item.getItem().getName(), item.getItem().getName(), item.getItem().getName()}))
+        }
 
         DefaultTableModel billItemTableModel = new DefaultTableModel();
         billItemTableModel.addColumn("nama");
         billItemTableModel.addColumn("quantity");
         billItemTableModel.addColumn("subtotal");
 
-
         title = new JLabel();
         browsePane = new JScrollPane();
         // Benerin ini
-        //browseTable = new JTable(browseObjects, new String[]{"Nama", "Kategori", "Harga"});
+        browseTable = new JTable((Object[][]) browseObjectAsString.toArray()
+                , new String[]{"Nama", "Kategori", "Harga"});
         searchText = new JTextField();
         searchButton = new JButton();
         billTabPane = new JTabbedPane();
@@ -186,7 +190,7 @@ public class Cashier extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (browseTableSM.isSelectionEmpty()) return;
 // Benerin ini
-//                CashierItemAdd cashierItemAddDialog = new CashierItemAdd(selectedSoldItem.getName(), selectedSoldItem.getCost(), billItemTableModel);
+                CashierItemAdd cashierItemAddDialog = new CashierItemAdd(selectedSoldItem.getName(), selectedSoldItem.getCost(), billItemTableModel);
 
 
             }

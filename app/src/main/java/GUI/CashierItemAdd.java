@@ -15,10 +15,10 @@ import javax.swing.table.DefaultTableModel;
  */
 public class CashierItemAdd extends JDialog {
     String itemName;
-    int itemPrice;
+    Double itemPrice;
     int itemQuantity;
     DefaultTableModel tableModel;
-    public CashierItemAdd(String itemName, int itemPrice, DefaultTableModel tableModel) {
+    public CashierItemAdd(String itemName, Double itemPrice, DefaultTableModel tableModel) {
         this.itemName = itemName;
         this.itemPrice = itemPrice;
         this.itemQuantity = 1;
@@ -58,7 +58,7 @@ public class CashierItemAdd extends JDialog {
         ((GridBagLayout)contentPane.getLayout()).rowWeights = new double[] {1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0E-4};
 
         //---- itemDesc ----
-        itemDesc.setText(this.itemName + " - " + Integer.toString(this.itemPrice));
+        itemDesc.setText(this.itemName + " - " + Double.toString(this.itemPrice));
         itemDesc.setHorizontalAlignment(SwingConstants.CENTER);
         contentPane.add(itemDesc, new GridBagConstraints(1, 0, 4, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
