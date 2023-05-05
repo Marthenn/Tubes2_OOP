@@ -26,9 +26,13 @@ public class Cashier extends JPanel {
         // Generated using JFormDesigner Evaluation license - Fakih Anugerah Pratama
 
         ArrayList<QuantifiableItem> browseObjects = DataStore.getInstance().getItems();
-        ArrayList<Object[]> browseObjectAsString = new ArrayList<>();
-        for(QuantifiableItem item : browseObjects) {
-            browseObjectAsString.add(new String[]{item.getItem().getName(), item.getItem().getName(), item.getItem().getName()});
+//        ArrayList<Object[]> browseObjectAsString = new ArrayList<>();
+        Object[][] browseObjectAsString = new Object[browseObjects.size()][3];
+        for(int i = 0; i < browseObjects.size(); i++) {
+            browseObjectAsString[i] = new Object[]{ browseObjects.get(i).getName(),
+                                                    browseObjects.get(i).getCategory(),
+                                                    Double.toString(browseObjects.get(i).getCost())
+                                                    };
         }
 
         DefaultTableModel billItemTableModel = new DefaultTableModel();
@@ -39,7 +43,7 @@ public class Cashier extends JPanel {
         title = new JLabel();
         browsePane = new JScrollPane();
         // Benerin ini
-        browseTable = new JTable((Object[][]) browseObjectAsString.toArray()
+        browseTable = new JTable( browseObjectAsString
                 , new String[]{"Nama", "Kategori", "Harga"});
         searchText = new JTextField();
         searchButton = new JButton();
