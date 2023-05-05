@@ -34,7 +34,7 @@ public class Customer implements IDAble, CanPay {
         this.history = customer.getHistory();
         try {
             this.billID = customer.getOngoingPurchase().getID();
-        } catch (Exception e) {
+        } catch (NoOngoingPurchaseException | SearchedItemNotExist ignored) {
 
         }
     }
