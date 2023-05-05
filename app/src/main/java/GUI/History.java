@@ -163,8 +163,7 @@ public class History extends JPanel {
             Membership.setText("Customer");
         } else {
             PremiumCustomer _premiumCustomer = (PremiumCustomer) selectedCustomer;
-            Membership.setText(_premiumCustomer.getStatus().name());
+            Membership.setText(_premiumCustomer.getStatus().getName());
         }
-
     }
 }
