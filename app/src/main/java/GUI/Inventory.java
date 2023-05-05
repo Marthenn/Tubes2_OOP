@@ -1,21 +1,18 @@
 package GUI;
 
 import Core.DataStore.DataStore;
-import Core.Item.Item;
 import Core.Item.QuantifiableItem;
 
-import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
-import java.awt.Image;
-
-
-import java.util.*;
 import java.util.List;
+import java.util.Objects;
 
 public class Inventory extends JPanel {
     private List<QuantifiableItem> items;

@@ -1,5 +1,4 @@
 package Core.Customer;
-import java.util.*;
 
 import Core.Customer.Exception.NoOngoingPurchaseException;
 import Core.DataStore.DataStore;
@@ -13,6 +12,7 @@ import lombok.Getter;
 import lombok.NonNull;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 
 @Data
 public class Customer implements IDAble, CanPay {

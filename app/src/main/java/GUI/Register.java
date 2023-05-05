@@ -4,19 +4,19 @@
 
 package GUI;
 
+import Core.Customer.Customer;
+import Core.Customer.MembershipState.MembershipStateName;
+import Core.DataStore.DataStore;
+import Core.DataStore.Exception.CustomerNotExistException;
+import Core.DataStore.Exception.PromotedCustomerAlreadyExist;
+
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import javax.swing.*;
-
-import Core.Customer.MembershipState.MembershipStateName;
-import Core.DataStore.*;
-import Core.Customer.*;
-import Core.DataStore.Exception.CustomerNotExistException;
-import Core.DataStore.Exception.PromotedCustomerAlreadyExist;
 
 /**
  * @author Marthen

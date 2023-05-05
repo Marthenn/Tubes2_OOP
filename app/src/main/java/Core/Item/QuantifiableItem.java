@@ -1,7 +1,6 @@
 package Core.Item;
 
 import Core.Item.Bill.Exception.ItemInBillNotExist;
-import Core.Item.Bill.Exception.ItemIsNotInBillException;
 import Core.Item.Bill.Image.ImageWithID;
 import Core.Item.Exception.NegativeQuantityException;
 import Core.Item.Exception.NegativeQuantityModifierException;
@@ -154,16 +153,15 @@ public class QuantifiableItem implements ItemLikeInterface {
 
     /**
      * @return The cost of the item(s)
-     * @throws ItemIsNotInBillException Certain item does not exist in the Bill
      * @throws ItemInBillNotExist       Certain item does not exist in the DataStore
      */
     @Override
-    public Double getPrice() throws ItemIsNotInBillException, ItemInBillNotExist {
+    public Double getPrice() throws ItemInBillNotExist {
         return quantity * item.getPrice();
     }
 
     @Override
-    public Double getProfit() throws ItemIsNotInBillException, ItemInBillNotExist {
+    public Double getProfit() throws ItemInBillNotExist {
         return getPrice() - getCost();
     }
 }
