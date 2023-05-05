@@ -33,15 +33,15 @@ public class History extends JPanel {
         dataStore.createNewCustomer();
         dataStore.createNewCustomer();
         dataStore.createNewCustomer();
-        try {
+//        try {
+////
+//            dataStore.promoteCustomer(1, "Bembi", "10", "11", MembershipStateName.MEMBER);
 //
-            dataStore.promoteCustomer(1, "Bembi", "10", "11", MembershipStateName.MEMBER);
-
-        } catch (CustomerNotExistException e) {
-            System.out.println("a");
-        } catch (PromotedCustomerAlreadyExist e) {
-            System.out.println("b");
-        }
+//        } catch (CustomerNotExistException e) {
+//            System.out.println("a");
+//        } catch (PromotedCustomerAlreadyExist e) {
+//            System.out.println("b");
+//        }
         // HAPUS KALO GA DIPAKE //
 
 
