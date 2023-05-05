@@ -1,6 +1,7 @@
 package GUI;
 
 import Core.DataStore.DataStore;
+import Core.Item.Bill.Exception.ItemInBillNotExist;
 import Core.Item.Item;
 import Core.Item.QuantifiableItem;
 
@@ -138,23 +139,23 @@ public class Inventory extends JPanel {
         button3.setText("add");
 
         //---- label8 ----
-        label8.setText("dummy1");
+        label8.setText(" ");
         label8.setFont(label8.getFont().deriveFont(14f));
 
         //---- label9 ----
-        label9.setText("9999");
+        label9.setText(" ");
         label9.setFont(label9.getFont().deriveFont(14f));
 
         //---- label10 ----
-        label10.setText("8888");
+        label10.setText(" ");
         label10.setFont(label10.getFont().deriveFont(14f));
 
         //---- label11 ----
-        label11.setText("7777");
+        label11.setText(" ");
         label11.setFont(label11.getFont().deriveFont(14f));
 
         //---- label12 ----
-        label12.setText("dummy2");
+        label12.setText(" ");
         label12.setFont(label12.getFont().deriveFont(14f));
 
         GroupLayout layout = new GroupLayout(this);
@@ -378,7 +379,7 @@ public class Inventory extends JPanel {
                     int idx = list1.getSelectedIndex();
                     if (idx!=-1) {
                         QuantifiableItem x = items.get(idx);
-                        setItemProperty(x.getName(),x.getSingularCost(), x.getCost(),x.getQuantity(),x.getCategory());
+                        setItemProperty(x.getName(),x.getItem().getPrice(), x.getItem().getCost(),x.getQuantity(),x.getCategory());
                         displayImageInJLabel(x.getImage(),label2);
                     }
                 }
@@ -407,9 +408,10 @@ public class Inventory extends JPanel {
                     if (items.get(list1.getSelectedIndex()).getItem().isDeleted()){
                         dialog2.setVisible(true);
                     } else {
+
                         dialog1.setTitle("Edit Item");
                         QuantifiableItem x = items.get(list1.getSelectedIndex());
-                        setTextField(x.getName(), String.valueOf(x.getSingularCost()), String.valueOf(x.getCost()), String.valueOf(x.getQuantity()), x.getCategory());
+                        setTextField(x.getName(), String.valueOf(x.getItem().getPrice()), String.valueOf(x.getItem().getCost()), String.valueOf(x.getQuantity()), x.getCategory());
                         displayImageInJLabel(x.getImage(),label19);
                         base64Image=x.getImage();
                         dialog1.setVisible(true);
@@ -569,14 +571,9 @@ public class Inventory extends JPanel {
 
     public ImageIcon ResizeImage(ImageIcon MyImage, JLabel label)
     {
-//        ImageIcon MyImage = new ImageIcon(ImagePath);
         Image img = MyImage.getImage();
         Image newImg;
-//        if (isLabel2){
-//            newImg = img.getScaledInstance(label2.getWidth(), label2.getHeight(), Image.SCALE_SMOOTH);
-//        } else {
         newImg = img.getScaledInstance(label.getWidth(), label.getHeight(), Image.SCALE_SMOOTH);
-//        }
         ImageIcon image = new ImageIcon(newImg);
         return image;
     }
