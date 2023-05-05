@@ -4,8 +4,9 @@ import Core.IDAble;
 import Core.Item.Bill.Image.ImageWithID;
 import Core.Item.Cost.Costable;
 import Core.Item.Price.Priceable;
+import Core.Item.Profit.Profitable;
 
-interface ItemLikeInterface extends IDAble, Priceable, Costable {
+interface ItemLikeInterface extends IDAble, Profitable {
     String getName();
 
     String getCategory();

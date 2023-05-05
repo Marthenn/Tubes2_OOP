@@ -161,4 +161,9 @@ public class QuantifiableItem implements ItemLikeInterface {
     public Double getPrice() throws ItemIsNotInBillException, ItemInBillNotExist {
         return quantity * item.getPrice();
     }
+
+    @Override
+    public Double getProfit() throws ItemIsNotInBillException, ItemInBillNotExist {
+        return getPrice() - getCost();
+    }
 }

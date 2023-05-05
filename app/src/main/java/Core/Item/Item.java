@@ -1,5 +1,7 @@
 package Core.Item;
 
+import Core.Item.Bill.Exception.ItemInBillNotExist;
+import Core.Item.Bill.Exception.ItemIsNotInBillException;
 import Core.Item.Bill.Image.ImageWithID;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -83,5 +85,10 @@ public class Item implements Cloneable, ItemInterface {
      */
     public void setAsDeleted() {
         this.deleted = true;
+    }
+
+    @Override
+    public Double getProfit() throws ItemIsNotInBillException, ItemInBillNotExist {
+        return getPrice() - getCost();
     }
 }
