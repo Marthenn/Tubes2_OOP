@@ -17,13 +17,13 @@ public class CashierItemAdd extends JDialog {
     String itemName;
     int itemPrice;
     int itemQuantity;
-    DefaultTableModel listModel;
-    public CashierItemAdd(String itemName, int itemPrice, DefaultTableModel listModel) {
+    DefaultTableModel tableModel;
+    public CashierItemAdd(String itemName, int itemPrice, DefaultTableModel tableModel) {
         this.itemName = itemName;
         this.itemPrice = itemPrice;
         this.itemQuantity = 1;
 
-        this.listModel = listModel;
+        this.tableModel = tableModel;
 
 
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -77,7 +77,7 @@ public class CashierItemAdd extends JDialog {
             new Insets(0, 0, 5, 5), 0, 0));
 
         //---- itemAmount ----
-        itemAmount.setText("0");
+        itemAmount.setText("1");
         contentPane.add(itemAmount, new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 5), 0, 0));
@@ -99,10 +99,28 @@ public class CashierItemAdd extends JDialog {
         saveItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                listModel.addRow(new Object[]{itemName, itemQuantity, itemQuantity * itemPrice});
+                tableModel.addRow(new Object[]{itemName, itemQuantity, itemQuantity * itemPrice});
 
                 // exit dialog
                 dispose();
+            }
+        });
+
+        quantityAdd.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                itemQuantity += 1;
+
+                itemAmount.setText(Integer.toString(itemQuantity));
+            }
+        });
+
+        quantityReduce.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                itemQuantity -= 1;
+
+                itemAmount.setText(Integer.toString(itemQuantity));
             }
         });
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
