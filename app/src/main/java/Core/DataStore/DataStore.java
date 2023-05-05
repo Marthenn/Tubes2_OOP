@@ -97,12 +97,19 @@ public class DataStore {
      * @throws SearchedItemNotExist The Customer with the given ID does not exist
      */
     public Customer getCustomerWithID(int id) throws SearchedItemNotExist {
-        try {
-            return premiumCustomers.getItem(id);
-        } catch (SearchedItemNotExist e) {
-            return customers.getItem(id);
-        }
+        return customers.getItem(id);
     }
+
+    /**
+     * Get a PremiumCustomer with the given ID
+     * @param id
+     * @return PremiumCustomer
+     * @throws SearchedItemNotExist The Customer with the given ID does not exist
+     */
+    public PremiumCustomer getPremiumCustomerWithID(int id) throws SearchedItemNotExist {
+        return premiumCustomers.getItem(id);
+    }
+
 
     /**
      * Get an ImageWithID with the given ID
