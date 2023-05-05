@@ -2,8 +2,10 @@ package Core.Customer;
 import java.util.*;
 
 import Core.Customer.Exception.NoOngoingPurchaseException;
+import Core.DataStore.DataStore;
+import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
 import Core.IDAble;
-import Core.Item.Bill.Original.Bill;
+import Core.Item.Bill.Bill;
 import Core.Item.Bill.FixedBill.FixedBill;
 import Core.Item.Bill.FixedBill.FixedBillModifier.FixedBillModifier;
 import lombok.Data;
@@ -20,9 +22,8 @@ public class Customer implements IDAble, CanPay {
     @Getter
     private ArrayList<FixedBill> history = new ArrayList<>();
 
-    @Getter
     @Nullable
-    private Bill ongoingPurchase;
+    private Integer billID;
 
     public Customer(int id) {
         this.id = id;
@@ -31,7 +32,11 @@ public class Customer implements IDAble, CanPay {
     public  Customer(Customer customer) {
         this.id = customer.getID();
         this.history = customer.getHistory();
-        this.ongoingPurchase = customer.getOngoingPurchase();
+        try {
+            this.billID = customer.getOngoingPurchase().getID();
+        } catch (Exception e) {
+
+        }
     }
 
     @Override
@@ -40,12 +45,12 @@ public class Customer implements IDAble, CanPay {
     }
 
     @Override
-    public FixedBill pay()  throws NoOngoingPurchaseException {
+    public FixedBill pay() throws NoOngoingPurchaseException, SearchedItemNotExist {
         return this.pay(new ArrayList<FixedBillModifier>());
     }
 
     @Override
-    public FixedBill pay(ArrayList<FixedBillModifier> externalModifier) throws NoOngoingPurchaseException {
+    public FixedBill pay(ArrayList<FixedBillModifier> externalModifier) throws NoOngoingPurchaseException, SearchedItemNotExist {
         FixedBill finalBill = finalizeOngoingPurchase();
         for (FixedBillModifier modifier : externalModifier) {
             finalBill.addFixedBillModifier(modifier);
@@ -55,7 +60,7 @@ public class Customer implements IDAble, CanPay {
     }
 
     public boolean isNoOngoingPurchase() {
-        return ongoingPurchase == null;
+        return billID == null;
     }
 
     /**
@@ -63,7 +68,7 @@ public class Customer implements IDAble, CanPay {
      * @return The Bill from ongoingPurchase converted to FixedBill
      * @throws NoOngoingPurchaseException The Customer has no current bill
      */
-    public FixedBill finalizeOngoingPurchase() throws NoOngoingPurchaseException {
+    public FixedBill finalizeOngoingPurchase() throws NoOngoingPurchaseException, SearchedItemNotExist {
         if (isNoOngoingPurchase()) {
             throw new NoOngoingPurchaseException();
         }
@@ -88,6 +93,13 @@ public class Customer implements IDAble, CanPay {
      * @param bill
      */
     public void assignBill(Bill bill){
-        ongoingPurchase = bill;
+        billID = bill.getID();
+    }
+
+    public Bill getOngoingPurchase() throws NoOngoingPurchaseException, SearchedItemNotExist {
+        if (billID == null) {
+            throw new NoOngoingPurchaseException();
+        }
+        return DataStore.getInstance().getBillWithID(this.id);
     }
 }

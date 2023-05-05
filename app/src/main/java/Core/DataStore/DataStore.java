@@ -5,13 +5,11 @@ import Core.Customer.MembershipState.MembershipStateName;
 import Core.Customer.PremiumCustomer;
 import Core.DataStore.Exception.CustomerNotExistException;
 import Core.DataStore.Exception.PromotedCustomerAlreadyExist;
+import Core.DataStore.StorerData.*;
 import Core.DataStore.StorerData.Exception.ItemWithIDAlreadyExist;
 import Core.DataStore.StorerData.Exception.RemovedItemNotExist;
 import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
-import Core.DataStore.StorerData.StorerCustomer;
-import Core.DataStore.StorerData.StorerImage;
-import Core.DataStore.StorerData.StorerItem;
-import Core.DataStore.StorerData.StorerPremiumCustomer;
+import Core.Item.Bill.Bill;
 import Core.Item.Bill.Image.ImageWithID;
 import Core.Item.Exception.NegativeQuantityException;
 import Core.Item.Item;
@@ -22,10 +20,11 @@ import java.util.ArrayList;
 
 public class DataStore {
     private static DataStore instance = null;
-    private StorerItem items = new StorerItem();
-    private StorerCustomer customers = new StorerCustomer();
-    private StorerPremiumCustomer premiumCustomers = new StorerPremiumCustomer();
-    private StorerImage images = new StorerImage();
+    private StorerData<QuantifiableItem> items = new StorerData<>("Item");
+    private StorerData<Customer> customers = new StorerData<>("Customer");
+    private StorerData<PremiumCustomer> premiumCustomers = new StorerData<>("Premium Customer");
+    private StorerData<ImageWithID> images = new StorerData<>("ImageWithID");
+    private StorerData<Bill> bills = new StorerData<>("Bill");
 
     private DataStore() {
 
@@ -77,14 +76,31 @@ public class DataStore {
             throw new PromotedCustomerAlreadyExist();
         }
         return newPremiumCustomer;
-
     }
 
     public PremiumCustomer promoteCustomer(int id, String name, String phoneNumber, String email) throws CustomerNotExistException, PromotedCustomerAlreadyExist {
         return promoteCustomer(id, name, phoneNumber, email, MembershipStateName.MEMBER);
     }
 
+    /**
+     * Get a Bill with the given ID
+     * @param id
+     * @return Bill
+     * @throws SearchedItemNotExist The Bill with the given ID does not exist
+     */
+    public Bill getBillWithID(int id) throws SearchedItemNotExist {
+        return bills.getItem(id);
+    }
 
+    /**
+     * Get a Bill with the given ID
+     * @param bill
+     * @return Bill
+     * @throws SearchedItemNotExist The Bill with the given ID does not exist
+     */
+    public Bill getBillWithID(Bill bill) throws SearchedItemNotExist {
+        return bills.getItem(bill);
+    }
 
     public Item getItemWithID(int id) throws SearchedItemNotExist {
         return items.getItem(id).getItem();

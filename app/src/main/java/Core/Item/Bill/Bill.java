@@ -1,21 +1,32 @@
 package Core.Item.Bill;
 
+import Core.Customer.Customer;
 import Core.DataStore.DataStore;
 import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
+import Core.IDAble;
 import Core.Item.Bill.Exception.ItemInBillNotExist;
 import Core.Item.Bill.Exception.ItemIsNotInBillException;
+import Core.Item.Bill.FixedBill.FixedBill;
 import Core.Item.Costly;
 import Core.Item.Exception.NegativeQuantityException;
 import Core.Item.Item;
 import Core.Item.QuantifiableItem;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-@NoArgsConstructor
-public class Bill implements Costly {
+@RequiredArgsConstructor
+public class Bill implements Costly, IDAble {
+
+    @NonNull
+    private Integer id;
+
+    @Nullable
+    @Getter
+    private Integer ownerId;
+
     @NonNull
     protected HashMap<Integer, Integer> itemsQuantity = new HashMap<Integer, Integer>();
 
@@ -68,18 +79,37 @@ public class Bill implements Costly {
         return cost;
     }
 
-    public ArrayList<QuantifiableItem> getItemList() throws ItemInBillNotExist {
+    /**
+     * If certain Item in the Bill does not exist in DataStore, it will not be included here
+     * @return
+     * @throws ItemInBillNotExist
+     */
+    public ArrayList<QuantifiableItem> getItemList() {
         ArrayList<QuantifiableItem> list = new ArrayList<>();
         for (int id : itemsQuantity.keySet()) {
             try {
                 // The below error should not be possible because the quantity is asserted to not have error
                 list.add(new QuantifiableItem(DataStore.getInstance().getItemWithID(id), itemsQuantity.get(id)));
-            } catch (NegativeQuantityException ignored) {
+            } catch (NegativeQuantityException | SearchedItemNotExist ignored) {
             }
-            catch (SearchedItemNotExist e) {
-                throw new ItemInBillNotExist(id);
-            }
+
         }
         return list;
+    }
+
+    /**
+     * @return The supposedly unique ID of the item
+     */
+    @Override
+    public Integer getID() {
+        return id;
+    }
+
+    public FixedBill getFixedBill() {
+        return new FixedBill(this.id, getItemList(), new ArrayList<>());
+    }
+
+    public void setOwner(Customer customer) {
+        this.ownerId = customer.getID();
     }
 }

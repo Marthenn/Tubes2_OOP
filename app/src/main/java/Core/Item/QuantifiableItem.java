@@ -9,7 +9,7 @@ import lombok.Setter;
 import lombok.SneakyThrows;
 
 @Getter
-public class QuantifiableItem implements ItemInterface {
+public class QuantifiableItem implements ItemLikeInterface {
     @Setter
     private int quantity = 0;
 
