@@ -128,6 +128,30 @@ public class DataStore {
 
 
     /**
+     * Remove bill from the DataStore. Even if the bill is different, it will only be compared by its ID.
+     * @param bill
+     * @throws RemovedItemNotExist
+     */
+    public void removeBillWithID(Bill bill) throws RemovedItemNotExist {
+        bills.removeItem(bill);
+    }
+
+    /**
+     *
+     * @return New Bill with the latest ID
+     */
+    public Bill createNewBill() {
+        Bill newBill = new Bill(bills.getNewID());
+        try {
+            bills.addItem(newBill, true);
+        } catch (Exception ignored) {
+
+        }
+        return newBill;
+    }
+
+
+    /**
      * Get an ImageWithID with the given ID
      * @param id
      * @return ImageWithID

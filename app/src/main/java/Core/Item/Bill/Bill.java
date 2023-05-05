@@ -114,4 +114,12 @@ public class Bill implements Costly, IDAble {
     public void setOwner(Customer customer) {
         this.ownerId = customer.getID();
     }
+
+    /**
+     *
+     * @return Whether this bill already has an owner or not
+     */
+    public boolean isWithoutOwner() {
+        return this.ownerId == null;
+    }
 }
