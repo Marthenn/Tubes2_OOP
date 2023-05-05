@@ -180,7 +180,7 @@ new FormModel {
 					"height": 60
 				} )
 				add( new FormComponent( "javax.swing.JRadioButton" ) {
-					name: "vipRadio2"
+					name: "offRadio"
 					"text": "Off"
 					"font": #Font1
 					"$buttonGroup": #FormReference0
