@@ -4,10 +4,12 @@
 
 package GUI;
 
+import Core.Item.Exception.NegativeQuantityException;
 import Core.Item.QuantifiableItem;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,12 +20,12 @@ import java.awt.event.ActionListener;
 public class CashierItemAdd extends JDialog {
     QuantifiableItem itemToBeAdd;
     int requestedItemQuantity;
-    DefaultTableModel tableModel;
-    public CashierItemAdd(QuantifiableItem itemToBeAdd, DefaultTableModel tableModel) {
+    BillDisplay billDisplay;
+    public CashierItemAdd(QuantifiableItem itemToBeAdd, BillDisplay billDisplay) {
         this.itemToBeAdd = itemToBeAdd;
         this.requestedItemQuantity = 1;
 
-        this.tableModel = tableModel;
+        this.billDisplay = billDisplay;
 
 
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -58,7 +60,7 @@ public class CashierItemAdd extends JDialog {
         ((GridBagLayout)contentPane.getLayout()).rowWeights = new double[] {1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0E-4};
 
         //---- itemDesc ----
-        itemDesc.setText(this.itemToBeAdd.getName() + " - " + Double.toString(this.itemToBeAdd.getCost()));
+        itemDesc.setText(this.itemToBeAdd.getName() + " - " + Double.toString(this.itemToBeAdd.getSingularPrice()));
         itemDesc.setHorizontalAlignment(SwingConstants.CENTER);
         contentPane.add(itemDesc, new GridBagConstraints(1, 0, 4, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
@@ -99,13 +101,57 @@ public class CashierItemAdd extends JDialog {
         saveItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                tableModel.addRow(new Object[]{itemToBeAdd.getName(), requestedItemQuantity, requestedItemQuantity * itemToBeAdd.getCost()});
+                // update bill
+                //TODO : handle negative requested qty
+                if (billDisplay.getDisplayedBill().addItemID(itemToBeAdd.getID())) {
+                    try {
+                        billDisplay.getDisplayedBill().setItemIDQuantity(itemToBeAdd.getID(), requestedItemQuantity);
+                    } catch (NegativeQuantityException ex) {
+
+                    }
+                } else {
+                    try {
+                        //TODO : blacklist
+                        billDisplay.getDisplayedBill().setItemIDQuantity(itemToBeAdd.getID(), requestedItemQuantity);
+                    } catch (NegativeQuantityException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }
+
+                // update table model
+                billDisplay.updateTableModel();
+
 
                 // exit dialog
                 dispose();
             }
         });
 
+        itemAmount.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                try {
+                    requestedItemQuantity = Integer.parseInt(itemAmount.getText());
+                } catch (Exception exception) {
+
+                }
+
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                try {
+                    requestedItemQuantity = Integer.parseInt(itemAmount.getText());
+                } catch (Exception exception) {
+
+                }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                // left empty on purpose
+            }
+        });
         quantityAdd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

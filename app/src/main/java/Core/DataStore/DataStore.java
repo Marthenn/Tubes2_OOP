@@ -9,6 +9,10 @@ import Core.DataStore.StorerData.Exception.ItemWithIDAlreadyExist;
 import Core.DataStore.StorerData.Exception.RemovedItemNotExist;
 import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
 import Core.DataStore.StorerData.StorerData;
+import Core.DataStore.StorerData.StorerDataListener;
+import Core.FileController.DataStoreController;
+import Core.FileController.FileController;
+import Core.IDAble.IDAbleListener;
 import Core.Item.Bill.Bill;
 import Core.Item.Bill.Image.ImageWithID;
 import Core.Item.Exception.NegativeQuantityException;
@@ -16,6 +20,7 @@ import Core.Item.Item;
 import Core.Item.QuantifiableItem;
 import lombok.SneakyThrows;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class DataStore {
@@ -25,9 +30,20 @@ public class DataStore {
     private StorerData<PremiumCustomer> premiumCustomers = new StorerData<>("Premium Customer");
     private StorerData<ImageWithID> images = new StorerData<>("ImageWithID");
     private StorerData<Bill> bills = new StorerData<>("Bill");
+    private transient ArrayList<IDAbleListener<QuantifiableItem>> itemListeners = new ArrayList<>();
+
+    private transient ArrayList<IDAbleListener<Customer>> customerListeners = new ArrayList<>();
+
+    private transient ArrayList<StorerDataListener> itemStoreListeners = new ArrayList<>();
+
+    private transient ArrayList<StorerDataListener> customerStoreListeners = new ArrayList<>();
+
+
 
     private DataStore() {
-
+        items.setListenerList(itemStoreListeners);
+        customers.setListenerList(customerStoreListeners);
+        premiumCustomers.setListenerList(customerStoreListeners);
     }
 
     public static DataStore getInstance() {
@@ -45,6 +61,7 @@ public class DataStore {
     public Customer createNewCustomer() {
         int newID = Math.max(customers.getHighestID(), premiumCustomers.getHighestID()) + 1;
         Customer newCustomer = new Customer(newID);
+        newCustomer.setListenerList(customerListeners);
         customers.addItem(newCustomer);
         return newCustomer;
     }
@@ -150,6 +167,16 @@ public class DataStore {
         return newBill;
     }
 
+    public ImageWithID createNewImageWithID(String base64Image) {
+        ImageWithID image = new ImageWithID(images.getNewID(), base64Image);
+        try {
+            images.addItem(image, true);
+        } catch (ItemWithIDAlreadyExist ignored){
+
+        }
+        return image;
+    }
+
 
     /**
      * Get an ImageWithID with the given ID
@@ -174,13 +201,54 @@ public class DataStore {
     }
 
     public QuantifiableItem addNewItem(String name, Double price, Double originalPrice, String category, Integer quantity, String img) throws ItemWithIDAlreadyExist, NegativeQuantityException {
-        QuantifiableItem newQItem = new QuantifiableItem(new Item(items.getNewID(), name, price, originalPrice, category, img, false), quantity);
+        ImageWithID image = createNewImageWithID(img);
+        QuantifiableItem newQItem = new QuantifiableItem(new Item(items.getNewID(), name, price, originalPrice, category, image.getID(), false), quantity);
         items.addItem(newQItem);
+        newQItem.setListenerList(itemListeners);
         return newQItem;
     }
 
+    /**
+     * Add listener list of listener of changes to the individual Customer and PremiumCustomer stored in here
+     * @param listener
+     */
+    public void listenToCustomer(IDAbleListener<Customer> listener) {
+        customerListeners.add(listener);
+    }
+
+    /**
+     * Add listener list of listener of changes to the individual QuantifiableItem (i.e. item sold in the store) stored in here
+     * @param listener
+     */
+    public void listenToItem(IDAbleListener<QuantifiableItem> listener) {
+        itemListeners.add(listener);
+    }
+
+    /**
+     * Add listener list of listener of changes to the addition/removal of Customer / PremiumCustomer stored in here
+     * @param listener
+     */
+    public void listenToCustomerStore(StorerDataListener listener) {
+        customerStoreListeners.add(listener);
+    }
 
 
+    /**
+     * Add listener list of listener of changes to the addition/removal of QuantifiableItem (i.e. item sold in the store) stored in here
+     * @param listener
+     */
+    public void listenToItemStore(StorerDataListener listener){
+        itemStoreListeners.add(listener);
+    }
+
+    public void saveImage() throws IOException {
+        FileController controller = new DataStoreController();
+        controller.saveImage(images);
+    }
+    public void saveItem() throws IOException {
+        FileController controller = new DataStoreController();
+        controller.saveItem(items);
+    }
 
 
 }

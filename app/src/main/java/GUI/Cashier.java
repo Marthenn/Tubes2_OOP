@@ -4,24 +4,37 @@
 
 package GUI;
 
+import Core.Customer.Customer;
 import Core.DataStore.DataStore;
 import Core.DataStore.StorerData.Exception.ItemWithIDAlreadyExist;
-import Core.Item.Bill.Bill;
+import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
+import Core.DataStore.StorerData.StorerDataListener;
+import Core.IDAble.IDAbleListener;
+import Core.Item.Bill.FixedBill.FixedBill;
 import Core.Item.Exception.NegativeQuantityException;
 import Core.Item.QuantifiableItem;
+import lombok.SneakyThrows;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Base64;
+import java.util.stream.Collectors;
 
-public class Cashier extends JPanel {
+public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>, StorerDataListener {
 
     private ArrayList<BillDisplay> currentActiveBillDisplays = new ArrayList<>();
+    ArrayList<QuantifiableItem> browseObjects = new ArrayList<>();
+    DefaultTableModel browseListTableModel = new DefaultTableModel();
     public Cashier() {
         initComponents();
     }
@@ -30,49 +43,23 @@ public class Cashier extends JPanel {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner Evaluation license - Fakih Anugerah Pratama
 
-        //// DEBUG DATA
-        try {
-            DataStore.getInstance().addNewItem("makan", 2.3, 2.4, "ayam", 3, "");
-            DataStore.getInstance().addNewItem("tidak", 2.3, 2.4, "bebek", 4, "");
-        } catch (ItemWithIDAlreadyExist e) {
-            throw new RuntimeException(e);
-        } catch (NegativeQuantityException e) {
-            throw new RuntimeException(e);
-        }
-        //// DEBUG DATA
+        // add this to listener list
+        DataStore.getInstance().listenToItem(this);
+        DataStore.getInstance().listenToItemStore(this);
+
 
 
         //TODO : DATA PERSISTENCE AND NON_STATIC DATA FETCHING
-        ArrayList<QuantifiableItem> browseObjects = DataStore.getInstance().getItems();
-        Object[][] browseObjectItemPool = new Object[browseObjects.size()][3];
-        for(int i = 0; i < browseObjects.size(); i++) {
-            browseObjectItemPool[i] = new Object[]{ browseObjects.get(i).getName(),
-                                                    browseObjects.get(i).getCategory(),
-                                                    Double.toString(browseObjects.get(i).getCost())
-                                                    };
-        }
+        // FIRST TIME FETCH
+         browseObjects = DataStore.getInstance().getItems();
 
-        DefaultTableModel browseListTableModel = new DefaultTableModel();
-        browseListTableModel.addColumn("Nama");
-        browseListTableModel.addColumn("Kategori");
-        browseListTableModel.addColumn("Harga");
-        for(int i = 0; i < browseObjectItemPool.length; i++) {
-            browseListTableModel.addRow(browseObjectItemPool[i]);
-        }
-
-//        DefaultTableModel billItemTableModel = new DefaultTableModel();
-//        billItemTableModel.addColumn("nama");
-//        billItemTableModel.addColumn("quantity");
-//        billItemTableModel.addColumn("subtotal");
 
         title = new JLabel();
         browsePane = new JScrollPane();
-        browseTable = new JTable(browseListTableModel);
+        browseTable = new JTable();
         searchText = new JTextField();
         searchButton = new JButton();
         billTabPane = new JTabbedPane();
-//        billDetailPane = new JScrollPane();
-//        billItemTable = new JTable(billItemTableModel);
         createNewBillTab(); // Bill1
         createNewBillTab(); // +
         subtotalTitle = new JLabel();
@@ -81,6 +68,33 @@ public class Cashier extends JPanel {
         printBill = new JButton();
         addItem = new JButton();
 
+        // browsed Items Table Model
+        browseListTableModel.addColumn("Name");
+        browseListTableModel.addColumn("Category");
+        browseListTableModel.addColumn("Price");
+        browseListTableModel.addColumn("Detail");
+
+        updateBrowseTableModel();
+
+        browseTable.setModel(browseListTableModel);
+
+        // set last column as jlabel
+        browseTable.getColumnModel().getColumn(3).setCellRenderer(new JTableCellRenderer());
+
+        // set table row height
+        browseTable.setRowHeight(128);
+
+
+
+        //// DEBUG DATA
+//        try {
+//            DataStore.getInstance().addNewItem("123", 2d, 3d, "sad", 4, "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAABzklEQVR4nOzavWtTURjHca9cScQgouAgCEEcTMggEgIJODgpGaMoxBA0JMQh4qCgqIvGoBjUQMjgImSw7ZRA20x9oVAKHQJtOhQS+kKhlLZ3SNsEQkmh/Qe++8OB5zt+zhB+nKGX3mtbxaVz1HiwiV4O3kG3vrInNhfRvQ+O0CP+2+ip/27086gGpQOk0wHS6QDp7FUnjAdXPn1Er/XG0K9HKuh72wvoxek36IMPL9FdhTi68TegA6TTAdLpAOns0iU/HngyLvQXqXfoPl8Q/XSEn+Nfd1bQyxf4dx/Z/HfD+BvQAdLpAOl0gHRW53kSD7y9a+iZcB3995cc+o+7t9Ar2WfosV6JvcG/a/wN6ADpdIB0OkA6a3SX/5/TfXIfveH5g/7wagi91R6i37gXQc+u83P/ZOgbuvE3oAOk0wHS6QDp7M+/jvGg7qTQ89/fovdbDvpj9yH6vrOGHkreRH8fraIbfwM6QDodIJ0OkM4+aXbxYCv9D30Qu4weCLxCb/aX0f9e5O+IcsMZ9Il0At34G9AB0ukA6XSAdLaT4/cAO7P83ejPOL/fzU9toM9V59FrVQ/60+gAvdA+QDf+BnSAdDpAOh0g3VkAAAD//+/NYfgVbkzvAAAAAElFTkSuQmCC");
+//        } catch (ItemWithIDAlreadyExist e) {
+//            throw new RuntimeException(e);
+//        } catch (NegativeQuantityException e) {
+//            throw new RuntimeException(e);
+//        }
+        //// DEBUG DATA
 
 
         //---- title ----
@@ -210,7 +224,13 @@ public class Cashier extends JPanel {
 
                 ListSelectionModel listSelectionModel = (ListSelectionModel) e.getSource();
                 if(!listSelectionModel.isSelectionEmpty()) {
-                    setSelectedBrowseObject(browseObjects.get(listSelectionModel.getMinSelectionIndex()));
+                    setSelectedBrowseObject(browseObjects
+                                            .stream()
+                                            .filter(qItem -> qItem.getName().contains(searchText.getText()) ||
+                                                    qItem.getCategory().contains(searchText.getText()) ||
+                                                    Double.toString(qItem.getSingularPrice()).contains(searchText.getText()))
+                                            .collect(Collectors.toCollection(ArrayList::new))
+                                                .get(listSelectionModel.getMinSelectionIndex()));
                 }
             }
         });
@@ -219,37 +239,17 @@ public class Cashier extends JPanel {
         searchText.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                Object[] _temp = Arrays.stream(browseObjectItemPool).filter(item ->
-                        item[0].toString().contains(searchText.getText()) ||
-                        item[1].toString().contains(searchText.getText()) ||
-                        item[2].toString().contains(searchText.getText())
-                ).toArray();
-                Object[][] newValue = new Object[_temp.length][3];
-                for(int i = 0; i < _temp.length; i++) {
-                    newValue[i] = new Object[]{((Object[]) _temp[i])[0], ((Object[]) _temp[i])[1], ((Object[]) _temp[i])[2]};
-                }
-
-                setTableModelContent(browseListTableModel, newValue);
+                updateBrowseTableModel();
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                Object[] _temp = Arrays.stream(browseObjectItemPool).filter(item ->
-                        item[0].toString().contains(searchText.getText()) ||
-                                item[1].toString().contains(searchText.getText()) ||
-                                item[2].toString().contains(searchText.getText())
-                ).toArray();
-                Object[][] newValue = new Object[_temp.length][3];
-                for(int i = 0; i < _temp.length; i++) {
-                    newValue[i] = new Object[]{((Object[]) _temp[i])[0], ((Object[]) _temp[i])[1], ((Object[]) _temp[i])[2]};
-                }
-
-                setTableModelContent(browseListTableModel, newValue);
+                updateBrowseTableModel();
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                //?
+                // this will only trigger when font, size, and other non-text attribute changed
             }
         });
 
@@ -257,7 +257,10 @@ public class Cashier extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (browseTableSM.isSelectionEmpty()) return;
-                CashierItemAdd cashierItemAddDialog = new CashierItemAdd(selectedSoldItem, currentActiveBillDisplays.get(billTabPane.getSelectedIndex()).getDisplayedTableModel());
+                CashierItemAdd cashierItemAddDialog = new CashierItemAdd(selectedSoldItem,
+                                                        currentActiveBillDisplays
+                                                        .get(billTabPane.getSelectedIndex())
+                                                    );
             }
         });
 
@@ -275,6 +278,24 @@ public class Cashier extends JPanel {
         });
 
 
+        saveBill.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+//                browseObjects.get(0).setName(browseObjects.get(0).getName().concat(browseObjects.get(0).getName().substring(1)));
+
+            }
+        });
+
+        printBill.addActionListener(new ActionListener() {
+            @SneakyThrows
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Customer customer = DataStore.getInstance().createNewCustomer(); //dummy customer yang diassign
+                currentActiveBillDisplays.get(billTabPane.getSelectedIndex()).getDisplayedBill().setOwner(customer);
+                FixedBill toBePrinted = currentActiveBillDisplays.get(billTabPane.getSelectedIndex()).getDisplayedBill().getFixedBill();// dummy fixedbill
+            }
+        });
+
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
     QuantifiableItem selectedSoldItem;
@@ -282,14 +303,30 @@ public class Cashier extends JPanel {
         selectedSoldItem = soldItem;
     }
 
-    void setTableModelContent(DefaultTableModel tableModel, Object[][] newValue){
-//        for (int i = 0; i < tableModel.getRowCount(); i++){
-//            tableModel.removeRow(0);
-//        }
-        tableModel.setRowCount(0);
+    void updateBrowseTableModel(){
 
-        for (int i = 0; i < newValue.length; i++){
-            tableModel.addRow(new Object[]{newValue[i][0], newValue[i][1], newValue[i][2]});
+        String filterText = searchText.getText() == null ? "" : searchText.getText();
+
+        // Empty tableModel
+        browseListTableModel.setRowCount(0);
+
+        // Filter tableModel
+        ArrayList<QuantifiableItem> filteredBrowseObjects =
+                browseObjects
+                .stream()
+                .filter(qItem ->    qItem.getName().contains(filterText) ||
+                                    qItem.getCategory().contains(filterText) ||
+                                    Double.toString(qItem.getSingularPrice()).contains(filterText))
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        // Update tableModel
+        for (QuantifiableItem qItem : filteredBrowseObjects) {
+
+            try {
+                browseListTableModel.addRow(new Object[]{qItem.getName(), qItem.getCategory(), Double.toString(qItem.getSingularPrice()), base64ImageDecode(qItem.getImage().getBase64Image())});
+            } catch (Exception e) {
+                System.out.println(e.toString());
+            }
         }
     }
 
@@ -298,6 +335,34 @@ public class Cashier extends JPanel {
 
         // return latest created BillDisplay
         return currentActiveBillDisplays.get(currentActiveBillDisplays.size() - 1);
+    }
+
+    public void onItemWithIDChange(QuantifiableItem item) {
+        // NOTE : MIGHT CHANGE INTO MORE OPTIMIZED SOLUTION
+        // should we update cost and qty realtime?
+        browseObjects = DataStore.getInstance().getItems();
+        updateBrowseTableModel();
+    }
+
+    @Override
+    public void onStorerDataChange(String storerName) {
+        if (storerName.equals("Item")) {
+            browseObjects = DataStore.getInstance().getItems();
+            updateBrowseTableModel();
+        }
+
+    }
+
+    private ImageIcon base64ImageDecode(String base64img){
+        try {
+            byte[] btDataFile = Base64.getDecoder().decode(base64img);
+            BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(btDataFile));
+            return new ImageIcon(bufferedImage);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+        return null;
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
@@ -315,5 +380,21 @@ public class Cashier extends JPanel {
     private JButton saveBill;
     private JButton printBill;
     private JButton addItem;
+
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
+}
+
+class JTableCellRenderer extends DefaultTableCellRenderer {
+    JLabel label = new JLabel();
+
+    @Override
+    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        //TODO : onselect
+        label.setIcon((Icon) value);
+        label.setHorizontalAlignment(JLabel.CENTER);
+//        label.setText((String) value);
+        return label;
+    }
+
+
 }

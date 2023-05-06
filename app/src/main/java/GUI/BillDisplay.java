@@ -1,10 +1,11 @@
 package GUI;
 
-import Core.Item.Bill.Bill;
 import Core.DataStore.DataStore;
+import Core.Item.Bill.Bill;
+import Core.Item.Bill.Exception.ItemInBillNotExist;
+import Core.Item.QuantifiableItem;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -13,13 +14,12 @@ import java.awt.*;
 public class BillDisplay extends JScrollPane {
 
     @Getter
-    Bill displayedBill;
+    private Bill displayedBill;
 
-    @Getter(AccessLevel.PROTECTED)
-    JTable displayedTable;
-    @Getter
-    @Setter
-    DefaultTableModel displayedTableModel;
+    @Getter(AccessLevel.PRIVATE)
+    private JTable displayedTable;
+
+    private DefaultTableModel displayedTableModel;
     public BillDisplay() {
         this.displayedBill = DataStore.getInstance().createNewBill();
 
@@ -32,6 +32,18 @@ public class BillDisplay extends JScrollPane {
         this.displayedTable.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 
         this.setViewportView(this.displayedTable);
+    }
+
+    public void updateTableModel() {
+        this.displayedTableModel.setRowCount(0);
+
+        for (QuantifiableItem qItem : this.displayedBill.getItemList()) {
+            try {
+                this.displayedTableModel.addRow(new String[]{qItem.getName(), Integer.toString(qItem.getQuantity()), Double.toString(qItem.getPrice())});
+            } catch (ItemInBillNotExist e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
 

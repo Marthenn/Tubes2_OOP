@@ -4,22 +4,26 @@ package Core.DataStore.StorerData;
 import Core.DataStore.StorerData.Exception.ItemWithIDAlreadyExist;
 import Core.DataStore.StorerData.Exception.RemovedItemNotExist;
 import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
-import Core.IDAble;
+import Core.IDAble.IDAble;
+import Core.IDAble.IDAbleListener;
+import Core.Item.QuantifiableItem;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class StorerData<T extends IDAble> {
+@RequiredArgsConstructor
+public class StorerData<T extends IDAble> implements StorerDataEmitter<StorerDataListener>{
     private HashMap<Integer, T> store = new HashMap<Integer, T>();
+
+    @NonNull
+    private transient ArrayList<StorerDataListener> storerListeners = new ArrayList<>();
 
     @Getter
     @NonNull
     private String storedItemName;
-    public StorerData(String storedItemName) {
-        this.storedItemName = storedItemName;
-    }
 
     /**
      * Add a new Item to the StorerData
@@ -37,6 +41,7 @@ public class StorerData<T extends IDAble> {
             throw new ItemWithIDAlreadyExist(errorMessage);
         }
         store.put(addedID, item);
+        notifySubscriber();
     }
 
     /**
@@ -62,6 +67,7 @@ public class StorerData<T extends IDAble> {
         }
         T removedItem = store.get(id);
         store.remove(id);
+        notifySubscriber();
         return removedItem;
     }
 
@@ -159,5 +165,15 @@ public class StorerData<T extends IDAble> {
     }
 
 
+    @Override
+    public void notifySubscriber() {
+        for (StorerDataListener storerListener : storerListeners) {
+            storerListener.onStorerDataChange(this.storedItemName);
+        }
+    }
+
+    public void setListenerList(ArrayList<StorerDataListener> listeners) {
+        this.storerListeners = listeners;
+    }
 
 }

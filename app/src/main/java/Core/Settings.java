@@ -1,8 +1,8 @@
 package Core;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.AccessLevel;
 
 import java.util.ArrayList;
 import java.util.HashMap;

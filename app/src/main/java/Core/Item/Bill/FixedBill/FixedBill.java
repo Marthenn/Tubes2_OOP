@@ -1,6 +1,6 @@
 package Core.Item.Bill.FixedBill;
 
-import Core.IDAble;
+import Core.IDAble.IDAble;
 import Core.Item.Bill.Exception.ItemInBillNotExist;
 import Core.Item.Bill.FixedBill.FixedBillModifier.FixedBillModifier;
 import Core.Item.Profit.Profitable;
