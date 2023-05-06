@@ -4,6 +4,8 @@
 
 package GUI;
 
+import Core.Item.QuantifiableItem;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -14,14 +16,12 @@ import java.awt.event.ActionListener;
  * @author Fakih A
  */
 public class CashierItemAdd extends JDialog {
-    String itemName;
-    Double itemPrice;
-    int itemQuantity;
+    QuantifiableItem itemToBeAdd;
+    int requestedItemQuantity;
     DefaultTableModel tableModel;
-    public CashierItemAdd(String itemName, Double itemPrice, DefaultTableModel tableModel) {
-        this.itemName = itemName;
-        this.itemPrice = itemPrice;
-        this.itemQuantity = 1;
+    public CashierItemAdd(QuantifiableItem itemToBeAdd, DefaultTableModel tableModel) {
+        this.itemToBeAdd = itemToBeAdd;
+        this.requestedItemQuantity = 1;
 
         this.tableModel = tableModel;
 
@@ -58,7 +58,7 @@ public class CashierItemAdd extends JDialog {
         ((GridBagLayout)contentPane.getLayout()).rowWeights = new double[] {1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0E-4};
 
         //---- itemDesc ----
-        itemDesc.setText(this.itemName + " - " + Double.toString(this.itemPrice));
+        itemDesc.setText(this.itemToBeAdd.getName() + " - " + Double.toString(this.itemToBeAdd.getCost()));
         itemDesc.setHorizontalAlignment(SwingConstants.CENTER);
         contentPane.add(itemDesc, new GridBagConstraints(1, 0, 4, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
@@ -99,7 +99,7 @@ public class CashierItemAdd extends JDialog {
         saveItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                tableModel.addRow(new Object[]{itemName, itemQuantity, itemQuantity * itemPrice});
+                tableModel.addRow(new Object[]{itemToBeAdd.getName(), requestedItemQuantity, requestedItemQuantity * itemToBeAdd.getCost()});
 
                 // exit dialog
                 dispose();
@@ -109,22 +109,24 @@ public class CashierItemAdd extends JDialog {
         quantityAdd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                itemQuantity += 1;
+                requestedItemQuantity += 1;
 
-                itemAmount.setText(Integer.toString(itemQuantity));
+                itemAmount.setText(Integer.toString(requestedItemQuantity));
             }
         });
 
         quantityReduce.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                itemQuantity -= 1;
+                requestedItemQuantity -= 1;
 
-                itemAmount.setText(Integer.toString(itemQuantity));
+                itemAmount.setText(Integer.toString(requestedItemQuantity));
             }
         });
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
+
+//    void setTableModel(DefaultTableModel tableModel, )
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
     // Generated using JFormDesigner Evaluation license - Fakih Anugerah Pratama

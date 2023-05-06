@@ -259,7 +259,7 @@ public class Cashier extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (browseTableSM.isSelectionEmpty()) return;
-                CashierItemAdd cashierItemAddDialog = new CashierItemAdd(selectedSoldItem.getName(), selectedSoldItem.getCost(), billItemTableModel);
+                CashierItemAdd cashierItemAddDialog = new CashierItemAdd(selectedSoldItem, billItemTableModel);
             }
         });
 
