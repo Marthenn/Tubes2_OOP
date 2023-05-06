@@ -8,6 +8,8 @@ import Core.Item.Exception.NegativeQuantityException;
 import Core.Item.QuantifiableItem;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -125,6 +127,31 @@ public class CashierItemAdd extends JDialog {
             }
         });
 
+        itemAmount.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                try {
+                    requestedItemQuantity = Integer.parseInt(itemAmount.getText());
+                } catch (Exception exception) {
+
+                }
+
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                try {
+                    requestedItemQuantity = Integer.parseInt(itemAmount.getText());
+                } catch (Exception exception) {
+
+                }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                // left empty on purpose
+            }
+        });
         quantityAdd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
