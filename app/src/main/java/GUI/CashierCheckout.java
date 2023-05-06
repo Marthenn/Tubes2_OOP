@@ -4,28 +4,33 @@
 
 package GUI;
 
-import Core.Customer.Customer;
 import Core.Customer.MembershipState.MembershipStateName;
-import Core.Customer.PremiumCustomer;
 import Core.DataStore.DataStore;
 import Core.DataStore.Exception.CustomerNotExistException;
 import Core.DataStore.Exception.PromotedCustomerAlreadyExist;
+import Core.DataStore.StorerData.StorerDataListener;
+import Core.Item.Bill.Bill;
+import Core.Item.QuantifiableItem;
+import lombok.SneakyThrows;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
 import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.table.DefaultTableModel;
 
 /**
  * @author Fakih A
  */
-public class CashierCheckout extends JPanel {
+public class CashierCheckout extends JPanel implements StorerDataListener {
     JTabbedPane parentTabbedPane;
     Cashier parentCashier;
-    public CashierCheckout(JTabbedPane parentTabbedPane, Cashier parentCashier) {
+    Bill billToBeCheckedOut; // add listeners
+
+    DefaultTableModel tabelDetailModel = new DefaultTableModel();
+    public CashierCheckout(JTabbedPane parentTabbedPane, Cashier parentCashier, Bill billToBeCheckedOut) {
         this.parentTabbedPane = parentTabbedPane;
         this.parentCashier = parentCashier;
+        this.billToBeCheckedOut  = billToBeCheckedOut;
 
         initComponents();
     }
@@ -34,12 +39,13 @@ public class CashierCheckout extends JPanel {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner Evaluation license - Fakih Anugerah Pratama
 
+        // listener init
+        DataStore.getInstance().listenToCustomerStore(this);
+
         //data//
         try {
             DataStore.getInstance().promoteCustomer(DataStore.getInstance().createNewCustomer().getID(), "lmao", "123456789012", "asd@gmail.com", MembershipStateName.VIP );
             DataStore.getInstance().promoteCustomer(DataStore.getInstance().createNewCustomer().getID(), "likalat", "123456789012", "asd@gmail.com", MembershipStateName.MEMBER );
-
-            System.out.println("custard" + DataStore.getInstance().getCustomers().toString());
         } catch (CustomerNotExistException e) {
             throw new RuntimeException(e);
         } catch (PromotedCustomerAlreadyExist e) {
@@ -58,7 +64,16 @@ public class CashierCheckout extends JPanel {
         NilaiTotalPembelian = new JLabel();
         Checkout = new JButton();
 
-        NamaCustomer.setEditable(true);
+        TabelDetail.setModel(tabelDetailModel);
+
+        tabelDetailModel.addColumn("No");
+        tabelDetailModel.addColumn("Name");
+        tabelDetailModel.addColumn("Detail");
+        tabelDetailModel.addColumn("Price");
+        tabelDetailModel.addColumn("Qty");
+        tabelDetailModel.addColumn("Subtotal");
+
+        updateTabelDetailModel();
 
         setLayout(new GridBagLayout());
         ((GridBagLayout)getLayout()).columnWidths = new int[] {0, 0, 0, 0, 0, 0};
@@ -115,20 +130,36 @@ public class CashierCheckout extends JPanel {
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 0, 0), 0, 0));
 
-        CashierCheckout thisCashierCheckout = this;
         Checkout.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // function finish checkout
+                billToBeCheckedOut.setOwner();
 
                 // hide this page (TODO: destroy or recycle instead)
                 parentTabbedPane.setComponentAt(parentTabbedPane.getSelectedIndex(), parentCashier);
                 parentTabbedPane.repaint();
-                thisCashierCheckout.removeAll();
+                removeAll();
             }
         });
 
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
+    }
+
+    @SneakyThrows // TODO : check ketika item dihapus
+    void updateTabelDetailModel() {
+        tabelDetailModel.setRowCount(0);
+
+        int i = 1;
+        for (QuantifiableItem qItem : billToBeCheckedOut.getItemList()) {
+            tabelDetailModel.addRow(new String[]{Integer.toString(i),
+                    qItem.getName(),
+                    "TODO",
+                    Double.toString(qItem.getSingularPrice()),
+                    Integer.toString(qItem.getQuantity()),
+                    Double.toString(qItem.getPrice())
+            });
+        }
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
@@ -143,5 +174,12 @@ public class CashierCheckout extends JPanel {
     private JLabel LabelTotalPembelian;
     private JLabel NilaiTotalPembelian;
     private JButton Checkout;
+
+    @Override
+    public void onStorerDataChange(String storerName) {
+     if(storerName.equals("Premium Customer")) {
+
+     }
+    }
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }
