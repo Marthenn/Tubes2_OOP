@@ -10,6 +10,8 @@ import Core.DataStore.StorerData.Exception.RemovedItemNotExist;
 import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
 import Core.DataStore.StorerData.StorerData;
 import Core.DataStore.StorerData.StorerDataListener;
+import Core.FileController.DataStoreController;
+import Core.FileController.FileController;
 import Core.IDAble.IDAbleListener;
 import Core.Item.Bill.Bill;
 import Core.Item.Bill.Image.ImageWithID;
@@ -18,6 +20,7 @@ import Core.Item.Item;
 import Core.Item.QuantifiableItem;
 import lombok.SneakyThrows;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class DataStore {
@@ -238,6 +241,14 @@ public class DataStore {
         itemStoreListeners.add(listener);
     }
 
+    public void saveImage() throws IOException {
+        FileController controller = new DataStoreController();
+        controller.saveImage(images);
+    }
+    public void saveItem() throws IOException {
+        FileController controller = new DataStoreController();
+        controller.saveItem(items);
+    }
 
 
 }

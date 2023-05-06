@@ -23,6 +23,7 @@ dependencies {
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:31.1-jre'
     implementation 'com.itextpdf:itextpdf:5.5.13.2'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.10.0'
 
     compileOnly 'org.projectlombok:lombok:1.18.20'
     annotationProcessor 'org.projectlombok:lombok:1.18.20'

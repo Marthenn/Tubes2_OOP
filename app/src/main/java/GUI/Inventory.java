@@ -459,6 +459,12 @@ public class Inventory extends JPanel {
                         items_list.addElement(newItem.getName());
                         dialog1.setVisible(false);
                         setBase64ImageToDefault();
+                        try {
+                            DataStore.getInstance().saveImage();
+                            DataStore.getInstance().saveItem();
+                        } catch (IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
                     }
                 } else { //edit
                     int idx = list1.getSelectedIndex();
