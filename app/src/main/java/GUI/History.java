@@ -5,15 +5,21 @@
 package GUI;
 
 import Core.Customer.Customer;
+import Core.Customer.MembershipState.MembershipStateName;
 import Core.Customer.PremiumCustomer;
 import Core.DataStore.DataStore;
+import Core.DataStore.Exception.CustomerNotExistException;
+import Core.DataStore.Exception.PromotedCustomerAlreadyExist;
 import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
 import Core.FullReportPrinter;
 import Core.DataStore.StorerData.StorerDataListener;
 import Core.IDAble.IDAbleListener;
 import Core.Item.Bill.Exception.ItemInBillNotExist;
+import Core.Item.Bill.FixedBill.FixedBill;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.xml.crypto.Data;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,24 +35,21 @@ import java.util.stream.Stream;
  * @author Marthen
  */
 public class History extends JPanel implements IDAbleListener<Customer>, StorerDataListener {
-    DataStore dataStore;
     Customer selectedCustomer;
+    DefaultTableModel historyTableModel = new DefaultTableModel();
     public History() {
-        this.dataStore = DataStore.getInstance();
 
         //DEBUG POPULATING//
-        dataStore.createNewCustomer();
-        dataStore.createNewCustomer();
-        dataStore.createNewCustomer();
-//        try {
-////
-//            dataStore.promoteCustomer(1, "Bembi", "10", "11", MembershipStateName.MEMBER);
-//
-//        } catch (CustomerNotExistException e) {
-//            System.out.println("a");
-//        } catch (PromotedCustomerAlreadyExist e) {
-//            System.out.println("b");
-//        }
+        //data//
+        try {
+            DataStore.getInstance().promoteCustomer(DataStore.getInstance().createNewCustomer().getID(), "lmao", "123456789012", "asd@gmail.com", MembershipStateName.VIP );
+            DataStore.getInstance().promoteCustomer(DataStore.getInstance().createNewCustomer().getID(), "likalat", "123456789012", "asd@gmail.com", MembershipStateName.MEMBER );
+        } catch (CustomerNotExistException e) {
+            throw new RuntimeException(e);
+        } catch (PromotedCustomerAlreadyExist e) {
+            throw new RuntimeException(e);
+        }
+        //data//
         // HAPUS KALO GA DIPAKE //
 
 
@@ -56,14 +59,22 @@ public class History extends JPanel implements IDAbleListener<Customer>, StorerD
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner Evaluation license - Fakih Anugerah Pratama
-        DefaultComboBoxModel customerListModel = new DefaultComboBoxModel();
 
-        List<? extends Customer> listOfAllCustomers = Stream.of(dataStore.getCustomers(), dataStore.getPremiumCustomers())
-                                                        .flatMap(x -> x.stream())
-                                                        .collect(Collectors.toList());
-
+        // listeners init
         DataStore.getInstance().listenToCustomer(this);
         DataStore.getInstance().listenToCustomerStore(this);
+
+        // init historyTableModel
+        historyTableModel.addColumn("No");
+        historyTableModel.addColumn("ID");
+        historyTableModel.addColumn("Total Price");
+
+
+        DefaultComboBoxModel customerListModel = new DefaultComboBoxModel();
+
+        List<? extends Customer> listOfAllCustomers = Stream.of(DataStore.getInstance().getCustomers(), DataStore.getInstance().getPremiumCustomers())
+                                                        .flatMap(x -> x.stream())
+                                                        .collect(Collectors.toList());
 
         for (Customer customer : listOfAllCustomers) {
             customerListModel.addElement(customer.getID());
@@ -180,16 +191,16 @@ public class History extends JPanel implements IDAbleListener<Customer>, StorerD
         return customer.getClass() == PremiumCustomer.class;
     }
 
-    void updateCustomerData(int customerID) {
+    private void updateCustomerData(int customerID) {
         // TODO : gabungin
         try {
-            selectedCustomer = dataStore.getCustomerWithID(customerID);
+            selectedCustomer = DataStore.getInstance().getCustomerWithID(customerID);
         } catch (SearchedItemNotExist e) {
 
         }
 
         try {
-            selectedCustomer = dataStore.getPremiumCustomerWithID(customerID);
+            selectedCustomer = DataStore.getInstance().getPremiumCustomerWithID(customerID);
         } catch (SearchedItemNotExist e) {
 
         }
@@ -200,15 +211,37 @@ public class History extends JPanel implements IDAbleListener<Customer>, StorerD
             PremiumCustomer _premiumCustomer = (PremiumCustomer) selectedCustomer;
             Membership.setText(_premiumCustomer.getStatus().getName());
         }
+
+        updateHistoryTable();
+    }
+
+    private void updateHistoryTable() {
+        // TODO:make them clickable
+        historyTableModel.setRowCount(0);
+        int idx = 1;
+        for (FixedBill fixedBill : selectedCustomer.getHistory()) {
+            historyTableModel.addRow(new Object[]{idx, fixedBill.getID(), Double.toString(fixedBill.getPrice())});
+            idx++;
+        }
+
+
     }
 
     @Override
     public void onItemWithIDChange(Customer item) {
-
+        // TODO : add notify when update customer status and other status
+        if (item.getID() == selectedCustomer.getID()) {
+            updateCustomerData(selectedCustomer.getID());
+        }
+        System.out.println(item.toString() + " V " +selectedCustomer.getID());
     }
-
     @Override
     public void onStorerDataChange(String storerName) {
+        if (storerName.equals("Premium Customer") || storerName.equals("Customer")) {
+            // delete if deactivated(?) or removed(?)
 
+        }
+
+        System.out.println(storerName);
     }
 }
