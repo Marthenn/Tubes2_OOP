@@ -41,201 +41,205 @@ public class Inventory extends JPanel {
 
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner Evaluation license - Althaaf Khasyi Atisomya
-        label1 = new JLabel();
+        title = new JLabel();
         scrollPane1 = new JScrollPane();
-        list1 = new JList(items_list);
-        label2 = new JLabel();
-        label3 = new JLabel();
-        label4 = new JLabel();
-        label5 = new JLabel();
-        label6 = new JLabel();
-        label7 = new JLabel();
-        button1 = new JButton();
-        button2 = new JButton();
-        button3 = new JButton();
-        label8 = new JLabel();
-        label9 = new JLabel();
-        label10 = new JLabel();
-        label11 = new JLabel();
-        label12 = new JLabel();
+        item_list = new JList(items_list);
+        item_image = new JLabel();
+        prop_name = new JLabel();
+        prop_sellprice = new JLabel();
+        prop_buyprice = new JLabel();
+        prop_stock = new JLabel();
+        prop_category = new JLabel();
+        delete_button = new JButton();
+        edit_button = new JButton();
+        add_button = new JButton();
+        item_name = new JLabel();
+        item_sellprice = new JLabel();
+        item_buyprice = new JLabel();
+        item_stock = new JLabel();
+        item_category = new JLabel();
         dialog1 = new JDialog();
-        label13 = new JLabel();
-        textField1 = new JTextField();
-        textField2 = new JTextField();
-        label14 = new JLabel();
-        label15 = new JLabel();
-        textField3 = new JTextField();
-        label16 = new JLabel();
-        textField4 = new JTextField();
-        label19 = new JLabel();
-        button4 = new JButton();
-        textField5 = new JTextField();
-        label18 = new JLabel();
-        label20 = new JLabel();
-        button5 = new JButton();
-        dialog2 = new JDialog();
-        label17 = new JLabel();
+        prop_name_edit = new JLabel();
+        input_name = new JTextField();
+        input_sellprice = new JTextField();
+        prop_sellprice_edit = new JLabel();
+        prop_buyprice_edit = new JLabel();
+        input_buyprice = new JTextField();
+        prop_stock_edit = new JLabel();
+        input_stock = new JTextField();
+        image_editdisplay = new JLabel();
+        save_button = new JButton();
+        input_category = new JTextField();
+        prop_image_edit = new JLabel();
+        prop_category_edit = new JLabel();
+        add_image_button = new JButton();
+        error_deleted_item = new JDialog();
+        error_message1 = new JLabel();
+        error_null_item = new JDialog();
+        error_message2 = new JLabel();
+        error_wrong_types = new JDialog();
+        error_message3 = new JLabel();
 
         //======== this ========
-        setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax . swing.
-                border .EmptyBorder ( 0, 0 ,0 , 0) ,  "JFor\u006dDesi\u0067ner \u0045valu\u0061tion" , javax. swing .border . TitledBorder. CENTER
-                ,javax . swing. border .TitledBorder . BOTTOM, new java. awt .Font ( "Dia\u006cog", java .awt . Font
-                . BOLD ,12 ) ,java . awt. Color .red ) , getBorder () ) );  addPropertyChangeListener(
-                new java. beans .PropertyChangeListener ( ){ @Override public void propertyChange (java . beans. PropertyChangeEvent e) { if( "bord\u0065r"
-                        .equals ( e. getPropertyName () ) )throw new RuntimeException( ) ;} } );
+        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border. EmptyBorder
+        ( 0, 0, 0, 0) , "JF\u006frmDesi\u0067ner Ev\u0061luatio\u006e", javax. swing. border. TitledBorder. CENTER, javax. swing. border
+        . TitledBorder. BOTTOM, new java .awt .Font ("Dialo\u0067" ,java .awt .Font .BOLD ,12 ), java. awt
+        . Color. red) , getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void
+        propertyChange (java .beans .PropertyChangeEvent e) {if ("borde\u0072" .equals (e .getPropertyName () )) throw new RuntimeException( )
+        ; }} );
 
-        //---- label1 ----
-        label1.setText("Items");
-        label1.setFont(label1.getFont().deriveFont(label1.getFont().getSize() + 4f));
+        //---- title ----
+        title.setText("Items");
+        title.setFont(title.getFont().deriveFont(title.getFont().getSize() + 4f));
 
         //======== scrollPane1 ========
         {
 
-            //---- list1 ----
-            list1.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-            scrollPane1.setViewportView(list1);
+            //---- item_list ----
+            item_list.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+            scrollPane1.setViewportView(item_list);
         }
 
-        //---- label2 ----
-        label2.setText("text");
-        label2.setOpaque(true);
-        label2.setBackground(new Color(0xcccccc));
-        label2.setSize(210,210);
+        //---- item_image ----
+        item_image.setText("text");
+        item_image.setOpaque(true);
+        item_image.setBackground(new Color(0xcccccc));
+        item_image.setSize(210,210);
         setBase64ImageToDefault();
-        displayImageInJLabel(base64Image,label2);
+        displayImageInJLabel(base64Image,item_image);
 
 
+        //---- prop_name ----
+        prop_name.setText("Name              ");
+        prop_name.setFont(prop_name.getFont().deriveFont(14f));
 
-        //---- label3 ----
-        label3.setText("Name              ");
-        label3.setFont(label3.getFont().deriveFont(14f));
+        //---- prop_sellprice ----
+        prop_sellprice.setText("Sell Price          ");
+        prop_sellprice.setFont(prop_sellprice.getFont().deriveFont(14f));
 
-        //---- label4 ----
-        label4.setText("Sell Price          ");
-        label4.setFont(label4.getFont().deriveFont(14f));
+        //---- prop_buyprice ----
+        prop_buyprice.setText("Buy Price          ");
+        prop_buyprice.setFont(prop_buyprice.getFont().deriveFont(14f));
 
-        //---- label5 ----
-        label5.setText("Buy Price          ");
-        label5.setFont(label5.getFont().deriveFont(14f));
+        //---- prop_stock ----
+        prop_stock.setText("Stock                ");
+        prop_stock.setFont(prop_stock.getFont().deriveFont(14f));
 
-        //---- label6 ----
-        label6.setText("Stock                ");
-        label6.setFont(label6.getFont().deriveFont(14f));
+        //---- prop_category ----
+        prop_category.setText("Category          ");
+        prop_category.setFont(prop_category.getFont().deriveFont(14f));
 
-        //---- label7 ----
-        label7.setText("Category          ");
-        label7.setFont(label7.getFont().deriveFont(14f));
+        //---- delete_button ----
+        delete_button.setText("delete");
 
-        //---- button1 ----
-        button1.setText("delete");
+        //---- edit_button ----
+        edit_button.setText("edit");
 
-        //---- button2 ----
-        button2.setText("edit");
+        //---- add_button ----
+        add_button.setText("add");
 
-        //---- button3 ----
-        button3.setText("add");
+        //---- item_name ----
+        item_name.setText(" ");
+        item_name.setFont(item_name.getFont().deriveFont(14f));
 
-        //---- label8 ----
-        label8.setText(" ");
-        label8.setFont(label8.getFont().deriveFont(14f));
+        //---- item_sellprice ----
+        item_sellprice.setText(" ");
+        item_sellprice.setFont(item_sellprice.getFont().deriveFont(14f));
 
-        //---- label9 ----
-        label9.setText(" ");
-        label9.setFont(label9.getFont().deriveFont(14f));
+        //---- item_buyprice ----
+        item_buyprice.setText(" ");
+        item_buyprice.setFont(item_buyprice.getFont().deriveFont(14f));
 
-        //---- label10 ----
-        label10.setText(" ");
-        label10.setFont(label10.getFont().deriveFont(14f));
+        //---- item_stock ----
+        item_stock.setText(" ");
+        item_stock.setFont(item_stock.getFont().deriveFont(14f));
 
-        //---- label11 ----
-        label11.setText(" ");
-        label11.setFont(label11.getFont().deriveFont(14f));
-
-        //---- label12 ----
-        label12.setText(" ");
-        label12.setFont(label12.getFont().deriveFont(14f));
+        //---- item_category ----
+        item_category.setText(" ");
+        item_category.setFont(item_category.getFont().deriveFont(14f));
 
         GroupLayout layout = new GroupLayout(this);
         setLayout(layout);
         layout.setHorizontalGroup(
-                layout.createParallelGroup()
+            layout.createParallelGroup()
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(12, 12, 12)
+                    .addGroup(layout.createParallelGroup()
                         .addGroup(layout.createSequentialGroup()
-                                .addGap(12, 12, 12)
-                                .addGroup(layout.createParallelGroup()
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addComponent(label1, GroupLayout.PREFERRED_SIZE, 296, GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(button3))
-                                        .addComponent(scrollPane1))
-                                .addGroup(layout.createParallelGroup()
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addGap(76, 76, 76)
-                                                .addGroup(layout.createParallelGroup()
-                                                        .addComponent(label3)
-                                                        .addComponent(label4)
-                                                        .addComponent(label5)
-                                                        .addComponent(label6)
-                                                        .addComponent(label7))
-                                                .addGap(18, 18, 18)
-                                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                                                        .addComponent(label9, GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE)
-                                                        .addComponent(label10, GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE)
-                                                        .addComponent(label11, GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE)
-                                                        .addComponent(label12, GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE)
-                                                        .addComponent(label8, GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE))
-                                                .addContainerGap(40, Short.MAX_VALUE))
-                                        .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 123, Short.MAX_VALUE)
-                                                .addGroup(layout.createParallelGroup()
-                                                        .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                                .addComponent(label2, GroupLayout.PREFERRED_SIZE, 210, GroupLayout.PREFERRED_SIZE)
-                                                                .addGap(81, 81, 81))
-                                                        .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                                .addComponent(button1)
-                                                                .addGap(23, 23, 23)
-                                                                .addComponent(button2)
-                                                                .addGap(102, 102, 102))))))
+                            .addComponent(title, GroupLayout.PREFERRED_SIZE, 296, GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(add_button))
+                        .addComponent(scrollPane1))
+                    .addGroup(layout.createParallelGroup()
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(76, 76, 76)
+                            .addGroup(layout.createParallelGroup()
+                                .addComponent(prop_name)
+                                .addComponent(prop_sellprice)
+                                .addComponent(prop_buyprice)
+                                .addComponent(prop_stock)
+                                .addComponent(prop_category))
+                            .addGap(18, 18, 18)
+                            .addGroup(layout.createParallelGroup()
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(item_buyprice, GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE)
+                                    .addComponent(item_stock, GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE)
+                                    .addComponent(item_category, GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE)
+                                    .addComponent(item_name, GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE))
+                                .addComponent(item_sellprice, GroupLayout.PREFERRED_SIZE, 183, GroupLayout.PREFERRED_SIZE))
+                            .addContainerGap(47, Short.MAX_VALUE))
+                        .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 134, Short.MAX_VALUE)
+                            .addGroup(layout.createParallelGroup()
+                                .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addComponent(item_image, GroupLayout.PREFERRED_SIZE, 210, GroupLayout.PREFERRED_SIZE)
+                                    .addGap(81, 81, 81))
+                                .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addComponent(delete_button)
+                                    .addGap(23, 23, 23)
+                                    .addComponent(edit_button)
+                                    .addGap(102, 102, 102))))))
         );
         layout.setVerticalGroup(
-                layout.createParallelGroup()
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                        .addComponent(button3)
-                                        .addComponent(label1, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
-                                        .addGroup(GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                                .addComponent(label2, GroupLayout.PREFERRED_SIZE, 210, GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addGroup(layout.createParallelGroup()
-                                                        .addGroup(layout.createSequentialGroup()
-                                                                .addComponent(label3)
-                                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addComponent(label4)
-                                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addComponent(label5)
-                                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addComponent(label6)
-                                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addComponent(label7))
-                                                        .addGroup(layout.createSequentialGroup()
-                                                                .addComponent(label8)
-                                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addComponent(label9)
-                                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addComponent(label10)
-                                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addComponent(label11)
-                                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addComponent(label12)))
-                                                .addGap(31, 31, 31)
-                                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(button2)
-                                                        .addComponent(button1))
-                                                .addGap(19, 19, 19))
-                                        .addComponent(scrollPane1, GroupLayout.PREFERRED_SIZE, 436, GroupLayout.PREFERRED_SIZE))
-                                .addContainerGap(115, Short.MAX_VALUE))
+            layout.createParallelGroup()
+                .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(add_button)
+                        .addComponent(title, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))
+                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addComponent(item_image, GroupLayout.PREFERRED_SIZE, 210, GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createParallelGroup()
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(prop_name)
+                                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(prop_sellprice)
+                                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(prop_buyprice)
+                                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(prop_stock)
+                                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(prop_category))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(item_name)
+                                    .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(item_sellprice)
+                                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(item_buyprice)
+                                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(item_stock)
+                                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(item_category)))
+                            .addGap(31, 31, 31)
+                            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                .addComponent(edit_button)
+                                .addComponent(delete_button))
+                            .addGap(19, 19, 19))
+                        .addComponent(scrollPane1, GroupLayout.PREFERRED_SIZE, 436, GroupLayout.PREFERRED_SIZE))
+                    .addContainerGap(109, Short.MAX_VALUE))
         );
 
         //======== dialog1 ========
@@ -243,142 +247,167 @@ public class Inventory extends JPanel {
             dialog1.setTitle("Item Property");
             var dialog1ContentPane = dialog1.getContentPane();
 
-            //---- label13 ----
-            label13.setText("Name");
-            label13.setFont(label13.getFont().deriveFont(label13.getFont().getSize() + 2f));
+            //---- prop_name_edit ----
+            prop_name_edit.setText("Name");
+            prop_name_edit.setFont(prop_name_edit.getFont().deriveFont(prop_name_edit.getFont().getSize() + 2f));
 
-            //---- label14 ----
-            label14.setText("Sell Price");
-            label14.setFont(label14.getFont().deriveFont(label14.getFont().getSize() + 2f));
+            //---- prop_sellprice_edit ----
+            prop_sellprice_edit.setText("Sell Price");
+            prop_sellprice_edit.setFont(prop_sellprice_edit.getFont().deriveFont(prop_sellprice_edit.getFont().getSize() + 2f));
 
-            //---- label15 ----
-            label15.setText("Buy Price");
-            label15.setFont(label15.getFont().deriveFont(label15.getFont().getSize() + 2f));
+            //---- prop_buyprice_edit ----
+            prop_buyprice_edit.setText("Buy Price");
+            prop_buyprice_edit.setFont(prop_buyprice_edit.getFont().deriveFont(prop_buyprice_edit.getFont().getSize() + 2f));
 
-            //---- label16 ----
-            label16.setText("Stock");
-            label16.setFont(label16.getFont().deriveFont(label16.getFont().getSize() + 2f));
+            //---- prop_stock_edit ----
+            prop_stock_edit.setText("Stock");
+            prop_stock_edit.setFont(prop_stock_edit.getFont().deriveFont(prop_stock_edit.getFont().getSize() + 2f));
 
-            //---- label19 ----
-            label19.setText("text");
-            label19.setOpaque(true);
-            label19.setBackground(new Color(0xcccccc));
+            //---- image_editdisplay ----
+            image_editdisplay.setText("text");
+            image_editdisplay.setOpaque(true);
+            image_editdisplay.setBackground(new Color(0xcccccc));
 
-            //---- button4 ----
-            button4.setText("save");
+            //---- save_button ----
+            save_button.setText("save");
 
-            //---- label18 ----
-            label18.setText("Image");
-            label18.setFont(label18.getFont().deriveFont(label18.getFont().getSize() + 2f));
+            //---- prop_image_edit ----
+            prop_image_edit.setText("Image");
+            prop_image_edit.setFont(prop_image_edit.getFont().deriveFont(prop_image_edit.getFont().getSize() + 2f));
 
-            //---- label20 ----
-            label20.setText("Category");
-            label20.setFont(label20.getFont().deriveFont(label20.getFont().getSize() + 2f));
+            //---- prop_category_edit ----
+            prop_category_edit.setText("Category");
+            prop_category_edit.setFont(prop_category_edit.getFont().deriveFont(prop_category_edit.getFont().getSize() + 2f));
 
-            //---- button5 ----
-            button5.setText("add image");
+            //---- add_image_button ----
+            add_image_button.setText("add image");
 
             GroupLayout dialog1ContentPaneLayout = new GroupLayout(dialog1ContentPane);
             dialog1ContentPane.setLayout(dialog1ContentPaneLayout);
             dialog1ContentPaneLayout.setHorizontalGroup(
-                    dialog1ContentPaneLayout.createParallelGroup()
+                dialog1ContentPaneLayout.createParallelGroup()
+                    .addGroup(dialog1ContentPaneLayout.createSequentialGroup()
+                        .addGroup(dialog1ContentPaneLayout.createParallelGroup()
                             .addGroup(dialog1ContentPaneLayout.createSequentialGroup()
-                                    .addGroup(dialog1ContentPaneLayout.createParallelGroup()
-                                            .addGroup(GroupLayout.Alignment.TRAILING, dialog1ContentPaneLayout.createSequentialGroup()
-                                                    .addGap(17, 17, 17)
-                                                    .addGroup(dialog1ContentPaneLayout.createParallelGroup()
-                                                            .addComponent(label18)
-                                                            .addGroup(dialog1ContentPaneLayout.createSequentialGroup()
-                                                                    .addGroup(dialog1ContentPaneLayout.createParallelGroup()
-                                                                            .addComponent(label13)
-                                                                            .addComponent(label14)
-                                                                            .addComponent(label15)
-                                                                            .addComponent(label16)
-                                                                            .addComponent(label20))
-                                                                    .addGap(32, 32, 32)
-                                                                    .addGroup(dialog1ContentPaneLayout.createParallelGroup()
-                                                                            .addComponent(textField4, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE)
-                                                                            .addComponent(textField3, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE)
-                                                                            .addComponent(textField2, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE)
-                                                                            .addComponent(textField1, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE)))))
-                                            .addGroup(dialog1ContentPaneLayout.createSequentialGroup()
-                                                    .addGap(113, 113, 113)
-                                                    .addGroup(dialog1ContentPaneLayout.createParallelGroup()
-                                                            .addComponent(button5)
-                                                            .addComponent(textField5, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE))))
-                                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
-                                    .addGroup(dialog1ContentPaneLayout.createParallelGroup()
-                                            .addGroup(GroupLayout.Alignment.TRAILING, dialog1ContentPaneLayout.createSequentialGroup()
-                                                    .addComponent(label19, GroupLayout.PREFERRED_SIZE, 136, GroupLayout.PREFERRED_SIZE)
-                                                    .addGap(39, 39, 39))
-                                            .addGroup(GroupLayout.Alignment.TRAILING, dialog1ContentPaneLayout.createSequentialGroup()
-                                                    .addComponent(button4)
-                                                    .addGap(70, 70, 70))))
+                                .addGap(113, 113, 113)
+                                .addComponent(add_image_button))
+                            .addGroup(dialog1ContentPaneLayout.createSequentialGroup()
+                                .addGap(17, 17, 17)
+                                .addGroup(dialog1ContentPaneLayout.createParallelGroup()
+                                    .addComponent(prop_image_edit)
+                                    .addGroup(dialog1ContentPaneLayout.createSequentialGroup()
+                                        .addGroup(dialog1ContentPaneLayout.createParallelGroup()
+                                            .addComponent(prop_name_edit)
+                                            .addComponent(prop_sellprice_edit)
+                                            .addComponent(prop_buyprice_edit)
+                                            .addComponent(prop_stock_edit)
+                                            .addComponent(prop_category_edit))
+                                        .addGap(32, 32, 32)
+                                        .addGroup(dialog1ContentPaneLayout.createParallelGroup()
+                                            .addComponent(input_stock, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(input_buyprice, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(input_sellprice, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(input_name, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(input_category, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE))))))
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                        .addGroup(dialog1ContentPaneLayout.createParallelGroup()
+                            .addGroup(GroupLayout.Alignment.TRAILING, dialog1ContentPaneLayout.createSequentialGroup()
+                                .addComponent(image_editdisplay, GroupLayout.PREFERRED_SIZE, 136, GroupLayout.PREFERRED_SIZE)
+                                .addGap(39, 39, 39))
+                            .addGroup(GroupLayout.Alignment.TRAILING, dialog1ContentPaneLayout.createSequentialGroup()
+                                .addComponent(save_button, GroupLayout.PREFERRED_SIZE, 67, GroupLayout.PREFERRED_SIZE)
+                                .addGap(70, 70, 70))))
             );
             dialog1ContentPaneLayout.setVerticalGroup(
-                    dialog1ContentPaneLayout.createParallelGroup()
+                dialog1ContentPaneLayout.createParallelGroup()
+                    .addGroup(dialog1ContentPaneLayout.createSequentialGroup()
+                        .addGroup(dialog1ContentPaneLayout.createParallelGroup()
                             .addGroup(dialog1ContentPaneLayout.createSequentialGroup()
-                                    .addGroup(dialog1ContentPaneLayout.createParallelGroup()
-                                            .addGroup(dialog1ContentPaneLayout.createSequentialGroup()
-                                                    .addGap(15, 15, 15)
-                                                    .addGroup(dialog1ContentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                                            .addComponent(label13)
-                                                            .addComponent(textField1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                                                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                    .addGroup(dialog1ContentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                                            .addComponent(label14)
-                                                            .addComponent(textField2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                                                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                    .addGroup(dialog1ContentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                                            .addComponent(label15)
-                                                            .addComponent(textField3, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                                                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                    .addGroup(dialog1ContentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                                            .addComponent(label16)
-                                                            .addComponent(textField4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                                                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                    .addGroup(dialog1ContentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                                            .addComponent(textField5, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                                            .addComponent(label20))
-                                                    .addGap(18, 18, 18)
-                                                    .addGroup(dialog1ContentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                                            .addComponent(label18)
-                                                            .addComponent(button5)))
-                                            .addGroup(dialog1ContentPaneLayout.createSequentialGroup()
-                                                    .addGap(24, 24, 24)
-                                                    .addComponent(label19, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE)
-                                                    .addGap(18, 18, 18)
-                                                    .addComponent(button4)))
-                                    .addContainerGap(12, Short.MAX_VALUE))
+                                .addGap(15, 15, 15)
+                                .addGroup(dialog1ContentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                    .addComponent(prop_name_edit)
+                                    .addComponent(input_name, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(dialog1ContentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                    .addComponent(prop_sellprice_edit)
+                                    .addComponent(input_sellprice, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(dialog1ContentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                    .addComponent(prop_buyprice_edit)
+                                    .addComponent(input_buyprice, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(dialog1ContentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                    .addComponent(prop_stock_edit)
+                                    .addComponent(input_stock, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(dialog1ContentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                    .addComponent(prop_category_edit)
+                                    .addComponent(input_category, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(dialog1ContentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                    .addComponent(prop_image_edit)
+                                    .addComponent(add_image_button)))
+                            .addGroup(dialog1ContentPaneLayout.createSequentialGroup()
+                                .addGap(24, 24, 24)
+                                .addComponent(image_editdisplay, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(save_button)))
+                        .addContainerGap(18, Short.MAX_VALUE))
             );
             dialog1.pack();
             dialog1.setLocationRelativeTo(dialog1.getOwner());
         }
 
-        //======== dialog2 ========
+        //======== error_deleted_item ========
         {
-            var dialog2ContentPane = dialog2.getContentPane();
-            dialog2ContentPane.setLayout(new FlowLayout());
+            var error_deleted_itemContentPane = error_deleted_item.getContentPane();
+            error_deleted_itemContentPane.setLayout(new FlowLayout());
 
-            //---- label17 ----
-            label17.setText("Error: Item Already Deleted");
-            label17.setForeground(Color.red);
-            dialog2ContentPane.add(label17);
-            dialog2.pack();
-            dialog2.setLocationRelativeTo(dialog2.getOwner());
+            //---- error_message1 ----
+            error_message1.setText("Error: Item Already Deleted");
+            error_message1.setForeground(Color.red);
+            error_deleted_itemContentPane.add(error_message1);
+            error_deleted_item.pack();
+            error_deleted_item.setLocationRelativeTo(error_deleted_item.getOwner());
+        }
+
+        //======== error_null_item ========
+        {
+            var error_null_itemContentPane = error_null_item.getContentPane();
+            error_null_itemContentPane.setLayout(new FlowLayout());
+
+            //---- error_message2 ----
+            error_message2.setText("Error: Value Cannot be Null");
+            error_message2.setForeground(Color.red);
+            error_null_itemContentPane.add(error_message2);
+            error_null_item.pack();
+            error_null_item.setLocationRelativeTo(error_null_item.getOwner());
+        }
+
+        //======== error_wrong_types ========
+        {
+            var error_wrong_typesContentPane = error_wrong_types.getContentPane();
+            error_wrong_typesContentPane.setLayout(new FlowLayout());
+
+            //---- error_message3 ----
+            error_message3.setText("Error: Invalid Input Types");
+            error_message3.setForeground(Color.red);
+            error_wrong_typesContentPane.add(error_message3);
+            error_wrong_types.pack();
+            error_wrong_types.setLocationRelativeTo(error_wrong_types.getOwner());
         }
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
 
-        list1.addListSelectionListener(new ListSelectionListener() {
+        item_list.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 if (e.getValueIsAdjusting() == false) {
-                    int idx = list1.getSelectedIndex();
+                    int idx = item_list.getSelectedIndex();
                     try {
                         if (idx!=-1) {
                             QuantifiableItem x = items.get(idx);
                             setItemProperty(x.getName(),x.getItem().getPrice(), x.getItem().getCost(),x.getQuantity(),x.getCategory());
-                            displayImageInJLabel(x.getImage().getBase64Image(),label2);
+                            displayImageInJLabel(x.getImage().getBase64Image(),item_image);
                         }
                     } catch (SearchedItemNotExist ignored) {
 
@@ -387,13 +416,13 @@ public class Inventory extends JPanel {
             }
         });
 
-        button1.addActionListener(new ActionListener() { //delete
+        delete_button.addActionListener(new ActionListener() { //delete
             @Override
             public void actionPerformed(ActionEvent e) {
-                int index = list1.getSelectedIndex();
+                int index = item_list.getSelectedIndex();
                 if (index != -1){
-                    if (items.get(list1.getSelectedIndex()).getItem().isDeleted()){
-                        dialog2.setVisible(true);
+                    if (items.get(item_list.getSelectedIndex()).getItem().isDeleted()){
+                        error_deleted_item.setVisible(true);
                     } else {
                         clearItemProperty();
                         items.get(index).getItem().setAsDeleted();
@@ -402,18 +431,18 @@ public class Inventory extends JPanel {
             }
         });
 
-        button2.addActionListener(new ActionListener() { //edit
+        edit_button.addActionListener(new ActionListener() { //edit
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (list1.getSelectedIndex()!=-1) {
-                    if (items.get(list1.getSelectedIndex()).getItem().isDeleted()){
-                        dialog2.setVisible(true);
+                if (item_list.getSelectedIndex()!=-1) {
+                    if (items.get(item_list.getSelectedIndex()).getItem().isDeleted()){
+                        error_deleted_item.setVisible(true);
                     } else {
                         try {
                             dialog1.setTitle("Edit Item");
-                            QuantifiableItem x = items.get(list1.getSelectedIndex());
+                            QuantifiableItem x = items.get(item_list.getSelectedIndex());
                             setTextField(x.getName(), String.valueOf(x.getItem().getPrice()), String.valueOf(x.getItem().getCost()), String.valueOf(x.getQuantity()), x.getCategory());
-                            displayImageInJLabel(x.getImage().getBase64Image(),label19);
+                            displayImageInJLabel(x.getImage().getBase64Image(),image_editdisplay);
                             base64Image= x.getImage().getBase64Image();
                             dialog1.setVisible(true);
                         } catch (SearchedItemNotExist ignored) {
@@ -424,57 +453,61 @@ public class Inventory extends JPanel {
             }
         });
 
-        button3.addActionListener(new ActionListener() { //add
+        add_button.addActionListener(new ActionListener() { //add
             @Override
             public void actionPerformed(ActionEvent e) {
                 dialog1.setTitle("Add Item");
                 clearTextField();
                 dialog1.setVisible(true);
-                displayImageInJLabel(base64Image,label19);
+                displayImageInJLabel(base64Image,image_editdisplay);
             }
         });
 
-        button4.addActionListener(new ActionListener() { //save
+        save_button.addActionListener(new ActionListener() { //save
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (Objects.equals(dialog1.getTitle(), "Add Item")){
-                    String newName = textField1.getText();
-                    Double newPrice = Double.valueOf(textField2.getText());
-                    Double newOriginalPrice = Double.valueOf(textField3.getText());
-                    Integer newQuantity = Integer.parseInt(textField4.getText());
-                    String newCategory = textField5.getText();
-                    QuantifiableItem newItem = null;
-                    boolean addingSuccess = false;
-                    try {
-                        newItem = DataStore.getInstance().addNewItem(newName, newPrice, newOriginalPrice, newCategory, newQuantity, base64Image);
-                        addingSuccess = true;
-                    } catch (Exception error) {
-                        System.out.println(error.getMessage());
-                    }
-
-                    if (addingSuccess){
-                        assert (newItem != null);
-                        items.add(newItem);
-                        items_list.addElement(newItem.getName());
-                        dialog1.setVisible(false);
-                        setBase64ImageToDefault();
+                    String newName = input_name.getText();
+                    Double newPrice = Double.valueOf(input_sellprice.getText());
+                    Double newOriginalPrice = Double.valueOf(input_buyprice.getText());
+                    Integer newQuantity = Integer.parseInt(input_stock.getText());
+                    String newCategory = input_category.getText();
+                    if (newName.equals("")){
+                        input_name.setText("INVALID");
+                    } else {
+                        QuantifiableItem newItem = null;
+                        boolean addingSuccess = false;
                         try {
-                            DataStore.getInstance().saveImage();
-                            DataStore.getInstance().saveItem();
-                        } catch (IOException ex) {
-                            throw new RuntimeException(ex);
+                            newItem = DataStore.getInstance().addNewItem(newName, newPrice, newOriginalPrice, newCategory, newQuantity, base64Image);
+                            addingSuccess = true;
+                        } catch (Exception error) {
+                            System.out.println(error.getMessage());
+                        }
+
+                        if (addingSuccess) {
+                            assert (newItem != null);
+                            items.add(newItem);
+                            items_list.addElement(newItem.getName());
+                            dialog1.setVisible(false);
+                            setBase64ImageToDefault();
+                            try {
+                                DataStore.getInstance().saveImage();
+                                DataStore.getInstance().saveItem();
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
                         }
                     }
                 } else { //edit
-                    int idx = list1.getSelectedIndex();
+                    int idx = item_list.getSelectedIndex();
                     QuantifiableItem editedItemDisplay = items.get(idx);
-                    editedItemDisplay.setName(textField1.getText());
-                    editedItemDisplay.setSingularPrice(Double.valueOf((textField2.getText())));
-                    editedItemDisplay.setSingularCost(Double.valueOf(textField3.getText()));
-                    editedItemDisplay.setQuantity(Integer.parseInt(textField4.getText()));
-                    editedItemDisplay.setCategory(textField5.getText());
+                    editedItemDisplay.setName(input_name.getText());
+                    editedItemDisplay.setSingularPrice(Double.valueOf((input_sellprice.getText())));
+                    editedItemDisplay.setSingularCost(Double.valueOf(input_buyprice.getText()));
+                    editedItemDisplay.setQuantity(Integer.parseInt(input_stock.getText()));
+                    editedItemDisplay.setCategory(input_category.getText());
                     editedItemDisplay.setImage(base64Image);
-                    items_list.setElementAt(textField1.getText(),idx);
+                    items_list.setElementAt(input_name.getText(),idx);
 
                     String itemImage = null;
                     try {
@@ -485,15 +518,15 @@ public class Inventory extends JPanel {
 
                     assert(itemImage != null);
 
-                    setItemProperty(textField1.getText(),Double.parseDouble(textField2.getText()),Double.parseDouble(textField3.getText()),Integer.parseInt(textField4.getText()),textField5.getText());
-                    displayImageInJLabel(itemImage, label2);
+                    setItemProperty(input_name.getText(),Double.parseDouble(input_sellprice.getText()),Double.parseDouble(input_buyprice.getText()),Integer.parseInt(input_stock.getText()),input_category.getText());
+                    displayImageInJLabel(itemImage, item_image);
                     setBase64ImageToDefault();
                     dialog1.setVisible(false);
                 }
             }
         });
 
-        button5.addActionListener(new ActionListener() { //add image
+        add_image_button.addActionListener(new ActionListener() { //add image
             public void actionPerformed(ActionEvent e) {
 
                 JFileChooser file = new JFileChooser();
@@ -515,9 +548,9 @@ public class Inventory extends JPanel {
                         ex.printStackTrace();
                     }
 
-                    displayImageInJLabel(base64Image,label19);
+                    displayImageInJLabel(base64Image,image_editdisplay);
 
-//                    label19.setIcon(ResizeImage(image2));
+//                    image_editdisplay.setIcon(ResizeImage(image2));
 //                    imgPath = path;
                 }
                 //if the user click on save in Jfilechooser
@@ -530,63 +563,67 @@ public class Inventory extends JPanel {
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
     // Generated using JFormDesigner Evaluation license - Althaaf Khasyi Atisomya
-    private JLabel label1;
+    private JLabel title;
     private JScrollPane scrollPane1;
-    private JList list1;
-    private JLabel label2;
-    private JLabel label3;
-    private JLabel label4;
-    private JLabel label5;
-    private JLabel label6;
-    private JLabel label7;
-    private JButton button1;
-    private JButton button2;
-    private JButton button3;
-    private JLabel label8;
-    private JLabel label9;
-    private JLabel label10;
-    private JLabel label11;
-    private JLabel label12;
+    private JList item_list;
+    private JLabel item_image;
+    private JLabel prop_name;
+    private JLabel prop_sellprice;
+    private JLabel prop_buyprice;
+    private JLabel prop_stock;
+    private JLabel prop_category;
+    private JButton delete_button;
+    private JButton edit_button;
+    private JButton add_button;
+    private JLabel item_name;
+    private JLabel item_sellprice;
+    private JLabel item_buyprice;
+    private JLabel item_stock;
+    private JLabel item_category;
     private JDialog dialog1;
-    private JLabel label13;
-    private JTextField textField1;
-    private JTextField textField2;
-    private JLabel label14;
-    private JLabel label15;
-    private JTextField textField3;
-    private JLabel label16;
-    private JTextField textField4;
-    private JLabel label19;
-    private JButton button4;
-    private JTextField textField5;
-    private JLabel label18;
-    private JLabel label20;
-    private JButton button5;
-    private JDialog dialog2;
-    private JLabel label17;
+    private JLabel prop_name_edit;
+    private JTextField input_name;
+    private JTextField input_sellprice;
+    private JLabel prop_sellprice_edit;
+    private JLabel prop_buyprice_edit;
+    private JTextField input_buyprice;
+    private JLabel prop_stock_edit;
+    private JTextField input_stock;
+    private JLabel image_editdisplay;
+    private JButton save_button;
+    private JTextField input_category;
+    private JLabel prop_image_edit;
+    private JLabel prop_category_edit;
+    private JButton add_image_button;
+    private JDialog error_deleted_item;
+    private JLabel error_message1;
+    private JDialog error_null_item;
+    private JLabel error_message2;
+    private JDialog error_wrong_types;
+    private JLabel error_message3;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:of
     private void setItemProperty(String name, Double sell_price, Double buy_price, Integer stock,String category){
-        label8.setText(name);
-        label9.setText(String.valueOf(sell_price));
-        label10.setText(String.valueOf(buy_price));
-        label11.setText(stock.toString());
-        label12.setText(category);
+        prop_name.setText(name);
+        prop_sellprice.setText(String.valueOf(sell_price));
+        prop_buyprice.setText(String.valueOf(buy_price));
+        prop_stock.setText(stock.toString());
+        prop_category.setText(category);
     }
 
     private void clearItemProperty(){
-        label8.setText(" ");
-        label9.setText(" ");
-        label10.setText(" ");
-        label11.setText(" ");
-        label12.setText(" ");
+        prop_name.setText(" ");
+        prop_sellprice.setText(" ");
+        prop_buyprice.setText(" ");
+        prop_stock.setText(" ");
+        prop_category.setText(" ");
     }
 
     private void setTextField(String name, String sell_price, String buy_price, String stock, String category){
-        textField1.setText(name);
-        textField2.setText(sell_price);
-        textField3.setText(buy_price);
-        textField4.setText(stock);
-        textField5.setText(category);
+        input_name.setText(name);
+        input_sellprice.setText(sell_price);
+        input_buyprice.setText(buy_price);
+        input_stock.setText(stock);
+        input_category.setText(category);
     }
 
     public ImageIcon ResizeImage(ImageIcon MyImage, JLabel label)
@@ -608,15 +645,15 @@ public class Inventory extends JPanel {
             ex.printStackTrace();
         }
     }
-//    public ImageIcon ResizeImage(String ImagePath,Boolean isLabel2)
+//    public ImageIcon ResizeImage(String ImagePath,Boolean isitem_image)
 //    {
 //        ImageIcon MyImage = new ImageIcon(ImagePath);
 //        Image img = MyImage.getImage();
 //        Image newImg;
-//        if (isLabel2){
-//            newImg = img.getScaledInstance(label2.getWidth(), label2.getHeight(), Image.SCALE_SMOOTH);
+//        if (isitem_image){
+//            newImg = img.getScaledInstance(item_image.getWidth(), item_image.getHeight(), Image.SCALE_SMOOTH);
 //        } else {
-//            newImg = img.getScaledInstance(label19.getWidth(), label19.getHeight(), Image.SCALE_SMOOTH);
+//            newImg = img.getScaledInstance(image_editdisplay.getWidth(), image_editdisplay.getHeight(), Image.SCALE_SMOOTH);
 //        }
 //        ImageIcon image = new ImageIcon(newImg);
 //        return image;
