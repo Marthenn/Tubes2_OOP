@@ -6,14 +6,12 @@ package GUI;
 
 import Core.DataStore.DataStore;
 import Core.DataStore.StorerData.Exception.ItemWithIDAlreadyExist;
+import Core.Item.Bill.Bill;
 import Core.Item.Exception.NegativeQuantityException;
 import Core.Item.QuantifiableItem;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+import javax.swing.event.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -22,6 +20,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Cashier extends JPanel {
+
+    private ArrayList<BillDisplay> currentActiveBillDisplays = new ArrayList<>();
     public Cashier() {
         initComponents();
     }
@@ -42,6 +42,7 @@ public class Cashier extends JPanel {
         //// DEBUG DATA
 
 
+        //TODO : DATA PERSISTENCE AND NON_STATIC DATA FETCHING
         ArrayList<QuantifiableItem> browseObjects = DataStore.getInstance().getItems();
         Object[][] browseObjectItemPool = new Object[browseObjects.size()][3];
         for(int i = 0; i < browseObjects.size(); i++) {
@@ -51,14 +52,6 @@ public class Cashier extends JPanel {
                                                     };
         }
 
-//        Object[][] browseObjectDisplayPool = new Object[browseObjectItemPool.length][3];
-//        for (int i = 0; i < browseObjectItemPool.length; i++) {
-//            browseObjectDisplayPool[i] = new Object[]{  browseObjectItemPool[i][0],
-//                                                        browseObjectItemPool[i][1],
-//                                                        browseObjectItemPool[i][2]
-//                                                      };
-//        }
-
         DefaultTableModel browseListTableModel = new DefaultTableModel();
         browseListTableModel.addColumn("Nama");
         browseListTableModel.addColumn("Kategori");
@@ -67,10 +60,10 @@ public class Cashier extends JPanel {
             browseListTableModel.addRow(browseObjectItemPool[i]);
         }
 
-        DefaultTableModel billItemTableModel = new DefaultTableModel();
-        billItemTableModel.addColumn("nama");
-        billItemTableModel.addColumn("quantity");
-        billItemTableModel.addColumn("subtotal");
+//        DefaultTableModel billItemTableModel = new DefaultTableModel();
+//        billItemTableModel.addColumn("nama");
+//        billItemTableModel.addColumn("quantity");
+//        billItemTableModel.addColumn("subtotal");
 
         title = new JLabel();
         browsePane = new JScrollPane();
@@ -78,8 +71,10 @@ public class Cashier extends JPanel {
         searchText = new JTextField();
         searchButton = new JButton();
         billTabPane = new JTabbedPane();
-        billDetailPane = new JScrollPane();
-        billItemTable = new JTable(billItemTableModel);
+//        billDetailPane = new JScrollPane();
+//        billItemTable = new JTable(billItemTableModel);
+        createNewBillTab(); // Bill1
+        createNewBillTab(); // +
         subtotalTitle = new JLabel();
         subtotalAmount = new JLabel();
         saveBill = new JButton();
@@ -110,13 +105,16 @@ public class Cashier extends JPanel {
         {
 
             //======== billDetailPane ========
-            {
+//            {
 
                 //---- billItemList ----
-                billItemTable.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-                billDetailPane.setViewportView(billItemTable);
-            }
-            billTabPane.addTab("text", billDetailPane);
+//                billItemTable.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+//                billDetailPane.setViewportView(billItemTable);
+//            }
+            //Bill 1
+            billTabPane.addTab("Bill 1", currentActiveBillDisplays.get(0));
+            //+
+            billTabPane.addTab("+", currentActiveBillDisplays.get(1));
         }
 
         //---- subtotalTitle ----
@@ -259,11 +257,22 @@ public class Cashier extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (browseTableSM.isSelectionEmpty()) return;
-                CashierItemAdd cashierItemAddDialog = new CashierItemAdd(selectedSoldItem, billItemTableModel);
+                CashierItemAdd cashierItemAddDialog = new CashierItemAdd(selectedSoldItem, currentActiveBillDisplays.get(billTabPane.getSelectedIndex()).getDisplayedTableModel());
             }
         });
 
-
+        billTabPane.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                if (e.getSource() instanceof JTabbedPane) {
+                    JTabbedPane pane = (JTabbedPane) e.getSource();
+                    if (pane.getTitleAt(pane.getSelectedIndex()).equals("+")) {
+                        pane.setTitleAt(pane.getSelectedIndex(), "Bill");
+                        pane.add("+", createNewBillTab());
+                    }
+                }
+            }
+        });
 
 
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
@@ -284,6 +293,13 @@ public class Cashier extends JPanel {
         }
     }
 
+    BillDisplay createNewBillTab() {
+        currentActiveBillDisplays.add(new BillDisplay());
+
+        // return latest created BillDisplay
+        return currentActiveBillDisplays.get(currentActiveBillDisplays.size() - 1);
+    }
+
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
     // Generated using JFormDesigner Evaluation license - Fakih Anugerah Pratama
     private JLabel title;
@@ -292,8 +308,8 @@ public class Cashier extends JPanel {
     private JTextField searchText;
     private JButton searchButton;
     private JTabbedPane billTabPane;
-    private JScrollPane billDetailPane;
-    private JTable billItemTable;
+//    private JScrollPane billDetailPane;
+//    private JTable billItemTable;
     private JLabel subtotalTitle;
     private JLabel subtotalAmount;
     private JButton saveBill;
