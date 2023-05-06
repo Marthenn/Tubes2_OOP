@@ -42,7 +42,6 @@ public class CashierComboBox extends JComboBox {
         textField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
-//                showPopup();
                 if (e.getSource() instanceof JTextField){
                     updateComboModel();
                     hidePopup();
@@ -51,6 +50,13 @@ public class CashierComboBox extends JComboBox {
             }
 
 
+        });
+
+        this.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println(getSelectedIndex());
+            }
         });
     }
 
@@ -84,11 +90,11 @@ public class CashierComboBox extends JComboBox {
         }
 
         // incomplete query
-        if (! displayedList.get(0).getName().equals(textField.getText())) {
+        if (getSelectedIndex() == 0 && ! displayedList.get(0).getName().equals(textField.getText())) {
             return -1;
         }
-        
-        return displayedList.get(0).getID();
+
+        return displayedList.get(getSelectedIndex()).getID();
     }
 
 

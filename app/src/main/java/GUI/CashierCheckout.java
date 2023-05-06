@@ -11,6 +11,7 @@ import Core.DataStore.Exception.PromotedCustomerAlreadyExist;
 import Core.DataStore.StorerData.StorerDataListener;
 import Core.Item.Bill.Bill;
 import Core.Item.QuantifiableItem;
+import lombok.Data;
 import lombok.SneakyThrows;
 
 import java.awt.*;
@@ -131,10 +132,21 @@ public class CashierCheckout extends JPanel implements StorerDataListener {
             new Insets(0, 0, 0, 0), 0, 0));
 
         Checkout.addActionListener(new ActionListener() {
+            @SneakyThrows // MAY RESULT IN DEACTIVATED USER
             @Override
             public void actionPerformed(ActionEvent e) {
+                System.out.println(NamaCustomer.getSelectedCustomerID());
                 // function finish checkout
-                billToBeCheckedOut.setOwner();
+                billToBeCheckedOut.setOwner(
+                        NamaCustomer.getSelectedCustomerID() == -1
+                                ?
+                        DataStore.getInstance().createNewCustomer()
+                                :
+                        DataStore.getInstance().getCustomerWithID(NamaCustomer.getSelectedCustomerID()
+                        ));
+
+                // pay
+
 
                 // hide this page (TODO: destroy or recycle instead)
                 parentTabbedPane.setComponentAt(parentTabbedPane.getSelectedIndex(), parentCashier);
