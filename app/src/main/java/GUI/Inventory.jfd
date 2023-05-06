@@ -4,8 +4,8 @@ new FormModel {
 	contentType: "form/swing"
 	root: new FormRoot {
 		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
-			"$horizontalGroup": "par l {seq l {space :12:12:p, par l {seq {comp title:::p:296:p, space :::p, comp add_button:::p::p}, comp scrollPane1:::::x}, par l {seq {space :p:76:p, par l {comp prop_name:::p::p, comp prop_sellprice:::p::p, comp prop_buyprice::l:p::p, comp prop_stock::l:p::p, comp prop_category::l:p::p}, space s:::p, par l {comp item_name::l:p:183:p, comp item_sellprice::l:p:183:p, comp item_buyprice:::p:183:p, comp item_stock::l:p:183:p, comp item_category::l:p:183:p}, space ::50:x}, seq t {space ::137:x, par l {seq t {comp item_image:::p:210:p, space :p:81:p}, seq t {comp delete_button:::p::p, space :p:23:p, comp edit_button:::p::p, space :p:102:p}, seq t {comp delete_mark:::p::p, space :p:142:p}}}}}}"
-			"$verticalGroup": "par l {seq {space :::p, par b {comp add_button::b:p::p, comp title::b:p:37:p, comp delete_mark::b:p::p}, space :::p, par t:::p {seq l {comp item_image:::p:210:p, space :::x, par l {seq {comp prop_name:::p::p, space :::p, par b {comp prop_sellprice::b:p::p, comp item_sellprice::b:p::p}, space :::p, par b {comp prop_buyprice::b:p::p, comp item_buyprice::b:p::p}, space :::p, par b {comp prop_stock::b:p::p, comp item_stock::b:p::p}, space :::p, par b {comp prop_category::b:p::p, comp item_category::b:p::p}}, comp item_name:::p::p}, space :p:37:p, par b {comp edit_button::b:p::p, comp delete_button::b:p::p}, space :p:19:p}, comp scrollPane1:::p:436:p}, space ::115:x}}"
+			"$horizontalGroup": "par l {seq l {space :12:12:p, par l {seq {comp title:::p:296:p, space :::p, comp add_button:::p::p}, comp scrollPane1:::::x}, par l {seq {space :p:76:p, par l {comp prop_name:::p::p, comp prop_sellprice:::p::p, comp prop_buyprice::l:p::p, comp prop_stock::l:p::p, comp prop_category::l:p::p}, space s:::p, par l {comp item_name::l:p:183:p, comp item_sellprice::l:p:183:p, comp item_buyprice:::p:183:p, comp item_stock::l:p:183:p, comp item_category::l:p:183:p}, space ::47:x}, seq t {space ::134:x, par l {seq t {comp item_image:::p:210:p, space :p:81:p}, seq t {comp delete_button:::p::p, space :p:23:p, comp edit_button:::p::p, space :p:102:p}, seq t {comp delete_mark:::p::p, space :p:142:p}}}}}}"
+			"$verticalGroup": "par l {seq {space :::p, par b {comp add_button::b:p::p, comp title::b:p:37:p, comp delete_mark::b:p::p}, space :::p, par t:::p {seq l {comp item_image:::p:210:p, space :::x, par l {seq {comp prop_name:::p::p, space :::p, par b {comp prop_sellprice::b:p::p, comp item_sellprice::b:p::p}, space :::p, par b {comp prop_buyprice::b:p::p, comp item_buyprice::b:p::p}, space :::p, par b {comp prop_stock::b:p::p, comp item_stock::b:p::p}, space :::p, par b {comp prop_category::b:p::p, comp item_category::b:p::p}}, comp item_name:::p::p}, space :p:37:p, par b {comp edit_button::b:p::p, comp delete_button::b:p::p}, space :p:19:p}, comp scrollPane1:::p:436:p}, space ::109:x}}"
 		} ) {
 			name: "this"
 			add( new FormComponent( "javax.swing.JLabel" ) {
@@ -168,37 +168,15 @@ new FormModel {
 			"size": new java.awt.Dimension( 495, 250 )
 		} )
 		add( new FormWindow( "javax.swing.JDialog", new FormLayoutManager( class java.awt.FlowLayout ) ) {
-			name: "error_deleted_item"
+			name: "error_popup"
 			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "error_message1"
-				"text": "Error: Item Already Deleted"
+				name: "error_message"
+				"text": "Error: Item Already Deleted aaaaaaaaaaaaaaaaaa"
 				"foreground": sfield java.awt.Color red
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 660, 625 )
-			"size": &Dimension0 new java.awt.Dimension( 200, 65 )
-		} )
-		add( new FormWindow( "javax.swing.JDialog", new FormLayoutManager( class java.awt.FlowLayout ) ) {
-			name: "error_null_item"
-			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "error_message2"
-				"text": "Error: Value Cannot be Null"
-				"foreground": sfield java.awt.Color red
-			} )
-		}, new FormLayoutConstraints( null ) {
-			"size": #Dimension0
-			"location": new java.awt.Point( 660, 700 )
-		} )
-		add( new FormWindow( "javax.swing.JDialog", new FormLayoutManager( class java.awt.FlowLayout ) ) {
-			name: "error_wrong_types"
-			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "error_message3"
-				"text": "Error: Invalid Input Types"
-				"foreground": sfield java.awt.Color red
-			} )
-		}, new FormLayoutConstraints( null ) {
-			"size": #Dimension0
-			"location": new java.awt.Point( 660, 780 )
+			"size": new java.awt.Dimension( 305, 65 )
 		} )
 	}
 }
