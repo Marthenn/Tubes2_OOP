@@ -10,6 +10,7 @@ import java.util.*;
 import java.util.jar.JarInputStream;
 
 import static Plugins.Helper.loadClasses;
+import Plugins.Plugin;
 
 public class Settings {
     // pada class ini terdapat minim pengecekan terhadap inputan dari user
@@ -34,7 +35,16 @@ public class Settings {
     public void addPlugin(String pluginDirectory) {
         List<Class<?>> classes = loadClasses(pluginDirectory);
         for (Class<?> cls : classes) {
-            System.out.println(cls.getName());
+            try{
+                Object obj = cls.newInstance();
+                if (obj instanceof Plugin){
+                    Plugin plugin = (Plugin) obj;
+                    System.out.println(plugin.getName());
+                    this.plugins.add(plugin.getName());
+                }
+            } catch (Exception e){
+                System.out.println("Failed to load plugin");
+            }
         }
     }
 
