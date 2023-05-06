@@ -180,6 +180,7 @@ public class DataStore {
     public QuantifiableItem addNewItem(String name, Double price, Double originalPrice, String category, Integer quantity, String img) throws ItemWithIDAlreadyExist, NegativeQuantityException {
         QuantifiableItem newQItem = new QuantifiableItem(new Item(items.getNewID(), name, price, originalPrice, category, img, false), quantity);
         items.addItem(newQItem);
+        newQItem.setListenerList(itemListeners);
         return newQItem;
     }
 
