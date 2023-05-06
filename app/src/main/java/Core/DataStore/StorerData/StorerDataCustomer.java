@@ -1,7 +1,6 @@
 package Core.DataStore.StorerData;
 
 import Core.Customer.Customer;
-import Core.Item.Bill.Image.ImageWithID;
 import Core.Serializer.StorerData.StorerDataImageWithIDSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 

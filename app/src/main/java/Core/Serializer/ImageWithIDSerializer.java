@@ -1,7 +1,6 @@
 package Core.Serializer;
 
 import Core.Item.Bill.Image.ImageWithID;
-import Core.Item.QuantifiableItem;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

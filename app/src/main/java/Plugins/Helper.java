@@ -1,5 +1,7 @@
 package Plugins;
 
+import lombok.NonNull;
+
 import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -7,8 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
-
-import lombok.NonNull;
 
 public class Helper {
     @NonNull

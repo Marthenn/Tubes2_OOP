@@ -1,8 +1,6 @@
 package Core.Serializer.Customer;
 
 import Core.Customer.Customer;
-import Core.Item.Bill.FixedBill.FixedBill;
-import Core.Item.Bill.FixedBill.FixedBillModifier.FixedBillModifier;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

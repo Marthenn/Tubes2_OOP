@@ -10,7 +10,6 @@ import Core.Item.Bill.Bill;
 import Core.Item.Bill.FixedBill.FixedBill;
 import Core.Item.Bill.FixedBill.FixedBillModifier.FixedBillModifier;
 import Core.Serializer.Customer.CustomerSerializer;
-import Core.Serializer.Customer.PremiumCustomerSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;

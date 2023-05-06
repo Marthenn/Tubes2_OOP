@@ -1,7 +1,5 @@
 package Core.Deserializer;
 
-import Core.Customer.Customer;
-import Core.Deserializer.Customer.CustomerDeserializerUtility;
 import Core.Item.Bill.FixedBill.FixedBill;
 import Core.Item.Bill.FixedBill.FixedBillModifier.FixedBillModifier;
 import Core.Item.QuantifiableItem;

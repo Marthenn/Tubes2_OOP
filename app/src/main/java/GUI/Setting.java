@@ -4,19 +4,16 @@
 
 package GUI;
 
+import Core.Settings;
 import lombok.SneakyThrows;
 
-import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.xml.crypto.Data;
+import java.awt.*;
+import java.awt.event.ItemEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
-import java.io.IOException;
-import java.util.jar.JarInputStream;
-
-import Core.DataStore.DataStore;
-import Core.Settings;
 
 /**
  * @author Marthen

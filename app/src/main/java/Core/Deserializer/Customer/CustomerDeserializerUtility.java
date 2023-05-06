@@ -1,22 +1,15 @@
 package Core.Deserializer.Customer;
 
 import Core.Customer.Customer;
-import Core.DataStore.StorerData.StorerData;
-import Core.IDAble.IDAble;
 import Core.Item.Bill.FixedBill.FixedBill;
-import Core.Pair;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.IntNode;
 import lombok.SneakyThrows;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class CustomerDeserializerUtility {
 

@@ -2,7 +2,6 @@ package GUI;
 
 import Core.DataStore.DataStore;
 import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
-import Core.Item.Bill.Image.ImageWithID;
 import Core.Item.QuantifiableItem;
 
 import javax.imageio.ImageIO;

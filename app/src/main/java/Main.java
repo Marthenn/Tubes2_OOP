@@ -1,7 +1,7 @@
+import GUI.LoadingScreen;
 import GUI.MainMenu;
-import javax.swing.*;
 
-import GUI.*;
+import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
