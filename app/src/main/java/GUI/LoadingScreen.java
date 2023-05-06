@@ -1,9 +1,11 @@
 package GUI;
 
 import Core.DataStore.DataStore;
+import Core.Settings;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 public class LoadingScreen {
     private JProgressBar progressBar = new JProgressBar();
@@ -17,21 +19,16 @@ public class LoadingScreen {
         progressBar.setStringPainted(true);
         new Thread(() -> {
             int progress = 0;
-            while (progress < 100) {
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                progress += 10;
-                int finalProgress = progress;
-                SwingUtilities.invokeLater(() -> {
-                    progressBar.setValue(finalProgress);
-                });
+            try {
+                Settings.getInstance().loadPath();
+                Settings.getInstance().loadFileType();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-            DataStore.getInstance();
+            progress = 100;
+            int finalProgress = progress;
             SwingUtilities.invokeLater(() -> {
-                progressBar.setValue(100);
+                progressBar.setValue(finalProgress);
                 finished = true;
             });
         }).start();
