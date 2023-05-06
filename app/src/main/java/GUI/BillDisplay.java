@@ -37,7 +37,7 @@ public class BillDisplay extends JScrollPane {
         this.displayedTableModel.setRowCount(0);
 
         for (QuantifiableItem qItem : this.displayedBill.getItemList()) {
-            this.displayedTableModel.addRow(new String[]{qItem.getName(), qItem.getCategory(), Double.toString(qItem.getCost())});
+            this.displayedTableModel.addRow(new String[]{qItem.getName(), Integer.toString(qItem.getQuantity()), Double.toString(qItem.getCost())});
         }
     }
 
