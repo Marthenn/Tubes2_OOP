@@ -22,6 +22,8 @@ import java.util.stream.Collectors;
 public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem> {
 
     private ArrayList<BillDisplay> currentActiveBillDisplays = new ArrayList<>();
+    ArrayList<QuantifiableItem> browseObjects = new ArrayList<>();
+    DefaultTableModel browseListTableModel = new DefaultTableModel();
     public Cashier() {
         initComponents();
     }
@@ -40,26 +42,19 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem> 
             throw new RuntimeException(e);
         }
 
+        // add this to listener list
         DataStore.getInstance().listenToItem(this);
 
         //// DEBUG DATA
 
 
         //TODO : DATA PERSISTENCE AND NON_STATIC DATA FETCHING
-        ArrayList<QuantifiableItem> browseObjects = DataStore.getInstance().getItems();
-
-        // browsed Items Table Model
-        DefaultTableModel browseListTableModel = new DefaultTableModel();
-        browseListTableModel.addColumn("Nama");
-        browseListTableModel.addColumn("Kategori");
-        browseListTableModel.addColumn("Harga");
-
-        setTableModelContent(browseListTableModel, browseObjects);
-
+        // FIRST TIME FETCH
+         browseObjects = DataStore.getInstance().getItems();
 
         title = new JLabel();
         browsePane = new JScrollPane();
-        browseTable = new JTable(browseListTableModel);
+        browseTable = new JTable();
         searchText = new JTextField();
         searchButton = new JButton();
         billTabPane = new JTabbedPane();
@@ -70,6 +65,15 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem> 
         saveBill = new JButton();
         printBill = new JButton();
         addItem = new JButton();
+
+        // browsed Items Table Model
+        browseListTableModel.addColumn("Nama");
+        browseListTableModel.addColumn("Kategori");
+        browseListTableModel.addColumn("Harga");
+
+        updateBrowseTableModel();
+
+        browseTable.setModel(browseListTableModel);
 
 
 
@@ -215,31 +219,17 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem> 
         searchText.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                setTableModelContent(browseListTableModel,
-                                        browseObjects
-                                            .stream()
-                                            .filter(qItem -> qItem.getName().contains(searchText.getText()) ||
-                                                            qItem.getCategory().contains(searchText.getText()) ||
-                                                            Double.toString(qItem.getCost()).contains(searchText.getText()))
-                                            .collect(Collectors.toCollection(ArrayList::new))
-                );
+                updateBrowseTableModel();
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                setTableModelContent(browseListTableModel,
-                        browseObjects
-                                .stream()
-                                .filter(qItem -> qItem.getName().contains(searchText.getText()) ||
-                                        qItem.getCategory().contains(searchText.getText()) ||
-                                        Double.toString(qItem.getCost()).contains(searchText.getText()))
-                                .collect(Collectors.toCollection(ArrayList::new))
-                );
+                updateBrowseTableModel();
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                //?
+                // this will only trigger when font, size, and other non-text attribute changed
             }
         });
 
@@ -270,7 +260,7 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem> 
         saveBill.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                browseObjects.get(0).setName(browseObjects.get(0).getName().concat(browseObjects.get(0).getName().substring(1)));
             }
         });
 
@@ -281,13 +271,25 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem> 
         selectedSoldItem = soldItem;
     }
 
-    void setTableModelContent(DefaultTableModel tableModel, ArrayList<QuantifiableItem> newValue){
+    void updateBrowseTableModel(){
+
+        String filterText = searchText.getText() == null ? "" : searchText.getText();
+
         // Empty tableModel
-        tableModel.setRowCount(0);
+        browseListTableModel.setRowCount(0);
+
+        // Filter tableModel
+        ArrayList<QuantifiableItem> filteredBrowseObjects =
+                browseObjects
+                .stream()
+                .filter(qItem ->    qItem.getName().contains(filterText) ||
+                                    qItem.getCategory().contains(filterText) ||
+                                    Double.toString(qItem.getCost()).contains(filterText))
+                .collect(Collectors.toCollection(ArrayList::new));
 
         // Update tableModel
-        for (QuantifiableItem qItem : newValue) {
-            tableModel.addRow(new String[]{qItem.getName(), qItem.getCategory(), Double.toString(qItem.getCost())});
+        for (QuantifiableItem qItem : filteredBrowseObjects) {
+            browseListTableModel.addRow(new String[]{qItem.getName(), qItem.getCategory(), Double.toString(qItem.getCost())});
         }
     }
 
@@ -299,7 +301,11 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem> 
     }
 
     public void onItemWithIDChange(QuantifiableItem item) {
+        // NOTE : MIGHT CHANGE INTO MORE OPTIMIZED SOLUTION
+        browseObjects = DataStore.getInstance().getItems();
+        updateBrowseTableModel();
 
+        System.out.println("TRIGGERED OBSERVER");
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
