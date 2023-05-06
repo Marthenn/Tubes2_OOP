@@ -7,12 +7,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 public class PieInsight implements Plugin {
     private MainMenu mainMenu = MainMenu.getInstance();
-    public String getName() {
-        return "PieInsight";
-    }
 
     public void load() {
         System.out.println("Loading PieChart based insight");
@@ -45,6 +43,7 @@ public class PieInsight implements Plugin {
 
             // add PieChart menuItem at the second from last index
             menuBar.add(pieChart, menuBar.getMenuCount() - 1);
+            addToSetting("PieChart", null);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
@@ -54,5 +53,10 @@ public class PieInsight implements Plugin {
         System.out.println("Unloading PieChart based insight");
     }
 
+    public ArrayList<String> getItems() {
+        ArrayList<String> items = new ArrayList<String>();
+        items.add("PieChart");
+        return items;
+    }
 
 }
