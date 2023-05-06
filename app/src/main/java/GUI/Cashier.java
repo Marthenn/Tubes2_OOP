@@ -10,8 +10,10 @@ import Core.DataStore.StorerData.Exception.ItemWithIDAlreadyExist;
 import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
 import Core.DataStore.StorerData.StorerDataListener;
 import Core.IDAble.IDAbleListener;
+import Core.Item.Bill.FixedBill.FixedBill;
 import Core.Item.Exception.NegativeQuantityException;
 import Core.Item.QuantifiableItem;
+import lombok.SneakyThrows;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -275,10 +277,22 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
             }
         });
 
+
         saveBill.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                browseObjects.get(0).setName(browseObjects.get(0).getName().concat(browseObjects.get(0).getName().substring(1)));
+//                browseObjects.get(0).setName(browseObjects.get(0).getName().concat(browseObjects.get(0).getName().substring(1)));
+
+            }
+        });
+
+        printBill.addActionListener(new ActionListener() {
+            @SneakyThrows
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Customer customer = DataStore.getInstance().createNewCustomer(); //dummy customer yang diassign
+                currentActiveBillDisplays.get(billTabPane.getSelectedIndex()).getDisplayedBill().setOwner(customer);
+                FixedBill toBePrinted = currentActiveBillDisplays.get(billTabPane.getSelectedIndex()).getDisplayedBill().getFixedBill();// dummy fixedbill
             }
         });
 
