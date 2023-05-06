@@ -13,7 +13,14 @@ import java.awt.event.MouseEvent;
  * @author Marthen
  */
 public class MainMenu extends JPanel {
-    public MainMenu() {
+    private static MainMenu instance = null;
+    public static MainMenu getInstance(){
+        if (MainMenu.instance == null){
+            MainMenu.instance = new MainMenu();
+        }
+        return MainMenu.instance;
+    }
+    private MainMenu() {
         initComponents();
         Dimension size = new Dimension(800, 600);
         setPreferredSize(size);
