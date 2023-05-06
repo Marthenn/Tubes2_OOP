@@ -1,5 +1,6 @@
 package Core.FileController;
 
+import Core.DataStore.DataStore;
 import Core.DataStore.StorerData.StorerData;
 import Core.Item.Bill.Image.ImageWithID;
 import Core.Item.QuantifiableItem;
@@ -11,7 +12,7 @@ import java.util.Map;
 public class DataStoreController implements FileController{
     private FileController fileController;
     public DataStoreController(){
-        Map<String, Boolean> fileType = Settings.getInstance().getFileType();
+        Map<String, Boolean> fileType = DataStore.getInstance().getFileType();
         if (fileType.get("JSON")){
             fileController = new JsonController();
         }
