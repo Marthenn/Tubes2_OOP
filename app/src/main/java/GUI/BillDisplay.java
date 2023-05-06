@@ -2,6 +2,7 @@ package GUI;
 
 import Core.DataStore.DataStore;
 import Core.Item.Bill.Bill;
+import Core.Item.Bill.Exception.ItemInBillNotExist;
 import Core.Item.QuantifiableItem;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -37,7 +38,11 @@ public class BillDisplay extends JScrollPane {
         this.displayedTableModel.setRowCount(0);
 
         for (QuantifiableItem qItem : this.displayedBill.getItemList()) {
-            this.displayedTableModel.addRow(new String[]{qItem.getName(), Integer.toString(qItem.getQuantity()), Double.toString(qItem.getCost())});
+            try {
+                this.displayedTableModel.addRow(new String[]{qItem.getName(), Integer.toString(qItem.getQuantity()), Double.toString(qItem.getPrice())});
+            } catch (ItemInBillNotExist e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
