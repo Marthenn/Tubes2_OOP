@@ -405,6 +405,7 @@ public class Inventory extends JPanel {
                         items.get(index).getItem().setAsDeleted();
                         QuantifiableItem x = items.get(index);
                         setItemProperty(x.getName(), x.getItem().getPrice(), x.getItem().getCost(), x.getQuantity(), x.getCategory(), x.getItem().isDeleted());
+                        items_list.setElementAt(x.getName()+" (deleted)",index);
                     }
                 }
             }
