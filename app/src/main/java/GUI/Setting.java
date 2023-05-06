@@ -76,8 +76,7 @@ public class Setting extends JPanel {
         int result = fileChooser.showOpenDialog(Setting.this);
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
-            JarInputStream jarFile = new JarInputStream(selectedFile.toURI().toURL().openStream());
-            settings.addPlugin(jarFile);
+            settings.addPlugin(selectedFile.getAbsolutePath());
         }
     }
 

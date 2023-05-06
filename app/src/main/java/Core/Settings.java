@@ -5,11 +5,10 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.jar.JarEntry;
+import java.util.*;
 import java.util.jar.JarInputStream;
+
+import static Plugins.Helper.loadClasses;
 
 public class Settings {
     // pada class ini terdapat minim pengecekan terhadap inputan dari user
@@ -42,11 +41,10 @@ public class Settings {
 
     // TODO: Add settings for plugins
     @SneakyThrows
-    public void addPlugin(JarInputStream pluginDirectory) throws Exception {
-        ArrayList<String> classNames = null;
-        classNames = getClassNames(pluginDirectory);
-        for (String className : classNames) {
-            System.out.println(className);
+    public void addPlugin(String pluginDirectory) {
+        List<Class<?>> classes = loadClasses(pluginDirectory);
+        for (Class<?> cls : classes) {
+            System.out.println(cls.getName());
         }
     }
 
@@ -54,23 +52,5 @@ public class Settings {
         // unload the plugin
         this.plugins.remove(pluginName);
     }
-
-    private ArrayList<String> getClassNames(JarInputStream jarFile) throws Exception {
-        ArrayList<String> classNames = new ArrayList<>();
-        try{
-            JarEntry jar;
-            while(true){
-                jar = jarFile.getNextJarEntry();
-                if(jar == null){
-                    break;
-                }
-                if(jar.getName().endsWith(".class")){
-                    classNames.add(jar.getName().replaceAll("/", "\\.").substring(0, jar.getName().length() - 6));
-                }
-            }
-        } catch (Exception e){
-            throw new Exception("Failed to get class names from jar file");
-        }
-        return classNames;
-    }
 }
+
