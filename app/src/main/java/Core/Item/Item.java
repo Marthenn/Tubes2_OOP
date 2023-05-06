@@ -1,7 +1,6 @@
 package Core.Item;
 
 import Core.Item.Bill.Exception.ItemInBillNotExist;
-import Core.Item.Bill.Image.ImageWithID;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 

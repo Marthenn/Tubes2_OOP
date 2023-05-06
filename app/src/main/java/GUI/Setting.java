@@ -4,12 +4,14 @@
 
 package GUI;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import java.io.File;
-
 import Core.Settings;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ItemEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
 
 /**
  * @author Marthen

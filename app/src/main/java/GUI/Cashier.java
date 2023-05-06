@@ -7,7 +7,6 @@ package GUI;
 import Core.DataStore.DataStore;
 import Core.DataStore.StorerData.Exception.ItemWithIDAlreadyExist;
 import Core.IDAble.IDAbleListener;
-import Core.Item.Bill.Bill;
 import Core.Item.Exception.NegativeQuantityException;
 import Core.Item.QuantifiableItem;
 
@@ -18,7 +17,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.stream.Collectors;
 
 public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem> {

@@ -3,7 +3,6 @@ package Core.Item;
 import Core.IDAble.IDAbleEmitter;
 import Core.IDAble.IDAbleListener;
 import Core.Item.Bill.Exception.ItemInBillNotExist;
-import Core.Item.Bill.Image.ImageWithID;
 import Core.Item.Exception.NegativeQuantityException;
 import Core.Item.Exception.NegativeQuantityModifierException;
 import lombok.Getter;

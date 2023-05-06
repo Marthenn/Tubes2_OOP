@@ -1,11 +1,10 @@
 package GUI;
 
-import Core.Item.Bill.Bill;
 import Core.DataStore.DataStore;
+import Core.Item.Bill.Bill;
 import Core.Item.QuantifiableItem;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

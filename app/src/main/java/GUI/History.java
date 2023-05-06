@@ -5,11 +5,8 @@
 package GUI;
 
 import Core.Customer.Customer;
-import Core.Customer.MembershipState.MembershipStateName;
 import Core.Customer.PremiumCustomer;
 import Core.DataStore.DataStore;
-import Core.DataStore.Exception.CustomerNotExistException;
-import Core.DataStore.Exception.PromotedCustomerAlreadyExist;
 import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
 import Core.IDAble.IDAbleListener;
 
