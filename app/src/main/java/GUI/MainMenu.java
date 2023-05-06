@@ -65,7 +65,7 @@ public class MainMenu extends JPanel {
     }
 
     private void cashierMenuMousePressed(MouseEvent e) {
-        tabbedPane.addTab("Cashier", new Cashier());
+        tabbedPane.addTab("Cashier", new Cashier(tabbedPane));
         tabbedPane.setSelectedIndex(tabbedPane.getTabCount()-1);
     }
 

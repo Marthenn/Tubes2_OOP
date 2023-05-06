@@ -87,7 +87,7 @@ public class Customer implements IDAbleEmitter<IDAbleListener<Customer>>, CanPay
      * Add fixedBill to the Customer's history
      * @param fixedBill
      */
-    private void addFixedBill(FixedBill fixedBill){
+    public void addFixedBill(FixedBill fixedBill){
         history.add(fixedBill);
     };
 
