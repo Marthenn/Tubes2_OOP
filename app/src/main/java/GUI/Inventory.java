@@ -460,56 +460,66 @@ public class Inventory extends JPanel {
                         Double newOriginalPriceD = Double.valueOf(input_buyprice.getText());
                         Integer newQuantityI = Integer.parseInt(input_stock.getText());
 
-                        QuantifiableItem newItem = null;
-                        boolean addingSuccess = false;
-                        try {
-                            newItem = DataStore.getInstance().addNewItem(newName, newPriceD, newOriginalPriceD, newCategory, newQuantityI, base64Image);
-                            addingSuccess = true;
-                        } catch (Exception error) {
-                            System.out.println(error.getMessage());
-                        }
+                        if(newPriceD<0 || newOriginalPriceD<0 || newQuantityI<0){
+                            error_message.setText("Error: Price & Stock Cannot Be Negative");
+                            error_popup.setVisible(true);
+                        } else {
 
-                        if (addingSuccess) {
-                            assert (newItem != null);
-                            items.add(newItem);
-                            items_list.addElement(newItem.getName());
-                            dialog1.setVisible(false);
-                            setBase64ImageToDefault();
-//                            try {
-//                                DataStore.getInstance().saveImage();
-//                                DataStore.getInstance().saveItem();
-//                            } catch (IOException ex) {
-//                                throw new RuntimeException(ex);
-//                            }
+                            QuantifiableItem newItem = null;
+                            boolean addingSuccess = false;
+                            try {
+                                newItem = DataStore.getInstance().addNewItem(newName, newPriceD, newOriginalPriceD, newCategory, newQuantityI, base64Image);
+                                addingSuccess = true;
+                            } catch (Exception error) {
+                                System.out.println(error.getMessage());
+                            }
+
+                            if (addingSuccess) {
+                                assert (newItem != null);
+                                items.add(newItem);
+                                items_list.addElement(newItem.getName());
+                                dialog1.setVisible(false);
+                                setBase64ImageToDefault();
+                            }
                         }
                     } catch (NumberFormatException nfe){
                         error_message.setText("Error: Invalid Input Types");
+                        error_popup.setVisible(true);
                     }
                 } else { //edit
                     int idx = item_list.getSelectedIndex();
                     try {
-                        QuantifiableItem editedItemDisplay = items.get(idx);
-                        editedItemDisplay.setName(input_name.getText());
-                        editedItemDisplay.setSingularPrice(Double.valueOf((input_sellprice.getText())));
-                        editedItemDisplay.setSingularCost(Double.valueOf(input_buyprice.getText()));
-                        editedItemDisplay.setQuantity(Integer.parseInt(input_stock.getText()));
-                        editedItemDisplay.setCategory(input_category.getText());
-                        editedItemDisplay.setImage(base64Image);
-                        items_list.setElementAt(input_name.getText(), idx);
+                        Double newPriceD = Double.valueOf(input_sellprice.getText());
+                        Double newOriginalPriceD = Double.valueOf(input_buyprice.getText());
+                        Integer newQuantityI = Integer.parseInt(input_stock.getText());
 
-                        String itemImage = null;
-                        try {
-                            itemImage = editedItemDisplay.getImage().getBase64Image();
-                        } catch (SearchedItemNotExist error) {
+                        if (newPriceD<0 || newOriginalPriceD<0 || newQuantityI<0){
+                            error_message.setText("Error:  Price & Stock Cannot Be Negative");
+                            error_popup.setVisible(true);
+                        } else {
+                            QuantifiableItem editedItemDisplay = items.get(idx);
+                            editedItemDisplay.setName(newName);
+                            editedItemDisplay.setSingularPrice(newPriceD);
+                            editedItemDisplay.setSingularCost(newOriginalPriceD);
+                            editedItemDisplay.setQuantity(newQuantityI);
+                            editedItemDisplay.setCategory(newCategory);
+                            editedItemDisplay.setImage(base64Image);
+                            items_list.setElementAt(input_name.getText(), idx);
 
+                            String itemImage = null;
+                            try {
+                                itemImage = editedItemDisplay.getImage().getBase64Image();
+                            } catch (SearchedItemNotExist error) {
+
+                            }
+
+                            assert (itemImage != null);
+
+                            setItemProperty(input_name.getText(), Double.parseDouble(input_sellprice.getText()), Double.parseDouble(input_buyprice.getText()), Integer.parseInt(input_stock.getText()), input_category.getText(), false);
+                            displayImageInJLabel(itemImage, item_image);
+                            setBase64ImageToDefault();
+                            dialog1.setVisible(false);
                         }
-
-                        assert (itemImage != null);
-
-                        setItemProperty(input_name.getText(), Double.parseDouble(input_sellprice.getText()), Double.parseDouble(input_buyprice.getText()), Integer.parseInt(input_stock.getText()), input_category.getText(),false);
-                        displayImageInJLabel(itemImage, item_image);
-                        setBase64ImageToDefault();
-                        dialog1.setVisible(false);
                     } catch (NumberFormatException nfe){
                         error_message.setText("Error: Invalid Input Types");
                         error_popup.setVisible(true);
