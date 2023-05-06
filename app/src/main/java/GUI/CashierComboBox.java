@@ -2,6 +2,8 @@ package GUI;
 
 import Core.Customer.Customer;
 import Core.Customer.PremiumCustomer;
+import Core.DataStore.DataStore;
+import lombok.SneakyThrows;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -12,12 +14,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class CashierComboBox extends JComboBox {
-    ArrayList<PremiumCustomer>  customerList = new ArrayList<>();
-    JTextField textField = new JTextField();
-    DefaultComboBoxModel comboBoxModel = new DefaultComboBoxModel();
-    BasicComboBoxEditor comboBoxEditor = new BasicComboBoxEditor();
+    private ArrayList<PremiumCustomer>  customerList;
+    private ArrayList<PremiumCustomer> displayedList = new ArrayList<>();
+    private JTextField textField = new JTextField();
+    private DefaultComboBoxModel comboBoxModel = new DefaultComboBoxModel();
+    private BasicComboBoxEditor comboBoxEditor = new BasicComboBoxEditor();
     public CashierComboBox(ArrayList<PremiumCustomer> customerList){
         this.customerList = customerList;
 
@@ -28,7 +32,7 @@ public class CashierComboBox extends JComboBox {
         updateComboModel();
     }
 
-    public void initComponents(){
+    private void initComponents(){
         this.setEditor(comboBoxEditor);
         this.setModel(comboBoxModel);
 
@@ -38,7 +42,6 @@ public class CashierComboBox extends JComboBox {
         textField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
-//                showPopup();
                 if (e.getSource() instanceof JTextField){
                     updateComboModel();
                     hidePopup();
@@ -48,10 +51,18 @@ public class CashierComboBox extends JComboBox {
 
 
         });
+
+        this.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println(getSelectedIndex());
+            }
+        });
     }
 
-    public void updateComboModel(){
-        // TODO: MAKE SURE OF THIS
+    private void updateComboModel(){
+        // TODO: MAKE SURE OF THE MAX LENGTH
+        // KNOWN PROBLEM : AUTO WIDTH INCREASE
         String lastInput = textField.getText().substring(0, textField.getText().length() >= 16 ?
                                                                 16
                                                                 :
@@ -60,11 +71,30 @@ public class CashierComboBox extends JComboBox {
         comboBoxModel.removeAllElements();
         comboBoxModel.addElement(lastInput);
 
-        for (PremiumCustomer pCustomer : customerList) {
-            if (pCustomer.getName().contains(lastInput)) {
-                        comboBoxModel.addElement(pCustomer.getName());
-            }
+        displayedList = customerList
+                            .stream()
+                            .filter(customer -> customer.getName().contains(lastInput))
+                            .collect(Collectors
+                            .toCollection(ArrayList::new));
+
+        for (PremiumCustomer pCustomer : displayedList) {
+            comboBoxModel.addElement(pCustomer.getName());
         }
+    }
+
+    @SneakyThrows
+    public int getSelectedCustomerID() {
+        // wrong query
+        if (displayedList.size() == 0) {
+            return -1;
+        }
+
+        // incomplete query
+        if (getSelectedIndex() == 0 && ! displayedList.get(0).getName().equals(textField.getText())) {
+            return -1;
+        }
+
+        return displayedList.get(getSelectedIndex()).getID();
     }
 
 
