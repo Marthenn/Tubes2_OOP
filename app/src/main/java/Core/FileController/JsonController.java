@@ -1,20 +1,11 @@
 package Core.FileController;
 
-import Core.DataStore.DataStore;
-import Core.DataStore.StorerData.StorerData;
 import Core.DataStore.StorerData.StorerDataBill;
 import Core.DataStore.StorerData.StorerDataImageWithID;
 import Core.DataStore.StorerData.StorerDataQuantifiableItem;
-import Core.Item.Bill.Bill;
-import Core.Item.Bill.Image.ImageWithID;
-import Core.Item.QuantifiableItem;
-import Core.Serializer.StorerData.StorerDataImageWithIDSerializer;
 import Core.Settings;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 
-import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -51,7 +42,7 @@ public class JsonController implements FileController{
     public void saveBill(StorerDataBill bills) throws IOException {
         String json = new ObjectMapper().writeValueAsString(bills);
         ObjectMapper mapper = new ObjectMapper();
-
+        System.out.println(Settings.getInstance().getPath());
         mapper.writeValue(Paths.get(Settings.getInstance().getPath()+"/bill.json").toFile(), json);
     }
 

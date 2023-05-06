@@ -4,20 +4,23 @@
 
 package GUI;
 
+import Core.Customer.Customer;
 import Core.Customer.MembershipState.MembershipStateName;
 import Core.DataStore.DataStore;
 import Core.DataStore.Exception.CustomerNotExistException;
 import Core.DataStore.Exception.PromotedCustomerAlreadyExist;
 import Core.DataStore.StorerData.StorerDataListener;
+import Core.FixedBillPrinter;
 import Core.Item.Bill.Bill;
 import Core.Item.QuantifiableItem;
-import lombok.Data;
 import lombok.SneakyThrows;
 
-import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 
 /**
  * @author Fakih A
@@ -147,7 +150,24 @@ public class CashierCheckout extends JPanel implements StorerDataListener {
 
                 // pay
 
-
+                // pop up print bill
+                int custId = NamaCustomer.getSelectedCustomerID() == -1 ? DataStore.getInstance().createNewCustomer().getID() : NamaCustomer.getSelectedCustomerID();
+                int fixedbillidx = DataStore.getInstance().getCustomerWithID(custId).getHistory().size() - 1;
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                fileChooser.setDialogTitle("Print Bill");
+                int userSelection = JOptionPane.showConfirmDialog(null, "Do you want to print the bill?", "Print Bill?", JOptionPane.YES_NO_OPTION);
+                if (userSelection == JOptionPane.YES_OPTION) {
+                    int result = fileChooser.showSaveDialog(null);
+                    if (result == JFileChooser.APPROVE_OPTION) {
+                        File fileToSave = fileChooser.getSelectedFile();
+                        FixedBillPrinter fbp = new FixedBillPrinter(fileToSave.getAbsolutePath()+"/bill_"+custId+"_"+fixedbillidx+".pdf", custId,
+                                fixedbillidx);
+                        fbp.printFixedBill();
+                    }
+                } else {
+                    // Don't save file
+                }
                 // hide this page (TODO: destroy or recycle instead)
                 parentTabbedPane.setComponentAt(parentTabbedPane.getSelectedIndex(), parentCashier);
                 parentTabbedPane.repaint();

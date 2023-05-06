@@ -1,10 +1,8 @@
 package Plugins;
 
 import GUI.MainMenu;
-import Plugins.PieInsightGUI;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.lang.reflect.Field;
 import java.util.ArrayList;

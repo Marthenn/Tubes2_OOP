@@ -4,13 +4,15 @@
 
 package GUI;
 
+import Core.Settings;
 import lombok.SneakyThrows;
 
-import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.xml.crypto.Data;
+import java.awt.*;
+import java.awt.event.ItemEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -83,6 +85,12 @@ public class Setting extends JPanel {
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
             settings.setPath(selectedFile.getAbsolutePath());
+            // save settings_config
+            try {
+                Settings.getInstance().savePath();
+            } catch (IOException er) {
+                throw new RuntimeException(er);
+            }
         }
     }
 
@@ -110,6 +118,12 @@ public class Setting extends JPanel {
         } else {
             settings.getFileType().put("OBJ", false);
         }
+        // save settings_config
+        try {
+            Settings.getInstance().saveFileType();
+        } catch (IOException er) {
+            throw new RuntimeException(er);
+        }
     }
 
     private void jsonBoxItemStateChanged(ItemEvent e) {
@@ -118,6 +132,12 @@ public class Setting extends JPanel {
         } else {
             settings.getFileType().put("JSON", false);
         }
+        // save settings_config
+        try {
+            Settings.getInstance().saveFileType();
+        } catch (IOException er) {
+            throw new RuntimeException(er);
+        }
     }
 
     private void xmlBoxItemStateChanged(ItemEvent e) {
@@ -125,6 +145,12 @@ public class Setting extends JPanel {
             settings.getFileType().put("XML", true);
         } else {
             settings.getFileType().put("XML", false);
+        }
+        // save settings_config
+        try {
+            Settings.getInstance().saveFileType();
+        } catch (IOException er) {
+            throw new RuntimeException(er);
         }
     }
 

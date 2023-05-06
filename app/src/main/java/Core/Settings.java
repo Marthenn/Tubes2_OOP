@@ -1,5 +1,6 @@
 package Core;
 
+import Plugins.Plugin;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -9,10 +10,12 @@ import lombok.SneakyThrows;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static Plugins.Helper.loadClasses;
-import Plugins.Plugin;
 
 public class Settings {
     // pada class ini terdapat minim pengecekan terhadap inputan dari user
@@ -65,14 +68,12 @@ public class Settings {
         this.plugins.remove(pluginName);
     }
     public void savePath() throws IOException {
-        String json = new ObjectMapper().writeValueAsString(this.path);
         ObjectMapper mapper = new ObjectMapper();
-        mapper.writeValue(Paths.get("path_config.json").toFile(), json);
+        mapper.writeValue(Paths.get("jsonConfig/path_config.json").toFile(), this.path);
     }
     public void saveFileType() throws IOException {
-        String json = new ObjectMapper().writeValueAsString(this.fileType);
         ObjectMapper mapper = new ObjectMapper();
-        mapper.writeValue(Paths.get("filetype_config.json").toFile(), json);
+        mapper.writeValue(Paths.get("jsonConfig/filetype_config.json").toFile(), this.fileType);
     }
     public void loadPath() throws IOException {
         String json = new String(Files.readAllBytes(Paths.get("jsonConfig/path_config.json")));

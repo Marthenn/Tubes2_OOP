@@ -3,11 +3,15 @@ package Core.Customer;
 import Core.Customer.Exception.NoOngoingPurchaseException;
 import Core.DataStore.DataStore;
 import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
+import Core.Deserializer.Customer.CustomerDeserializer;
 import Core.IDAble.IDAbleEmitter;
 import Core.IDAble.IDAbleListener;
 import Core.Item.Bill.Bill;
 import Core.Item.Bill.FixedBill.FixedBill;
 import Core.Item.Bill.FixedBill.FixedBillModifier.FixedBillModifier;
+import Core.Serializer.Customer.CustomerSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NonNull;
@@ -16,6 +20,8 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 
 @Data
+@JsonSerialize(using = CustomerSerializer.class)
+@JsonDeserialize(using = CustomerDeserializer.class)
 public class Customer implements IDAbleEmitter<IDAbleListener<Customer>>, CanPay {
     @NonNull
     private Integer id;

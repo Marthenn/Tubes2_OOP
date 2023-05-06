@@ -4,16 +4,10 @@
 
 package GUI;
 
-import Core.Customer.Customer;
 import Core.DataStore.DataStore;
-import Core.DataStore.StorerData.Exception.ItemWithIDAlreadyExist;
 import Core.DataStore.StorerData.StorerDataListener;
 import Core.IDAble.IDAbleListener;
-import Core.Item.Bill.Bill;
-import Core.Item.Bill.FixedBill.FixedBill;
-import Core.Item.Exception.NegativeQuantityException;
 import Core.Item.QuantifiableItem;
-import lombok.SneakyThrows;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -306,10 +300,10 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
 //            @SneakyThrows
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (currentActiveBillDisplays.get(billTabPane.getSelectedIndex()).getDisplayedTableModel().getRowCount() == 0) {
-                    System.out.println("bill kosong");
-                    return;
-                }
+//                if (currentActiveBillDisplays.get(billTabPane.getSelectedIndex()).getDisplayedTableModel().getRowCount() == 0) {
+//                    System.out.println("bill kosong");
+//                    return;
+//                }
 //                Customer customer = DataStore.getInstance().createNewCustomer(); //dummy customer yang diassign
 //                currentActiveBillDisplays.get(billTabPane.getSelectedIndex()).getDisplayedBill().setOwner(customer);
 //                FixedBill toBePrinted = currentActiveBillDisplays.get(billTabPane.getSelectedIndex()).getDisplayedBill().getFixedBill();// dummy fixedbill

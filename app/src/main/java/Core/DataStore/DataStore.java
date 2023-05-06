@@ -5,10 +5,10 @@ import Core.Customer.MembershipState.MembershipStateName;
 import Core.Customer.PremiumCustomer;
 import Core.DataStore.Exception.CustomerNotExistException;
 import Core.DataStore.Exception.PromotedCustomerAlreadyExist;
-import Core.DataStore.StorerData.*;
 import Core.DataStore.StorerData.Exception.ItemWithIDAlreadyExist;
 import Core.DataStore.StorerData.Exception.RemovedItemNotExist;
 import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
+import Core.DataStore.StorerData.*;
 import Core.FileController.DataStoreController;
 import Core.FileController.FileController;
 import Core.IDAble.IDAbleListener;
@@ -17,15 +17,10 @@ import Core.Item.Bill.Image.ImageWithID;
 import Core.Item.Exception.NegativeQuantityException;
 import Core.Item.Item;
 import Core.Item.QuantifiableItem;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.SneakyThrows;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class DataStore {
     private static DataStore instance = null;
@@ -268,16 +263,16 @@ public class DataStore {
 
     public void saveImage() throws IOException {
         FileController controller = new DataStoreController();
-        controller.saveImage(images);
+        controller.saveImage(this.images);
     }
     public void saveItem() throws IOException {
         FileController controller = new DataStoreController();
-        controller.saveItem(items);
+        controller.saveItem(this.items);
     }
 
     public void saveBill() throws IOException {
         FileController controller = new DataStoreController();
-        controller.saveBill(bills);
+        controller.saveBill(this.bills);
     }
 
 
