@@ -7,13 +7,16 @@ import Core.Item.Bill.Exception.ItemInBillNotExist;
 import Core.Item.Bill.Image.ImageWithID;
 import Core.Item.Exception.NegativeQuantityException;
 import Core.Item.Exception.NegativeQuantityModifierException;
+import Core.Serializer.QuantifiableItemSerializer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
 
 @Getter
+@JsonSerialize(using = QuantifiableItemSerializer.class)
 public class QuantifiableItem implements ItemLikeInterface, IDAbleEmitter<IDAbleListener<QuantifiableItem>> {
     @Setter
     private int quantity = 0;
@@ -21,6 +24,7 @@ public class QuantifiableItem implements ItemLikeInterface, IDAbleEmitter<IDAble
     @Getter
     private Item item;
 
+    @JsonIgnore
     private transient ArrayList<IDAbleListener<QuantifiableItem>> itemListeners = new ArrayList<>();
 
     public QuantifiableItem(Item item){
@@ -104,10 +108,12 @@ public class QuantifiableItem implements ItemLikeInterface, IDAbleEmitter<IDAble
      *
      * @return Whether the quantity of the item is zero
      */
+    @JsonIgnore
     public boolean isQuantityZero() {
         return this.quantity == 0;
     }
 
+    @JsonIgnore
     public Double getCost() {
         return quantity * item.getCost();
     }
@@ -152,6 +158,16 @@ public class QuantifiableItem implements ItemLikeInterface, IDAbleEmitter<IDAble
         notifyListener();
     }
 
+    @Override
+    public boolean isDeleted() {
+        return item.isDeleted();
+    }
+
+    @Override
+    public void setDeleted(boolean deleted) {
+        item.setDeleted(deleted);
+    }
+
     public void setSingularCost(Double cost) {
         this.item.setCost(cost);
         notifyListener();
@@ -161,6 +177,7 @@ public class QuantifiableItem implements ItemLikeInterface, IDAbleEmitter<IDAble
      *
      * @return The cost of one item
      */
+    @JsonIgnore
     public Double getSingularCost() {
         return this.item.getCost();
     }
@@ -169,6 +186,7 @@ public class QuantifiableItem implements ItemLikeInterface, IDAbleEmitter<IDAble
      *
      * @return The price of one item
      */
+    @JsonIgnore
     public Double getSingularPrice() {
         return this.item.getPrice();
     }
@@ -188,11 +206,13 @@ public class QuantifiableItem implements ItemLikeInterface, IDAbleEmitter<IDAble
      * @throws ItemInBillNotExist       Certain item does not exist in the DataStore
      */
     @Override
+    @JsonIgnore
     public Double getPrice() throws ItemInBillNotExist {
         return quantity * item.getPrice();
     }
 
     @Override
+    @JsonIgnore
     public Double getProfit() throws ItemInBillNotExist {
         return getPrice() - getCost();
     }
@@ -209,4 +229,11 @@ public class QuantifiableItem implements ItemLikeInterface, IDAbleEmitter<IDAble
     public void setListenerList(ArrayList<IDAbleListener<QuantifiableItem>> listeners) {
         this.itemListeners = listeners;
     }
+
+    public Integer getImageID() {
+        return item.getImageID();
+    }
+
+
+
 }

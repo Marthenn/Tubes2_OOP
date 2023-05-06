@@ -17,4 +17,8 @@ interface ItemLikeInterface extends IDAble, Profitable {
     void setCategory(String category);
 
     void setImage(String base64Image);
+
+    boolean isDeleted();
+
+    void setDeleted(boolean deleted);
 }
