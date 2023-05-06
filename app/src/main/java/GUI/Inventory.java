@@ -1,6 +1,8 @@
 package GUI;
 
 import Core.DataStore.DataStore;
+import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
+import Core.Item.Bill.Image.ImageWithID;
 import Core.Item.QuantifiableItem;
 
 import javax.imageio.ImageIO;
@@ -373,10 +375,14 @@ public class Inventory extends JPanel {
             public void valueChanged(ListSelectionEvent e) {
                 if (e.getValueIsAdjusting() == false) {
                     int idx = list1.getSelectedIndex();
-                    if (idx!=-1) {
-                        QuantifiableItem x = items.get(idx);
-                        setItemProperty(x.getName(),x.getItem().getPrice(), x.getItem().getCost(),x.getQuantity(),x.getCategory());
-                        displayImageInJLabel(x.getImage(),label2);
+                    try {
+                        if (idx!=-1) {
+                            QuantifiableItem x = items.get(idx);
+                            setItemProperty(x.getName(),x.getItem().getPrice(), x.getItem().getCost(),x.getQuantity(),x.getCategory());
+                            displayImageInJLabel(x.getImage().getBase64Image(),label2);
+                        }
+                    } catch (SearchedItemNotExist ignored) {
+
                     }
                 }
             }
@@ -404,13 +410,16 @@ public class Inventory extends JPanel {
                     if (items.get(list1.getSelectedIndex()).getItem().isDeleted()){
                         dialog2.setVisible(true);
                     } else {
+                        try {
+                            dialog1.setTitle("Edit Item");
+                            QuantifiableItem x = items.get(list1.getSelectedIndex());
+                            setTextField(x.getName(), String.valueOf(x.getItem().getPrice()), String.valueOf(x.getItem().getCost()), String.valueOf(x.getQuantity()), x.getCategory());
+                            displayImageInJLabel(x.getImage().getBase64Image(),label19);
+                            base64Image= x.getImage().getBase64Image();
+                            dialog1.setVisible(true);
+                        } catch (SearchedItemNotExist ignored) {
 
-                        dialog1.setTitle("Edit Item");
-                        QuantifiableItem x = items.get(list1.getSelectedIndex());
-                        setTextField(x.getName(), String.valueOf(x.getItem().getPrice()), String.valueOf(x.getItem().getCost()), String.valueOf(x.getQuantity()), x.getCategory());
-                        displayImageInJLabel(x.getImage(),label19);
-                        base64Image=x.getImage();
-                        dialog1.setVisible(true);
+                        }
                     }
                 }
             }
@@ -461,8 +470,18 @@ public class Inventory extends JPanel {
                     editedItemDisplay.setCategory(textField5.getText());
                     editedItemDisplay.setImage(base64Image);
                     items_list.setElementAt(textField1.getText(),idx);
+
+                    String itemImage = null;
+                    try {
+                        itemImage = editedItemDisplay.getImage().getBase64Image();
+                    } catch (SearchedItemNotExist error) {
+
+                    }
+
+                    assert(itemImage != null);
+
                     setItemProperty(textField1.getText(),Double.parseDouble(textField2.getText()),Double.parseDouble(textField3.getText()),Integer.parseInt(textField4.getText()),textField5.getText());
-                    displayImageInJLabel(editedItemDisplay.getImage(), label2);
+                    displayImageInJLabel(itemImage, label2);
                     setBase64ImageToDefault();
                     dialog1.setVisible(false);
                 }

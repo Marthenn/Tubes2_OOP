@@ -17,6 +17,7 @@ import Core.Item.Item;
 import Core.Item.QuantifiableItem;
 import lombok.SneakyThrows;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class DataStore {
@@ -154,6 +155,16 @@ public class DataStore {
         return newBill;
     }
 
+    public ImageWithID createNewImageWithID(String base64Image) {
+        ImageWithID image = new ImageWithID(images.getNewID(), base64Image);
+        try {
+            images.addItem(image, true);
+        } catch (ItemWithIDAlreadyExist ignored){
+
+        }
+        return image;
+    }
+
 
     /**
      * Get an ImageWithID with the given ID
@@ -178,7 +189,8 @@ public class DataStore {
     }
 
     public QuantifiableItem addNewItem(String name, Double price, Double originalPrice, String category, Integer quantity, String img) throws ItemWithIDAlreadyExist, NegativeQuantityException {
-        QuantifiableItem newQItem = new QuantifiableItem(new Item(items.getNewID(), name, price, originalPrice, category, img, false), quantity);
+        ImageWithID image = createNewImageWithID(img);
+        QuantifiableItem newQItem = new QuantifiableItem(new Item(items.getNewID(), name, price, originalPrice, category, image.getID(), false), quantity);
         items.addItem(newQItem);
         newQItem.setListenerList(itemListeners);
         return newQItem;
