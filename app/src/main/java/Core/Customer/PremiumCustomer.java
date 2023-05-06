@@ -58,7 +58,7 @@ public class PremiumCustomer extends Customer implements MembershipStateInterfac
      * @param state The MembershipState to transition into
      */
     public void transitionToState(MembershipStateName state) {
-        if (state !=null) {
+        if (this.state != null) {
             if (state == this.getStatus()) {
                 return;
             }
