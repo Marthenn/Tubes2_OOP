@@ -37,14 +37,14 @@ public class JsonController implements FileController{
     public void saveImage(StorerDataImageWithID images) throws IOException {
         String json = new ObjectMapper().writeValueAsString(images);
         ObjectMapper mapper = new ObjectMapper();
-        mapper.writeValue(Paths.get(DataStore.getInstance().getPath()+"/image.json").toFile(), json);
+        mapper.writeValue(Paths.get(Settings.getInstance().getPath()+"/image.json").toFile(), json);
     }
 
     @Override
     public void saveItem(StorerDataQuantifiableItem item) throws IOException {
         String json = new ObjectMapper().writeValueAsString(item);
         ObjectMapper mapper = new ObjectMapper();
-        mapper.writeValue(Paths.get(DataStore.getInstance().getPath()+"/item.json").toFile(), json);
+        mapper.writeValue(Paths.get(Settings.getInstance().getPath()+"/item.json").toFile(), json);
     }
 
     @Override
@@ -52,19 +52,18 @@ public class JsonController implements FileController{
         String json = new ObjectMapper().writeValueAsString(bills);
         ObjectMapper mapper = new ObjectMapper();
 
-        mapper.writeValue(Paths.get(DataStore.getInstance().getPath()+"/bill.json").toFile(), json);
+        mapper.writeValue(Paths.get(Settings.getInstance().getPath()+"/bill.json").toFile(), json);
     }
-
 
     @Override
     public StorerDataImageWithID loadImage() throws IOException {
-        String json = new String(Files.readAllBytes(Paths.get(DataStore.getInstance().getPath() + "/image.json")));
+        String json = new String(Files.readAllBytes(Paths.get(Settings.getInstance().getPath() + "/image.json")));
         return new ObjectMapper().readValue(json, StorerDataImageWithID.class);
     }
 
     @Override
     public StorerDataQuantifiableItem loadItem() throws IOException {
-        String json = new String(Files.readAllBytes(Paths.get(DataStore.getInstance().getPath() + "/item.json")));
+        String json = new String(Files.readAllBytes(Paths.get(Settings.getInstance().getPath() + "/item.json")));
         return new ObjectMapper().readValue(json, StorerDataQuantifiableItem.class);
     }
 }
