@@ -49,14 +49,12 @@ public class Settings {
         }
     }
     public void savePath() throws IOException {
-        String json = new ObjectMapper().writeValueAsString(this.path);
         ObjectMapper mapper = new ObjectMapper();
-        mapper.writeValue(Paths.get("path_config.json").toFile(), json);
+        mapper.writeValue(Paths.get("jsonConfig/path_config.json").toFile(), this.path);
     }
     public void saveFileType() throws IOException {
-        String json = new ObjectMapper().writeValueAsString(this.fileType);
         ObjectMapper mapper = new ObjectMapper();
-        mapper.writeValue(Paths.get("filetype_config.json").toFile(), json);
+        mapper.writeValue(Paths.get("jsonConfig/filetype_config.json").toFile(), this.fileType);
     }
     public void loadPath() throws IOException {
         String json = new String(Files.readAllBytes(Paths.get("jsonConfig/path_config.json")));
