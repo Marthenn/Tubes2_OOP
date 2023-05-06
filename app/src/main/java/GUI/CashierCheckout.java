@@ -4,9 +4,16 @@
 
 package GUI;
 
+import Core.Customer.Customer;
+import Core.Customer.MembershipState.MembershipStateName;
+import Core.Customer.PremiumCustomer;
+import Core.DataStore.DataStore;
+import Core.DataStore.Exception.CustomerNotExistException;
+import Core.DataStore.Exception.PromotedCustomerAlreadyExist;
+
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
+import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.*;
 
@@ -26,16 +33,32 @@ public class CashierCheckout extends JPanel {
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner Evaluation license - Fakih Anugerah Pratama
+
+        //data//
+        try {
+            DataStore.getInstance().promoteCustomer(DataStore.getInstance().createNewCustomer().getID(), "lmao", "123456789012", "asd@gmail.com", MembershipStateName.VIP );
+            DataStore.getInstance().promoteCustomer(DataStore.getInstance().createNewCustomer().getID(), "likalat", "123456789012", "asd@gmail.com", MembershipStateName.MEMBER );
+
+            System.out.println("custard" + DataStore.getInstance().getCustomers().toString());
+        } catch (CustomerNotExistException e) {
+            throw new RuntimeException(e);
+        } catch (PromotedCustomerAlreadyExist e) {
+            throw new RuntimeException(e);
+        }
+        //data//
+
         Title = new JLabel();
         DaftarPembelian = new JScrollPane();
         TabelPembelian = new JTable();
         LabelCustomer = new JLabel();
-        NamaCustomer = new JComboBox();
+        NamaCustomer = new CashierComboBox(DataStore.getInstance().getPremiumCustomers());
         DaftarDetail = new JScrollPane();
         TabelDetail = new JTable();
         LabelTotalPembelian = new JLabel();
         NilaiTotalPembelian = new JLabel();
         Checkout = new JButton();
+
+        NamaCustomer.setEditable(true);
 
         setLayout(new GridBagLayout());
         ((GridBagLayout)getLayout()).columnWidths = new int[] {0, 0, 0, 0, 0, 0};
@@ -104,6 +127,7 @@ public class CashierCheckout extends JPanel {
                 thisCashierCheckout.removeAll();
             }
         });
+
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
 
@@ -113,7 +137,7 @@ public class CashierCheckout extends JPanel {
     private JScrollPane DaftarPembelian;
     private JTable TabelPembelian;
     private JLabel LabelCustomer;
-    private JComboBox NamaCustomer;
+    private CashierComboBox NamaCustomer;
     private JScrollPane DaftarDetail;
     private JTable TabelDetail;
     private JLabel LabelTotalPembelian;
