@@ -26,7 +26,6 @@ import java.util.Objects;
 
 public class Inventory extends JPanel {
     private List<QuantifiableItem> items;
-    private String imgPath;
     private String base64Image;
 
     public Inventory() {

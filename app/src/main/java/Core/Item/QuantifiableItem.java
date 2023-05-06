@@ -7,6 +7,7 @@ import Core.Item.Bill.Exception.ItemInBillNotExist;
 import Core.Item.Bill.Image.ImageWithID;
 import Core.Item.Exception.NegativeQuantityException;
 import Core.Item.Exception.NegativeQuantityModifierException;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -127,6 +128,7 @@ public class QuantifiableItem implements ItemLikeInterface, IDAbleEmitter<IDAble
     }
 
     @Override
+    @JsonIgnore
     public ImageWithID getImage() throws SearchedItemNotExist {
         return item.getImage();
     }
@@ -144,6 +146,7 @@ public class QuantifiableItem implements ItemLikeInterface, IDAbleEmitter<IDAble
     }
 
     @Override
+    @JsonIgnore
     public void setImage(String image) {
         this.item.setImage(image);
         notifyListener();
@@ -202,6 +205,7 @@ public class QuantifiableItem implements ItemLikeInterface, IDAbleEmitter<IDAble
     }
 
     @Override
+    @JsonIgnore
     public void setListenerList(ArrayList<IDAbleListener<QuantifiableItem>> listeners) {
         this.itemListeners = listeners;
     }

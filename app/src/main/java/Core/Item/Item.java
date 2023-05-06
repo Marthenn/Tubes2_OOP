@@ -4,6 +4,7 @@ import Core.DataStore.DataStore;
 import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
 import Core.Item.Bill.Exception.ItemInBillNotExist;
 import Core.Item.Bill.Image.ImageWithID;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -89,11 +90,13 @@ public class Item implements Cloneable, ItemInterface {
     }
 
     @Override
+    @JsonIgnore
     public Double getProfit() throws ItemInBillNotExist {
         return getPrice() - getCost();
     }
 
     @Override
+    @JsonIgnore
     public ImageWithID getImage() throws SearchedItemNotExist {
         return DataStore.getInstance().getImageWithID(this.imageID);
     }
