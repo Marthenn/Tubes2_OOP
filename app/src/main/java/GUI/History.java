@@ -8,6 +8,7 @@ import Core.Customer.Customer;
 import Core.Customer.PremiumCustomer;
 import Core.DataStore.DataStore;
 import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
+import Core.DataStore.StorerData.StorerDataListener;
 import Core.IDAble.IDAbleListener;
 
 import javax.swing.*;
@@ -21,7 +22,7 @@ import java.util.stream.Stream;
 /**
  * @author Marthen
  */
-public class History extends JPanel implements IDAbleListener<Customer> {
+public class History extends JPanel implements IDAbleListener<Customer>, StorerDataListener {
     DataStore dataStore;
     Customer selectedCustomer;
     public History() {
@@ -56,6 +57,7 @@ public class History extends JPanel implements IDAbleListener<Customer> {
                                                         .collect(Collectors.toList());
 
         DataStore.getInstance().listenToCustomer(this);
+        DataStore.getInstance().listenToCustomerStore(this);
 
         for (Customer customer : listOfAllCustomers) {
             customerListModel.addElement(customer.getID());
@@ -169,6 +171,11 @@ public class History extends JPanel implements IDAbleListener<Customer> {
 
     @Override
     public void onItemWithIDChange(Customer item) {
+
+    }
+
+    @Override
+    public void onStorerDataChange(String storerName) {
 
     }
 }

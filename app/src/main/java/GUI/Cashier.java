@@ -4,8 +4,10 @@
 
 package GUI;
 
+import Core.Customer.Customer;
 import Core.DataStore.DataStore;
 import Core.DataStore.StorerData.Exception.ItemWithIDAlreadyExist;
+import Core.DataStore.StorerData.StorerDataListener;
 import Core.IDAble.IDAbleListener;
 import Core.Item.Exception.NegativeQuantityException;
 import Core.Item.QuantifiableItem;
@@ -19,7 +21,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem> {
+public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>, StorerDataListener {
 
     private ArrayList<BillDisplay> currentActiveBillDisplays = new ArrayList<>();
     ArrayList<QuantifiableItem> browseObjects = new ArrayList<>();
@@ -34,6 +36,7 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem> 
 
         // add this to listener list
         DataStore.getInstance().listenToItem(this);
+        DataStore.getInstance().listenToItemStore(this);
 
         //// DEBUG DATA
 
@@ -313,6 +316,10 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem> 
     private JButton saveBill;
     private JButton printBill;
     private JButton addItem;
+
+    @Override
+    public void onStorerDataChange(String storerName) {
+    }
 
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }
