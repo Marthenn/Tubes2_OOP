@@ -9,6 +9,7 @@ import Core.DataStore.StorerData.Exception.ItemWithIDAlreadyExist;
 import Core.DataStore.StorerData.Exception.RemovedItemNotExist;
 import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
 import Core.DataStore.StorerData.StorerData;
+import Core.IDAble.IDAbleListener;
 import Core.Item.Bill.Bill;
 import Core.Item.Bill.Image.ImageWithID;
 import Core.Item.Exception.NegativeQuantityException;
@@ -25,6 +26,8 @@ public class DataStore {
     private StorerData<PremiumCustomer> premiumCustomers = new StorerData<>("Premium Customer");
     private StorerData<ImageWithID> images = new StorerData<>("ImageWithID");
     private StorerData<Bill> bills = new StorerData<>("Bill");
+    private ArrayList<IDAbleListener<QuantifiableItem>> itemListeners = new ArrayList<>();
+    private ArrayList<IDAbleListener<Customer>> customerListeners = new ArrayList<>();
 
     private DataStore() {
 
@@ -45,6 +48,7 @@ public class DataStore {
     public Customer createNewCustomer() {
         int newID = Math.max(customers.getHighestID(), premiumCustomers.getHighestID()) + 1;
         Customer newCustomer = new Customer(newID);
+        newCustomer.setListenerList(customerListeners);
         customers.addItem(newCustomer);
         return newCustomer;
     }
@@ -179,6 +183,13 @@ public class DataStore {
         return newQItem;
     }
 
+    public void listenToCustomer(IDAbleListener<Customer> listener) {
+        customerListeners.add(listener);
+    }
+
+    public void listenToItem(IDAbleListener<QuantifiableItem> listener) {
+        itemListeners.add(listener);
+    }
 
 
 

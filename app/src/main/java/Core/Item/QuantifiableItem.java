@@ -1,5 +1,6 @@
 package Core.Item;
 
+import Core.IDAble.IDAbleEmitter;
 import Core.IDAble.IDAbleListener;
 import Core.Item.Bill.Exception.ItemInBillNotExist;
 import Core.Item.Bill.Image.ImageWithID;
@@ -11,14 +12,14 @@ import lombok.Setter;
 import java.util.ArrayList;
 
 @Getter
-public class QuantifiableItem implements ItemLikeInterface {
+public class QuantifiableItem implements ItemLikeInterface, IDAbleEmitter<IDAbleListener<QuantifiableItem>> {
     @Setter
     private int quantity = 0;
 
     @Getter
     private Item item;
 
-    private ArrayList<IDAbleListener<QuantifiableItem>> itemListeners = new ArrayList<>();
+    private transient ArrayList<IDAbleListener<QuantifiableItem>> itemListeners = new ArrayList<>();
 
     public QuantifiableItem(Item item){
         this.item = item;
@@ -93,10 +94,8 @@ public class QuantifiableItem implements ItemLikeInterface {
     }
 
     private void modifyQuantity(int modifier) {
-        for (IDAbleListener<QuantifiableItem> itemListener : itemListeners) {
-            itemListener.onItemWithIDChange(this);
-        }
         this.quantity += modifier;
+        notifyListener();
     }
 
     /**
@@ -134,34 +133,24 @@ public class QuantifiableItem implements ItemLikeInterface {
     @Override
     public void setName(String name) {
         this.item.setName(name);
-        for (IDAbleListener<QuantifiableItem> itemListener : itemListeners) {
-            itemListener.onItemWithIDChange(this);
-        }
+        notifyListener();
     }
 
     @Override
     public void setCategory(String category) {
         this.item.setCategory(category);
-        for (IDAbleListener<QuantifiableItem> itemListener : itemListeners) {
-            itemListener.onItemWithIDChange(this);
-        }
-
+        notifyListener();
     }
 
     @Override
     public void setImage(String image) {
         this.item.setImage(image);
-        for (IDAbleListener<QuantifiableItem> itemListener : itemListeners) {
-            itemListener.onItemWithIDChange(this);
-        }
-
+        notifyListener();
     }
 
     public void setSingularCost(Double cost) {
         this.item.setCost(cost);
-        for (IDAbleListener<QuantifiableItem> itemListener : itemListeners) {
-            itemListener.onItemWithIDChange(this);
-        }
+        notifyListener();
 
     }
 
@@ -190,5 +179,17 @@ public class QuantifiableItem implements ItemLikeInterface {
     @Override
     public Double getProfit() throws ItemInBillNotExist {
         return getPrice() - getCost();
+    }
+
+    @Override
+    public void notifyListener() {
+        for (IDAbleListener<QuantifiableItem> itemListener : itemListeners) {
+            itemListener.onItemWithIDChange(this);
+        }
+    }
+
+    @Override
+    public void setListenerList(ArrayList<IDAbleListener<QuantifiableItem>> listeners) {
+        this.itemListeners = listeners;
     }
 }

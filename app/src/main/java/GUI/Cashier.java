@@ -41,6 +41,9 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem> 
         } catch (NegativeQuantityException e) {
             throw new RuntimeException(e);
         }
+
+        DataStore.getInstance().listenToItem(this);
+
         //// DEBUG DATA
 
 
