@@ -608,19 +608,19 @@ public class Inventory extends JPanel {
     private JLabel error_message3;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:of
     private void setItemProperty(String name, Double sell_price, Double buy_price, Integer stock,String category){
-        prop_name.setText(name);
-        prop_sellprice.setText(String.valueOf(sell_price));
-        prop_buyprice.setText(String.valueOf(buy_price));
-        prop_stock.setText(stock.toString());
-        prop_category.setText(category);
+        item_name.setText(name);
+        item_sellprice.setText(String.valueOf(sell_price));
+        item_buyprice.setText(String.valueOf(buy_price));
+        item_stock.setText(stock.toString());
+        item_category.setText(category);
     }
 
     private void clearItemProperty(){
-        prop_name.setText(" ");
-        prop_sellprice.setText(" ");
-        prop_buyprice.setText(" ");
-        prop_stock.setText(" ");
-        prop_category.setText(" ");
+        item_name.setText(" ");
+        item_sellprice.setText(" ");
+        item_buyprice.setText(" ");
+        item_stock.setText(" ");
+        item_category.setText(" ");
     }
 
     private void setTextField(String name, String sell_price, String buy_price, String stock, String category){
