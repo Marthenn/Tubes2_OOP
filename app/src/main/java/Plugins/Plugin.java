@@ -7,7 +7,7 @@ public interface Plugin {
     public void load();
     public void unload();
     public String getName();
-    private Field findField(Class<?> clazz, String name) {
+    default Field findField(Class<?> clazz, String name) {
         try {
             return clazz.getDeclaredField(name);
         } catch (NoSuchFieldException e) {
