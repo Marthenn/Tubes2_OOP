@@ -26,8 +26,8 @@ public class DataStore {
     private StorerData<PremiumCustomer> premiumCustomers = new StorerData<>("Premium Customer");
     private StorerData<ImageWithID> images = new StorerData<>("ImageWithID");
     private StorerData<Bill> bills = new StorerData<>("Bill");
-    private ArrayList<IDAbleListener<QuantifiableItem>> itemListeners = new ArrayList<>();
-    private ArrayList<IDAbleListener<Customer>> customerListeners = new ArrayList<>();
+    private transient ArrayList<IDAbleListener<QuantifiableItem>> itemListeners = new ArrayList<>();
+    private transient ArrayList<IDAbleListener<Customer>> customerListeners = new ArrayList<>();
 
     private DataStore() {
 
