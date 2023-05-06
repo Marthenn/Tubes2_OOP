@@ -35,10 +35,6 @@ public class DataStore {
     private StorerDataImageWithID images = new StorerDataImageWithID();
     private StorerDataBill bills = new StorerDataBill();
 
-    @Setter @Getter(AccessLevel.PUBLIC)
-    private String path;
-    @Getter(AccessLevel.PUBLIC)
-    private Map<String, Boolean> fileType = new HashMap<>();
     private transient ArrayList<IDAbleListener<QuantifiableItem>> itemListeners = new ArrayList<>();
 
     private transient ArrayList<IDAbleListener<Customer>> customerListeners = new ArrayList<>();
