@@ -25,6 +25,8 @@ public class Home extends JPanel {
         appName = new JLabel();
         logo = new JLabel();
         namaKelompok = new JLabel();
+        loading = new JLabel();
+        progressBar = new JProgressBar();
 
         //======== this ========
         setLayout(new GridBagLayout());
@@ -48,9 +50,40 @@ public class Home extends JPanel {
                 "13521130 - Althaaf Khasyi Atisomya<br>" +
                 "13521144 - Bintang Dwi Marthen</html>");
         namaKelompok.setHorizontalAlignment(SwingConstants.CENTER);
-        add(namaKelompok, new GridBagConstraints(0, 10, 1, 2, 0.0, 0.0,
+        add(namaKelompok, new GridBagConstraints(0, 2, 1, 2, 0.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.NONE,
                 new Insets(0, 0, 0, 0), 0, 0));
+
+        //---- progressBar ----
+        loading.setText("Loading data:");
+        add(loading, new GridBagConstraints(0, 6, 1, 1, 0.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.NONE,
+                new Insets(0, 0, 0, 0), 0, 0));
+        progressBar.setStringPainted(true);
+        add(progressBar, new GridBagConstraints(0, 7, 1, 1, 0.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.NONE,
+                new Insets(0, 0, 0, 0), 0, 0));
+
+        // start background task
+        new Thread(() -> {
+            int progress = 0;
+            while (progress < 100) {
+                try {
+                    Thread.sleep(10000); // only for simulation purposes
+                    // task here
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                progress += 10;
+                int finalProgress = progress;
+                SwingUtilities.invokeLater(() -> {
+                    progressBar.setValue(finalProgress);
+                });
+            }
+            SwingUtilities.invokeLater(() -> {
+                progressBar.setValue(100);
+            });
+        }).start();
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
 
@@ -59,5 +92,7 @@ public class Home extends JPanel {
     private JLabel appName;
     private JLabel logo;
     private JLabel namaKelompok;
+    private JLabel loading;
+    private JProgressBar progressBar;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }
