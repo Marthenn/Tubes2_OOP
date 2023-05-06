@@ -12,6 +12,7 @@ import Core.DataStore.Exception.PromotedCustomerAlreadyExist;
 import Core.DataStore.StorerData.StorerDataListener;
 import Core.FixedBillPrinter;
 import Core.Item.Bill.Bill;
+import Core.Item.Bill.FixedBill.FixedBillModifier.FixedBillModifier;
 import Core.Item.QuantifiableItem;
 import lombok.SneakyThrows;
 
@@ -21,6 +22,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * @author Fakih A
@@ -29,8 +31,8 @@ public class CashierCheckout extends JPanel implements StorerDataListener {
     JTabbedPane parentTabbedPane;
     Cashier parentCashier;
     Bill billToBeCheckedOut; // add listeners
-
     DefaultTableModel tabelDetailModel = new DefaultTableModel();
+    ArrayList<FixedBillModifier> fixedBillModifiers = new ArrayList<>();
     public CashierCheckout(JTabbedPane parentTabbedPane, Cashier parentCashier, Bill billToBeCheckedOut) {
         this.parentTabbedPane = parentTabbedPane;
         this.parentCashier = parentCashier;
@@ -138,21 +140,24 @@ public class CashierCheckout extends JPanel implements StorerDataListener {
             @SneakyThrows // MAY RESULT IN DEACTIVATED USER
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println(NamaCustomer.getSelectedCustomerID());
+//                System.out.println(NamaCustomer.getSelectedCustomerID());
                 // function finish checkout
-                billToBeCheckedOut.setOwner(
-                        NamaCustomer.getSelectedCustomerID() == -1
-                                ?
-                        DataStore.getInstance().createNewCustomer()
-                                :
-                        DataStore.getInstance().getCustomerWithID(NamaCustomer.getSelectedCustomerID()
-                        ));
+                Customer billOwner = NamaCustomer.getSelectedCustomerID() == -1
+                        ?
+                        DataStore.getInstance().createNewCustomer()                                         // soon-to-be-customer
+                        :
+                        DataStore.getInstance().getCustomerWithID(NamaCustomer.getSelectedCustomerID()      // premium customer
+                        );
+
+                billToBeCheckedOut.setOwner(billOwner);
 
                 // pay
+                billOwner.pay();
+
 
                 // pop up print bill
                 int custId = NamaCustomer.getSelectedCustomerID() == -1 ? DataStore.getInstance().createNewCustomer().getID() : NamaCustomer.getSelectedCustomerID();
-                int fixedbillidx = DataStore.getInstance().getCustomerWithID(custId).getHistory().size() - 1;
+                int fixedbillidx = DataStore.getInstance().getCustomerWithID(custId).getHistory().size() - 1; // print latest
                 JFileChooser fileChooser = new JFileChooser();
                 fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
                 fileChooser.setDialogTitle("Print Bill");
