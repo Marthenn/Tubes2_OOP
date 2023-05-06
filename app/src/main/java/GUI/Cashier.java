@@ -323,10 +323,18 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
 
     public void onItemWithIDChange(QuantifiableItem item) {
         // NOTE : MIGHT CHANGE INTO MORE OPTIMIZED SOLUTION
+        // should we update cost and qty realtime?
         browseObjects = DataStore.getInstance().getItems();
         updateBrowseTableModel();
+    }
 
-        System.out.println("TRIGGERED OBSERVER");
+    @Override
+    public void onStorerDataChange(String storerName) {
+        if (storerName.equals("Item")) {
+            browseObjects = DataStore.getInstance().getItems();
+            updateBrowseTableModel();
+        }
+
     }
 
     private ImageIcon base64ImageDecode(String base64img){
@@ -356,10 +364,6 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
     private JButton saveBill;
     private JButton printBill;
     private JButton addItem;
-
-    @Override
-    public void onStorerDataChange(String storerName) {
-    }
 
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }
