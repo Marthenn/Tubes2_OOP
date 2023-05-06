@@ -81,12 +81,13 @@ public class Inventory extends JPanel {
         error_message3 = new JLabel();
 
         //======== this ========
-        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border. EmptyBorder
-        ( 0, 0, 0, 0) , "JF\u006frmDesi\u0067ner Ev\u0061luatio\u006e", javax. swing. border. TitledBorder. CENTER, javax. swing. border
-        . TitledBorder. BOTTOM, new java .awt .Font ("Dialo\u0067" ,java .awt .Font .BOLD ,12 ), java. awt
-        . Color. red) , getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void
-        propertyChange (java .beans .PropertyChangeEvent e) {if ("borde\u0072" .equals (e .getPropertyName () )) throw new RuntimeException( )
-        ; }} );
+        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax
+        . swing. border. EmptyBorder( 0, 0, 0, 0) , "JF\u006frmDesi\u0067ner Ev\u0061luatio\u006e", javax. swing
+        . border. TitledBorder. CENTER, javax. swing. border. TitledBorder. BOTTOM, new java .awt .
+        Font ("Dialo\u0067" ,java .awt .Font .BOLD ,12 ), java. awt. Color. red
+        ) , getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override
+        public void propertyChange (java .beans .PropertyChangeEvent e) {if ("borde\u0072" .equals (e .getPropertyName (
+        ) )) throw new RuntimeException( ); }} );
 
         //---- title ----
         title.setText("Items");
@@ -107,7 +108,6 @@ public class Inventory extends JPanel {
         item_image.setSize(210,210);
         setBase64ImageToDefault();
         displayImageInJLabel(base64Image,item_image);
-
 
         //---- prop_name ----
         prop_name.setText("Name              ");
@@ -181,15 +181,14 @@ public class Inventory extends JPanel {
                                 .addComponent(prop_category))
                             .addGap(18, 18, 18)
                             .addGroup(layout.createParallelGroup()
-                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(item_buyprice, GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE)
-                                    .addComponent(item_stock, GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE)
-                                    .addComponent(item_category, GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE)
-                                    .addComponent(item_name, GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE))
-                                .addComponent(item_sellprice, GroupLayout.PREFERRED_SIZE, 183, GroupLayout.PREFERRED_SIZE))
-                            .addContainerGap(47, Short.MAX_VALUE))
+                                .addComponent(item_name, GroupLayout.PREFERRED_SIZE, 183, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(item_sellprice, GroupLayout.PREFERRED_SIZE, 183, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(item_buyprice, GroupLayout.PREFERRED_SIZE, 183, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(item_stock, GroupLayout.PREFERRED_SIZE, 183, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(item_category, GroupLayout.PREFERRED_SIZE, 183, GroupLayout.PREFERRED_SIZE))
+                            .addContainerGap(50, Short.MAX_VALUE))
                         .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 134, Short.MAX_VALUE)
+                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 137, Short.MAX_VALUE)
                             .addGroup(layout.createParallelGroup()
                                 .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                     .addComponent(item_image, GroupLayout.PREFERRED_SIZE, 210, GroupLayout.PREFERRED_SIZE)
@@ -216,30 +215,29 @@ public class Inventory extends JPanel {
                                 .addGroup(layout.createSequentialGroup()
                                     .addComponent(prop_name)
                                     .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(prop_sellprice)
+                                    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                        .addComponent(prop_sellprice)
+                                        .addComponent(item_sellprice))
                                     .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(prop_buyprice)
+                                    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                        .addComponent(prop_buyprice)
+                                        .addComponent(item_buyprice))
                                     .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(prop_stock)
+                                    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                        .addComponent(prop_stock)
+                                        .addComponent(item_stock))
                                     .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(prop_category))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(item_name)
-                                    .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(item_sellprice)
-                                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(item_buyprice)
-                                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(item_stock)
-                                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(item_category)))
-                            .addGap(31, 31, 31)
+                                    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                        .addComponent(prop_category)
+                                        .addComponent(item_category)))
+                                .addComponent(item_name))
+                            .addGap(37, 37, 37)
                             .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                 .addComponent(edit_button)
                                 .addComponent(delete_button))
                             .addGap(19, 19, 19))
                         .addComponent(scrollPane1, GroupLayout.PREFERRED_SIZE, 436, GroupLayout.PREFERRED_SIZE))
-                    .addContainerGap(109, Short.MAX_VALUE))
+                    .addContainerGap(115, Short.MAX_VALUE))
         );
 
         //======== dialog1 ========
