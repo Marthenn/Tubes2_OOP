@@ -1,6 +1,11 @@
 package Core;
+import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Font.FontFamily;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
@@ -12,10 +17,13 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class PDFPrinter implements Runnable {
     private final BlockingQueue<String> queue;
     private final String fileName;
+    private float w, h;
 
-    public PDFPrinter(String fileName) {
+    public PDFPrinter(String fileName, float w, float h) {
         this.queue = new LinkedBlockingQueue<>();
         this.fileName = fileName;
+        this.w = w;
+        this.h = h;
     }
 
     public boolean addText(String text) {
@@ -26,12 +34,14 @@ public class PDFPrinter implements Runnable {
     public void run() {
         try {
             Thread.sleep(10000); // simulate long PDF print time
-            Document document = new Document();
+            Document document = new Document(new Rectangle(w, h));
+            document.setMargins(10, 10, 5, 5);
             PdfWriter.getInstance(document, new FileOutputStream(fileName));
             document.open();
             String text = "";
+            Font font = new Font(FontFamily.COURIER, 12, Font.NORMAL, BaseColor.BLACK);
             while ((text = queue.poll()) != null) {
-                document.add(new Paragraph(text));
+                document.add(new Paragraph(text, font));
             }
             document.close();
         } catch (DocumentException | FileNotFoundException e) {

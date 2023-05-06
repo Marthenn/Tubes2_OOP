@@ -21,19 +21,24 @@ public class FixedBillPrinter {
         this.filename = filename;
     }
     public void printFixedBill() {
-        PDFPrinter pdfPrinter = new PDFPrinter(this.filename);
+        PDFPrinter pdfPrinter = new PDFPrinter(this.filename, 250, 1000);
         Thread pdfThread = new Thread(pdfPrinter);
         pdfThread.start();
+        pdfPrinter.addText("-------------------------------");
         String text1 = String.format("Fixed Bill %d\nCustomer Id: %s ",
                 this.fixedBillIdx, this.customerId);
         pdfPrinter.addText(text1);
         for(int i = 0; i < this.fixedBill.getItems().size(); i++) {
             QuantifiableItem item = this.fixedBill.getItems().get(i);
-            String text2 = String.format("%d. Item ID: %d, Name: %s, Category: %s, Cost: $%.2f, OriginalPrice: $%.2f",
+            String text2 = String.format("%d. Item ID: %d\n    Name: %s\n    Category: %s\n    Cost: $%.2f\n",
                     i + 1, item.getItem().getID(), item.getItem().getName(), item.getItem().getCategory(),
-                    item.getItem().getCost(), item.getItem().getOriginalPrice() );
+                    item.getItem().getCost());
             pdfPrinter.addText(text2);
         }
+        double cost = this.fixedBill.getCost();
+        String text3 = Double.toString(cost);
+        pdfPrinter.addText("Total: " + text3 + "\n");
+        pdfPrinter.addText("-------------------------------");
         // wait for the PDF thread to finish
         try {
             pdfThread.join();
