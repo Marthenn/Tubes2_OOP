@@ -48,7 +48,7 @@ public class CashierCheckout extends JPanel implements StorerDataListener {
         // listener init
         DataStore.getInstance().listenToCustomerStore(this);
 
-        //data//
+        // DEBUG DATA //
         try {
             DataStore.getInstance().promoteCustomer(DataStore.getInstance().createNewCustomer().getID(), "lmao", "123456789012", "asd@gmail.com", MembershipStateName.VIP );
             DataStore.getInstance().promoteCustomer(DataStore.getInstance().createNewCustomer().getID(), "likalat", "123456789012", "asd@gmail.com", MembershipStateName.MEMBER );
@@ -57,7 +57,7 @@ public class CashierCheckout extends JPanel implements StorerDataListener {
         } catch (PromotedCustomerAlreadyExist e) {
             throw new RuntimeException(e);
         }
-        //data//
+        // DEBUG DATA //
 
         Title = new JLabel();
         DaftarPembelian = new JScrollPane();
@@ -150,13 +150,17 @@ public class CashierCheckout extends JPanel implements StorerDataListener {
                         );
 
                 billToBeCheckedOut.setOwner(billOwner);
+                billOwner.assignBill(billToBeCheckedOut);
+
+//                System.out.println("Bill Id = " + billToBeCheckedOut.getID());
+//                System.out.println(DataStore.getInstance().getBillWithID(billToBeCheckedOut).getID());
 
                 // pay
                 billOwner.pay();
 
 
                 // pop up print bill
-                int custId = NamaCustomer.getSelectedCustomerID() == -1 ? DataStore.getInstance().createNewCustomer().getID() : NamaCustomer.getSelectedCustomerID();
+                int custId = billOwner.getID();
                 int fixedbillidx = DataStore.getInstance().getCustomerWithID(custId).getHistory().size() - 1; // print latest
                 JFileChooser fileChooser = new JFileChooser();
                 fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
