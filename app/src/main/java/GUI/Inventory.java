@@ -74,20 +74,16 @@ public class Inventory extends JPanel {
         prop_image_edit = new JLabel();
         prop_category_edit = new JLabel();
         add_image_button = new JButton();
-        error_deleted_item = new JDialog();
-        error_message1 = new JLabel();
-        error_null_item = new JDialog();
-        error_message2 = new JLabel();
-        error_wrong_types = new JDialog();
-        error_message3 = new JLabel();
+        error_popup = new JDialog();
+        error_message = new JLabel();
 
         //======== this ========
-        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border
-        . EmptyBorder( 0, 0, 0, 0) , "JFor\u006dDesi\u0067ner \u0045valu\u0061tion", javax. swing. border. TitledBorder. CENTER, javax
-        . swing. border. TitledBorder. BOTTOM, new java .awt .Font ("Dia\u006cog" ,java .awt .Font .BOLD ,
-        12 ), java. awt. Color. red) , getBorder( )) );  addPropertyChangeListener (new java. beans
-        . PropertyChangeListener( ){ @Override public void propertyChange (java .beans .PropertyChangeEvent e) {if ("bord\u0065r" .equals (e .
-        getPropertyName () )) throw new RuntimeException( ); }} );
+        setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax . swing. border
+        .EmptyBorder ( 0, 0 ,0 , 0) ,  "JFor\u006dDesi\u0067ner \u0045valu\u0061tion" , javax. swing .border . TitledBorder. CENTER ,javax
+        . swing. border .TitledBorder . BOTTOM, new java. awt .Font ( "Dia\u006cog", java .awt . Font. BOLD ,
+        12 ) ,java . awt. Color .red ) , getBorder () ) );  addPropertyChangeListener( new java. beans
+        .PropertyChangeListener ( ){ @Override public void propertyChange (java . beans. PropertyChangeEvent e) { if( "bord\u0065r" .equals ( e.
+        getPropertyName () ) )throw new RuntimeException( ) ;} } );
 
         //---- title ----
         title.setText("Items");
@@ -105,6 +101,9 @@ public class Inventory extends JPanel {
         item_image.setText("text");
         item_image.setOpaque(true);
         item_image.setBackground(new Color(0xcccccc));
+        item_image.setSize(210,210);
+        setBase64ImageToDefault();
+        displayImageInJLabel(base64Image,item_image);
 
         //---- prop_name ----
         prop_name.setText("Name              ");
@@ -159,9 +158,6 @@ public class Inventory extends JPanel {
         delete_mark.setText("");
         delete_mark.setForeground(new Color(0xff0033));
         delete_mark.setFont(new Font(Font.DIALOG, Font.BOLD | Font.ITALIC, 20));
-        item_image.setSize(210,210);
-        setBase64ImageToDefault();
-        displayImageInJLabel(base64Image,item_image);
 
         GroupLayout layout = new GroupLayout(this);
         setLayout(layout);
@@ -191,9 +187,9 @@ public class Inventory extends JPanel {
                                 .addComponent(item_buyprice, GroupLayout.PREFERRED_SIZE, 183, GroupLayout.PREFERRED_SIZE)
                                 .addComponent(item_stock, GroupLayout.PREFERRED_SIZE, 183, GroupLayout.PREFERRED_SIZE)
                                 .addComponent(item_category, GroupLayout.PREFERRED_SIZE, 183, GroupLayout.PREFERRED_SIZE))
-                            .addContainerGap(50, Short.MAX_VALUE))
+                            .addContainerGap(47, Short.MAX_VALUE))
                         .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 137, Short.MAX_VALUE)
+                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 134, Short.MAX_VALUE)
                             .addGroup(layout.createParallelGroup()
                                 .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                     .addComponent(item_image, GroupLayout.PREFERRED_SIZE, 210, GroupLayout.PREFERRED_SIZE)
@@ -246,7 +242,7 @@ public class Inventory extends JPanel {
                                 .addComponent(delete_button))
                             .addGap(19, 19, 19))
                         .addComponent(scrollPane1, GroupLayout.PREFERRED_SIZE, 436, GroupLayout.PREFERRED_SIZE))
-                    .addContainerGap(115, Short.MAX_VALUE))
+                    .addContainerGap(109, Short.MAX_VALUE))
         );
 
         //======== dialog1 ========
@@ -365,43 +361,17 @@ public class Inventory extends JPanel {
             dialog1.setLocationRelativeTo(dialog1.getOwner());
         }
 
-        //======== error_deleted_item ========
+        //======== error_popup ========
         {
-            var error_deleted_itemContentPane = error_deleted_item.getContentPane();
-            error_deleted_itemContentPane.setLayout(new FlowLayout());
+            var error_popupContentPane = error_popup.getContentPane();
+            error_popupContentPane.setLayout(new FlowLayout());
 
-            //---- error_message1 ----
-            error_message1.setText("Error: Item Already Deleted");
-            error_message1.setForeground(Color.red);
-            error_deleted_itemContentPane.add(error_message1);
-            error_deleted_item.pack();
-            error_deleted_item.setLocationRelativeTo(error_deleted_item.getOwner());
-        }
-
-        //======== error_null_item ========
-        {
-            var error_null_itemContentPane = error_null_item.getContentPane();
-            error_null_itemContentPane.setLayout(new FlowLayout());
-
-            //---- error_message2 ----
-            error_message2.setText("Error: Value Cannot be Null");
-            error_message2.setForeground(Color.red);
-            error_null_itemContentPane.add(error_message2);
-            error_null_item.pack();
-            error_null_item.setLocationRelativeTo(error_null_item.getOwner());
-        }
-
-        //======== error_wrong_types ========
-        {
-            var error_wrong_typesContentPane = error_wrong_types.getContentPane();
-            error_wrong_typesContentPane.setLayout(new FlowLayout());
-
-            //---- error_message3 ----
-            error_message3.setText("Error: Invalid Input Types");
-            error_message3.setForeground(Color.red);
-            error_wrong_typesContentPane.add(error_message3);
-            error_wrong_types.pack();
-            error_wrong_types.setLocationRelativeTo(error_wrong_types.getOwner());
+            //---- error_message ----
+            error_message.setText("Error: Item Already Deleted aaaaaaaaaaaaaaaaaa");
+            error_message.setForeground(Color.red);
+            error_popupContentPane.add(error_message);
+            error_popup.pack();
+            error_popup.setLocationRelativeTo(error_popup.getOwner());
         }
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
 
@@ -429,11 +399,13 @@ public class Inventory extends JPanel {
                 int index = item_list.getSelectedIndex();
                 if (index != -1){
                     if (items.get(item_list.getSelectedIndex()).getItem().isDeleted()){
-                        error_deleted_item.setVisible(true);
+                        error_message.setText("Error: Item Already Deleted");
+                        error_popup.setVisible(true);
                     } else {
                         items.get(index).getItem().setAsDeleted();
                         QuantifiableItem x = items.get(index);
                         setItemProperty(x.getName(), x.getItem().getPrice(), x.getItem().getCost(), x.getQuantity(), x.getCategory(), x.getItem().isDeleted());
+                        items_list.setElementAt(x.getName()+" (deleted)",index);
                     }
                 }
             }
@@ -444,7 +416,8 @@ public class Inventory extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (item_list.getSelectedIndex()!=-1) {
                     if (items.get(item_list.getSelectedIndex()).getItem().isDeleted()){
-                        error_deleted_item.setVisible(true);
+                        error_message.setText("Error: Item Already Deleted");
+                        error_popup.setVisible(true);
                     } else {
                         try {
                             dialog1.setTitle("Edit Item");
@@ -480,65 +453,77 @@ public class Inventory extends JPanel {
                 String newQuantity = input_stock.getText();
                 String newCategory = input_category.getText();
                 if (newName.equals("") || newPrice.equals("") || newOriginalPrice.equals("") || newQuantity.equals("") || newCategory.equals("")) {
-                    error_null_item.setVisible(true);
+                    error_message.setText("Error: Value Cannot be Null");
+                    error_popup.setVisible(true);
                 } else if (Objects.equals(dialog1.getTitle(), "Add Item")){
                     try {
                         Double newPriceD = Double.valueOf(input_sellprice.getText());
                         Double newOriginalPriceD = Double.valueOf(input_buyprice.getText());
                         Integer newQuantityI = Integer.parseInt(input_stock.getText());
 
-                        QuantifiableItem newItem = null;
-                        boolean addingSuccess = false;
-                        try {
-                            newItem = DataStore.getInstance().addNewItem(newName, newPriceD, newOriginalPriceD, newCategory, newQuantityI, base64Image);
-                            addingSuccess = true;
-                        } catch (Exception error) {
-                            System.out.println(error.getMessage());
-                        }
+                        if(newPriceD<0 || newOriginalPriceD<0 || newQuantityI<0){
+                            error_message.setText("Error: Price & Stock Cannot Be Negative");
+                            error_popup.setVisible(true);
+                        } else {
 
-                        if (addingSuccess) {
-                            assert (newItem != null);
-                            items.add(newItem);
-                            items_list.addElement(newItem.getName());
-                            dialog1.setVisible(false);
-                            setBase64ImageToDefault();
-//                            try {
-//                                DataStore.getInstance().saveImage();
-//                                DataStore.getInstance().saveItem();
-//                            } catch (IOException ex) {
-//                                throw new RuntimeException(ex);
-//                            }
+                            QuantifiableItem newItem = null;
+                            boolean addingSuccess = false;
+                            try {
+                                newItem = DataStore.getInstance().addNewItem(newName, newPriceD, newOriginalPriceD, newCategory, newQuantityI, base64Image);
+                                addingSuccess = true;
+                            } catch (Exception error) {
+                                System.out.println(error.getMessage());
+                            }
+
+                            if (addingSuccess) {
+                                assert (newItem != null);
+                                items.add(newItem);
+                                items_list.addElement(newItem.getName());
+                                dialog1.setVisible(false);
+                                setBase64ImageToDefault();
+                            }
                         }
                     } catch (NumberFormatException nfe){
-                        error_wrong_types.setVisible(true);
+                        error_message.setText("Error: Invalid Input Types");
+                        error_popup.setVisible(true);
                     }
                 } else { //edit
                     int idx = item_list.getSelectedIndex();
                     try {
-                        QuantifiableItem editedItemDisplay = items.get(idx);
-                        editedItemDisplay.setName(input_name.getText());
-                        editedItemDisplay.setSingularPrice(Double.valueOf((input_sellprice.getText())));
-                        editedItemDisplay.setSingularCost(Double.valueOf(input_buyprice.getText()));
-                        editedItemDisplay.setQuantity(Integer.parseInt(input_stock.getText()));
-                        editedItemDisplay.setCategory(input_category.getText());
-                        editedItemDisplay.setImage(base64Image);
-                        items_list.setElementAt(input_name.getText(), idx);
+                        Double newPriceD = Double.valueOf(input_sellprice.getText());
+                        Double newOriginalPriceD = Double.valueOf(input_buyprice.getText());
+                        Integer newQuantityI = Integer.parseInt(input_stock.getText());
 
-                        String itemImage = null;
-                        try {
-                            itemImage = editedItemDisplay.getImage().getBase64Image();
-                        } catch (SearchedItemNotExist error) {
+                        if (newPriceD<0 || newOriginalPriceD<0 || newQuantityI<0){
+                            error_message.setText("Error:  Price & Stock Cannot Be Negative");
+                            error_popup.setVisible(true);
+                        } else {
+                            QuantifiableItem editedItemDisplay = items.get(idx);
+                            editedItemDisplay.setName(newName);
+                            editedItemDisplay.setSingularPrice(newPriceD);
+                            editedItemDisplay.setSingularCost(newOriginalPriceD);
+                            editedItemDisplay.setQuantity(newQuantityI);
+                            editedItemDisplay.setCategory(newCategory);
+                            editedItemDisplay.setImage(base64Image);
+                            items_list.setElementAt(input_name.getText(), idx);
 
+                            String itemImage = null;
+                            try {
+                                itemImage = editedItemDisplay.getImage().getBase64Image();
+                            } catch (SearchedItemNotExist error) {
+
+                            }
+
+                            assert (itemImage != null);
+
+                            setItemProperty(input_name.getText(), Double.parseDouble(input_sellprice.getText()), Double.parseDouble(input_buyprice.getText()), Integer.parseInt(input_stock.getText()), input_category.getText(), false);
+                            displayImageInJLabel(itemImage, item_image);
+                            setBase64ImageToDefault();
+                            dialog1.setVisible(false);
                         }
-
-                        assert (itemImage != null);
-
-                        setItemProperty(input_name.getText(), Double.parseDouble(input_sellprice.getText()), Double.parseDouble(input_buyprice.getText()), Integer.parseInt(input_stock.getText()), input_category.getText(),false);
-                        displayImageInJLabel(itemImage, item_image);
-                        setBase64ImageToDefault();
-                        dialog1.setVisible(false);
                     } catch (NumberFormatException nfe){
-                        error_wrong_types.setVisible(true);
+                        error_message.setText("Error: Invalid Input Types");
+                        error_popup.setVisible(true);
                     }
                 }
             }
@@ -609,12 +594,8 @@ public class Inventory extends JPanel {
     private JLabel prop_image_edit;
     private JLabel prop_category_edit;
     private JButton add_image_button;
-    private JDialog error_deleted_item;
-    private JLabel error_message1;
-    private JDialog error_null_item;
-    private JLabel error_message2;
-    private JDialog error_wrong_types;
-    private JLabel error_message3;
+    private JDialog error_popup;
+    private JLabel error_message;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:of
     private void setItemProperty(String name, Double sell_price, Double buy_price, Integer stock,String category,Boolean isDeleted){
         item_name.setText(name);
