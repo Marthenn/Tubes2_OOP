@@ -31,7 +31,10 @@ public class BillDeserializer extends StdDeserializer<Bill> {
     public Bill deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
         JsonNode node = jp.getCodec().readTree(jp);
         int id = (Integer) ((IntNode) node.get("id")).numberValue();
-        int ownerId = (Integer) ((IntNode) node.get("ownerId")).numberValue();
+        Integer ownerId = null;
+        if (node.get("ownerId") != null ){
+            ownerId = (Integer) ((IntNode) node.get("ownerId")).numberValue();
+        }
 
         TypeReference<HashMap<Integer, Integer>> typeRef = new TypeReference<HashMap<Integer, Integer>>() {};
         ObjectMapper objectMapper = new ObjectMapper();

@@ -5,11 +5,10 @@ import Core.Customer.MembershipState.MembershipStateName;
 import Core.Customer.PremiumCustomer;
 import Core.DataStore.Exception.CustomerNotExistException;
 import Core.DataStore.Exception.PromotedCustomerAlreadyExist;
+import Core.DataStore.StorerData.*;
 import Core.DataStore.StorerData.Exception.ItemWithIDAlreadyExist;
 import Core.DataStore.StorerData.Exception.RemovedItemNotExist;
 import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
-import Core.DataStore.StorerData.StorerData;
-import Core.DataStore.StorerData.StorerDataListener;
 import Core.FileController.DataStoreController;
 import Core.FileController.FileController;
 import Core.IDAble.IDAbleListener;
@@ -30,11 +29,11 @@ import java.util.Map;
 
 public class DataStore {
     private static DataStore instance = null;
-    private StorerData<QuantifiableItem> items = new StorerData<>("Item");
-    private StorerData<Customer> customers = new StorerData<>("Customer");
-    private StorerData<PremiumCustomer> premiumCustomers = new StorerData<>("Premium Customer");
-    private StorerData<ImageWithID> images = new StorerData<>("ImageWithID");
-    private StorerData<Bill> bills = new StorerData<>("Bill");
+    private StorerDataQuantifiableItem items = new StorerDataQuantifiableItem();
+    private StorerDataCustomer customers = new StorerDataCustomer();
+    private StorerDataPremiumCustomer premiumCustomers = new StorerDataPremiumCustomer();
+    private StorerDataImageWithID images = new StorerDataImageWithID();
+    private StorerDataBill bills = new StorerDataBill();
 
     @Setter @Getter(AccessLevel.PUBLIC)
     private String path;
@@ -51,6 +50,20 @@ public class DataStore {
 
 
     private DataStore() {
+
+//        FileController controller = new DataStoreController();
+//        try {
+//            this.images = controller.loadImage();
+//        } catch (IOException ignored) {
+//
+//        }
+//
+//        try {
+//            this.items = controller.loadItem();
+//        } catch (IOException ignored) {
+//
+//        }
+
         items.setListenerList(itemStoreListeners);
         customers.setListenerList(customerStoreListeners);
         premiumCustomers.setListenerList(customerStoreListeners);
@@ -174,6 +187,12 @@ public class DataStore {
         } catch (Exception ignored) {
 
         }
+
+        try {
+            saveBill();
+        } catch (IOException e) {
+            System.out.println(e);
+        }
         return newBill;
     }
 
@@ -258,6 +277,11 @@ public class DataStore {
     public void saveItem() throws IOException {
         FileController controller = new DataStoreController();
         controller.saveItem(items);
+    }
+
+    public void saveBill() throws IOException {
+        FileController controller = new DataStoreController();
+        controller.saveBill(bills);
     }
 
 

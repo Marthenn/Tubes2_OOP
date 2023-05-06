@@ -1,7 +1,9 @@
 package Core.Item.Bill.Image;
 
+import Core.Deserializer.ImageWithIDDeserializer;
 import Core.IDAble.IDAble;
 import Core.Serializer.ImageWithIDSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,6 +12,7 @@ import lombok.Setter;
 
 @AllArgsConstructor
 @JsonSerialize(using = ImageWithIDSerializer.class)
+@JsonDeserialize(using = ImageWithIDDeserializer.class)
 public class ImageWithID implements IDAble {
 
     private Integer id;

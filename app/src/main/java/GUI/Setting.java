@@ -188,7 +188,8 @@ public class Setting extends JPanel {
             //---- jsonBox ----
             jsonBox.setText("JSON");
             jsonBox.setFont(new Font("Verdana", Font.BOLD, 30));
-            jsonBox.addItemListener(e -> jsonBoxItemStateChanged(e));
+            jsonBox.addItemListener(e ->
+                    jsonBoxItemStateChanged(e));
             panel1.add(jsonBox);
             jsonBox.setBounds(525, 15, 120, 43);
 
