@@ -1,5 +1,7 @@
 package GUI;
 
+import Core.DataStore.DataStore;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -27,6 +29,7 @@ public class LoadingScreen {
                     progressBar.setValue(finalProgress);
                 });
             }
+            DataStore.getInstance();
             SwingUtilities.invokeLater(() -> {
                 progressBar.setValue(100);
                 finished = true;

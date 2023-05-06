@@ -1,6 +1,7 @@
 package Core.Item;
 
 import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
+import Core.Deserializer.QuantifiableItemDeserializer;
 import Core.IDAble.IDAbleEmitter;
 import Core.IDAble.IDAbleListener;
 import Core.Item.Bill.Exception.ItemInBillNotExist;
@@ -9,6 +10,7 @@ import Core.Item.Exception.NegativeQuantityException;
 import Core.Item.Exception.NegativeQuantityModifierException;
 import Core.Serializer.QuantifiableItemSerializer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,6 +19,7 @@ import java.util.ArrayList;
 
 @Getter
 @JsonSerialize(using = QuantifiableItemSerializer.class)
+@JsonDeserialize(using = QuantifiableItemDeserializer.class)
 public class QuantifiableItem implements ItemLikeInterface, IDAbleEmitter<IDAbleListener<QuantifiableItem>> {
     @Setter
     private int quantity = 0;
