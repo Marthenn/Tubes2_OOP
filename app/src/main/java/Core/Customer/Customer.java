@@ -1,10 +1,10 @@
 package Core.Customer;
-import java.util.*;
 
 import Core.Customer.Exception.NoOngoingPurchaseException;
 import Core.DataStore.DataStore;
 import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
-import Core.IDAble;
+import Core.IDAble.IDAbleEmitter;
+import Core.IDAble.IDAbleListener;
 import Core.Item.Bill.Bill;
 import Core.Item.Bill.FixedBill.FixedBill;
 import Core.Item.Bill.FixedBill.FixedBillModifier.FixedBillModifier;
@@ -13,9 +13,10 @@ import lombok.Getter;
 import lombok.NonNull;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 
 @Data
-public class Customer implements IDAble, CanPay {
+public class Customer implements IDAbleEmitter<IDAbleListener<Customer>>, CanPay {
     @NonNull
     private Integer id;
 
@@ -25,11 +26,13 @@ public class Customer implements IDAble, CanPay {
     @Nullable
     private Integer billID;
 
+    private transient ArrayList<IDAbleListener<Customer>> customerListeners = new ArrayList<>();
+
     public Customer(int id) {
         this.id = id;
     }
 
-    public  Customer(Customer customer) {
+    public Customer(Customer customer) {
         this.id = customer.getID();
         this.history = customer.getHistory();
         try {
@@ -101,5 +104,17 @@ public class Customer implements IDAble, CanPay {
             throw new NoOngoingPurchaseException();
         }
         return DataStore.getInstance().getBillWithID(this.id);
+    }
+
+    @Override
+    public void notifyListener() {
+        for (IDAbleListener<Customer> itemListener : customerListeners) {
+            itemListener.onItemWithIDChange(this);
+        }
+    }
+
+    @Override
+    public void setListenerList(ArrayList<IDAbleListener<Customer>> listeners) {
+        this.customerListeners = listeners;
     }
 }

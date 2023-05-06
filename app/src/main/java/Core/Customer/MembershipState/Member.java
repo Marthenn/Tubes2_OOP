@@ -6,7 +6,6 @@ import Core.Customer.Exception.ZeroPointException;
 import Core.Customer.PremiumCustomer;
 import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
 import Core.Item.Bill.FixedBill.FixedBill;
-import Core.Item.Bill.FixedBill.FixedBillModifier.DiscountFixedBillModifier;
 import Core.Item.Bill.FixedBill.FixedBillModifier.FixedBillModifier;
 import Core.Item.Bill.FixedBill.FixedBillModifier.FlatFixedBillModifier;
 

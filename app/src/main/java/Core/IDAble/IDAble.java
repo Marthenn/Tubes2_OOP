@@ -1,6 +1,5 @@
-package Core;
+package Core.IDAble;
 
-import java.lang.Integer;
 public interface IDAble {
     /**
      *

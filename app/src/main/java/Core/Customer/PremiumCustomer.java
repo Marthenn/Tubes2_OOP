@@ -3,11 +3,17 @@ package Core.Customer;
 import Core.Customer.Exception.NoOngoingPurchaseException;
 import Core.Customer.Exception.PointInaccessibleIfNotMemberException;
 import Core.Customer.Exception.ZeroPointException;
-import Core.Customer.MembershipState.*;
+import Core.Customer.MembershipState.MembershipState;
+import Core.Customer.MembershipState.MembershipStateFactory;
+import Core.Customer.MembershipState.MembershipStateInterface;
+import Core.Customer.MembershipState.MembershipStateName;
 import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
 import Core.Item.Bill.FixedBill.FixedBill;
 import Core.Item.Bill.FixedBill.FixedBillModifier.FixedBillModifier;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
 
 import java.util.ArrayList;
 

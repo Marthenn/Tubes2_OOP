@@ -1,20 +1,24 @@
 package Core.Item;
 
-import Core.IDAble;
-import Core.Item.Bill.Image.ImageWithID;
+import Core.IDAble.IDAbleEmitter;
+import Core.IDAble.IDAbleListener;
+import Core.Item.Bill.Exception.ItemInBillNotExist;
 import Core.Item.Exception.NegativeQuantityException;
 import Core.Item.Exception.NegativeQuantityModifierException;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.SneakyThrows;
+
+import java.util.ArrayList;
 
 @Getter
-public class QuantifiableItem implements ItemLikeInterface {
+public class QuantifiableItem implements ItemLikeInterface, IDAbleEmitter<IDAbleListener<QuantifiableItem>> {
     @Setter
     private int quantity = 0;
 
     @Getter
     private Item item;
+
+    private transient ArrayList<IDAbleListener<QuantifiableItem>> itemListeners = new ArrayList<>();
 
     public QuantifiableItem(Item item){
         this.item = item;
@@ -50,7 +54,7 @@ public class QuantifiableItem implements ItemLikeInterface {
         if (this.quantity - number < 0) {
             throw new NegativeQuantityException();
         }
-        this.quantity -= number;
+        modifyQuantity(number);
     }
 
     /**
@@ -76,7 +80,7 @@ public class QuantifiableItem implements ItemLikeInterface {
         if (this.quantity + number < 0) {
             throw new NegativeQuantityException();
         }
-        this.quantity += number;
+        modifyQuantity(number);
     }
 
     /**
@@ -88,6 +92,11 @@ public class QuantifiableItem implements ItemLikeInterface {
         increaseQuantity(1);
     }
 
+    private void modifyQuantity(int modifier) {
+        this.quantity += modifier;
+        notifyListener();
+    }
+
     /**
      *
      * @return Whether the quantity of the item is zero
@@ -96,7 +105,7 @@ public class QuantifiableItem implements ItemLikeInterface {
         return this.quantity == 0;
     }
 
-    public double getCost() {
+    public Double getCost() {
         return quantity * item.getCost();
     }
 
@@ -111,47 +120,75 @@ public class QuantifiableItem implements ItemLikeInterface {
     }
 
     @Override
-    public Double getOriginalPrice() {
-        return item.getOriginalPrice();
-    }
-
-    @Override
     public String getCategory() {
         return item.getCategory();
     }
 
     @Override
-    public ImageWithID getImage() {
+    public String getImage() {
         return item.getImage();
     }
 
     @Override
     public void setName(String name) {
         this.item.setName(name);
+        notifyListener();
     }
 
     @Override
     public void setCategory(String category) {
         this.item.setCategory(category);
+        notifyListener();
     }
 
     @Override
-    public void setImage(ImageWithID image) {
+    public void setImage(String image) {
         this.item.setImage(image);
+        notifyListener();
     }
 
     public void setSingularCost(Double cost) {
         this.item.setCost(cost);
+        notifyListener();
+
     }
 
     public Double getSingularCost() {
         return this.item.getCost();
     }
 
+    public void setSingularPrice(Double price) {
+        this.item.setPrice(price);
+    }
 
+    public Double setSingularPrice() {
+        return this.item.getPrice();
+    }
+
+
+    /**
+     * @return The cost of the item(s)
+     * @throws ItemInBillNotExist       Certain item does not exist in the DataStore
+     */
+    @Override
+    public Double getPrice() throws ItemInBillNotExist {
+        return quantity * item.getPrice();
+    }
 
     @Override
-    public void setOriginalPrice(Double originalPrice) {
-        item.setOriginalPrice(originalPrice);
+    public Double getProfit() throws ItemInBillNotExist {
+        return getPrice() - getCost();
+    }
+
+    @Override
+    public void notifyListener() {
+        for (IDAbleListener<QuantifiableItem> itemListener : itemListeners) {
+            itemListener.onItemWithIDChange(this);
+        }
+    }
+
+    @Override
+    public void setListenerList(ArrayList<IDAbleListener<QuantifiableItem>> listeners) {
+        this.itemListeners = listeners;
     }
 }

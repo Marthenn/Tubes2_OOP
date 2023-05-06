@@ -5,19 +5,23 @@
 package GUI;
 
 import Core.DataStore.DataStore;
+import Core.DataStore.StorerData.Exception.ItemWithIDAlreadyExist;
+import Core.IDAble.IDAbleListener;
+import Core.Item.Exception.NegativeQuantityException;
 import Core.Item.QuantifiableItem;
 
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
-import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableModel;
 
-public class Cashier extends JPanel {
+public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem> {
+
+    private ArrayList<BillDisplay> currentActiveBillDisplays = new ArrayList<>();
     public Cashier() {
         initComponents();
     }
@@ -26,27 +30,41 @@ public class Cashier extends JPanel {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner Evaluation license - Fakih Anugerah Pratama
 
-        ArrayList<QuantifiableItem> browseObjects = DataStore.getInstance().getItems();
-        ArrayList<Object[]> browseObjectAsString = new ArrayList<>();
-        for(QuantifiableItem item : browseObjects) {
-            browseObjectAsString.add(new String[]{item.getItem().getName(), item.getItem().getName(), item.getItem().getName()});
+        //// DEBUG DATA
+        try {
+            DataStore.getInstance().addNewItem("makan", 2.3, 2.4, "ayam", 3, "");
+            DataStore.getInstance().addNewItem("tidak", 2.3, 2.4, "bebek", 4, "");
+        } catch (ItemWithIDAlreadyExist e) {
+            throw new RuntimeException(e);
+        } catch (NegativeQuantityException e) {
+            throw new RuntimeException(e);
         }
 
-        DefaultTableModel billItemTableModel = new DefaultTableModel();
-        billItemTableModel.addColumn("nama");
-        billItemTableModel.addColumn("quantity");
-        billItemTableModel.addColumn("subtotal");
+        DataStore.getInstance().listenToItem(this);
+
+        //// DEBUG DATA
+
+
+        //TODO : DATA PERSISTENCE AND NON_STATIC DATA FETCHING
+        ArrayList<QuantifiableItem> browseObjects = DataStore.getInstance().getItems();
+
+        // browsed Items Table Model
+        DefaultTableModel browseListTableModel = new DefaultTableModel();
+        browseListTableModel.addColumn("Nama");
+        browseListTableModel.addColumn("Kategori");
+        browseListTableModel.addColumn("Harga");
+
+        setTableModelContent(browseListTableModel, browseObjects);
+
 
         title = new JLabel();
         browsePane = new JScrollPane();
-        // Benerin ini
-        browseTable = new JTable((Object[][]) browseObjectAsString.toArray()
-                , new String[]{"Nama", "Kategori", "Harga"});
+        browseTable = new JTable(browseListTableModel);
         searchText = new JTextField();
         searchButton = new JButton();
         billTabPane = new JTabbedPane();
-        billDetailPane = new JScrollPane();
-        billItemTable = new JTable(billItemTableModel);
+        createNewBillTab(); // Bill1
+        createNewBillTab(); // +
         subtotalTitle = new JLabel();
         subtotalAmount = new JLabel();
         saveBill = new JButton();
@@ -77,13 +95,16 @@ public class Cashier extends JPanel {
         {
 
             //======== billDetailPane ========
-            {
+//            {
 
                 //---- billItemList ----
-                billItemTable.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-                billDetailPane.setViewportView(billItemTable);
-            }
-            billTabPane.addTab("text", billDetailPane);
+//                billItemTable.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+//                billDetailPane.setViewportView(billItemTable);
+//            }
+            //Bill 1
+            billTabPane.addTab("Bill 1", currentActiveBillDisplays.get(0));
+            //+
+            billTabPane.addTab("+", currentActiveBillDisplays.get(1));
         }
 
         //---- subtotalTitle ----
@@ -169,7 +190,7 @@ public class Cashier extends JPanel {
 
 
 
-
+        // Selecting Browsable Object
         browseTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         ListSelectionModel browseTableSM = browseTable.getSelectionModel();
         browseTableSM.addListSelectionListener(new ListSelectionListener() {
@@ -179,31 +200,106 @@ public class Cashier extends JPanel {
 
                 ListSelectionModel listSelectionModel = (ListSelectionModel) e.getSource();
                 if(!listSelectionModel.isSelectionEmpty()) {
-                    setSelectedBrowseObject(browseObjects.get(listSelectionModel.getMinSelectionIndex()));
+                    setSelectedBrowseObject(browseObjects
+                                            .stream()
+                                            .filter(qItem -> qItem.getName().contains(searchText.getText()) ||
+                                                    qItem.getCategory().contains(searchText.getText()) ||
+                                                    Double.toString(qItem.getCost()).contains(searchText.getText()))
+                                            .collect(Collectors.toCollection(ArrayList::new))
+                                                .get(listSelectionModel.getMinSelectionIndex()));
                 }
             }
         });
 
+        // Search Box
+        searchText.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                setTableModelContent(browseListTableModel,
+                                        browseObjects
+                                            .stream()
+                                            .filter(qItem -> qItem.getName().contains(searchText.getText()) ||
+                                                            qItem.getCategory().contains(searchText.getText()) ||
+                                                            Double.toString(qItem.getCost()).contains(searchText.getText()))
+                                            .collect(Collectors.toCollection(ArrayList::new))
+                );
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                setTableModelContent(browseListTableModel,
+                        browseObjects
+                                .stream()
+                                .filter(qItem -> qItem.getName().contains(searchText.getText()) ||
+                                        qItem.getCategory().contains(searchText.getText()) ||
+                                        Double.toString(qItem.getCost()).contains(searchText.getText()))
+                                .collect(Collectors.toCollection(ArrayList::new))
+                );
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                //?
+            }
+        });
 
         addItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (browseTableSM.isSelectionEmpty()) return;
-// Benerin ini
-                CashierItemAdd cashierItemAddDialog = new CashierItemAdd(selectedSoldItem.getName(), selectedSoldItem.getCost(), billItemTableModel);
-
-
+                CashierItemAdd cashierItemAddDialog = new CashierItemAdd(selectedSoldItem,
+                                                        currentActiveBillDisplays
+                                                        .get(billTabPane.getSelectedIndex())
+                                                    );
             }
         });
 
+        billTabPane.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                if (e.getSource() instanceof JTabbedPane) {
+                    JTabbedPane pane = (JTabbedPane) e.getSource();
+                    if (pane.getTitleAt(pane.getSelectedIndex()).equals("+")) {
+                        pane.setTitleAt(pane.getSelectedIndex(), "Bill");
+                        pane.add("+", createNewBillTab());
+                    }
+                }
+            }
+        });
 
+        saveBill.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
 
+            }
+        });
 
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
     QuantifiableItem selectedSoldItem;
     void setSelectedBrowseObject(QuantifiableItem soldItem) {
         selectedSoldItem = soldItem;
+    }
+
+    void setTableModelContent(DefaultTableModel tableModel, ArrayList<QuantifiableItem> newValue){
+        // Empty tableModel
+        tableModel.setRowCount(0);
+
+        // Update tableModel
+        for (QuantifiableItem qItem : newValue) {
+            tableModel.addRow(new String[]{qItem.getName(), qItem.getCategory(), Double.toString(qItem.getCost())});
+        }
+    }
+
+    BillDisplay createNewBillTab() {
+        currentActiveBillDisplays.add(new BillDisplay());
+
+        // return latest created BillDisplay
+        return currentActiveBillDisplays.get(currentActiveBillDisplays.size() - 1);
+    }
+
+    public void onItemWithIDChange(QuantifiableItem item) {
+
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
@@ -214,12 +310,13 @@ public class Cashier extends JPanel {
     private JTextField searchText;
     private JButton searchButton;
     private JTabbedPane billTabPane;
-    private JScrollPane billDetailPane;
-    private JTable billItemTable;
+//    private JScrollPane billDetailPane;
+//    private JTable billItemTable;
     private JLabel subtotalTitle;
     private JLabel subtotalAmount;
     private JButton saveBill;
     private JButton printBill;
     private JButton addItem;
+
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }

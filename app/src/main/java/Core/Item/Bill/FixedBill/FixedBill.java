@@ -1,17 +1,17 @@
 package Core.Item.Bill.FixedBill;
 
-import Core.IDAble;
+import Core.IDAble.IDAble;
+import Core.Item.Bill.Exception.ItemInBillNotExist;
 import Core.Item.Bill.FixedBill.FixedBillModifier.FixedBillModifier;
-import Core.Item.Costly;
+import Core.Item.Profit.Profitable;
 import Core.Item.QuantifiableItem;
 import lombok.*;
-
 
 import java.util.ArrayList;
 
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class FixedBill implements Costly, IDAble {
+public class FixedBill implements Profitable, IDAble {
 
     @NonNull
     private Integer id;
@@ -41,12 +41,12 @@ public class FixedBill implements Costly, IDAble {
 
 
     @Override
-    public double getCost() {
-        double cost = getUnmodifiedCost();
+    public Double getPrice() {
+        double price = getUnmodifiedCost();
         for (FixedBillModifier modifier : modifiers){
-            cost = modifier.applyModifier(cost);
+            price = modifier.applyModifier(price);
         }
-        return cost;
+        return price;
     }
 
 
@@ -56,5 +56,19 @@ public class FixedBill implements Costly, IDAble {
     @Override
     public Integer getID() {
         return id;
+    }
+
+    @Override
+    public Double getCost() throws ItemInBillNotExist {
+        double cost = 0;
+        for (QuantifiableItem transactionHistory : items) {
+            cost += transactionHistory.getCost();
+        }
+        return cost;
+    }
+
+    @Override
+    public Double getProfit() throws ItemInBillNotExist {
+        return getPrice() - getCost();
     }
 }

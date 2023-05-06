@@ -4,26 +4,26 @@
 
 package GUI;
 
+import Core.Item.Exception.NegativeQuantityException;
+import Core.Item.QuantifiableItem;
+
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 
 /**
  * @author Fakih A
  */
 public class CashierItemAdd extends JDialog {
-    String itemName;
-    Double itemPrice;
-    int itemQuantity;
-    DefaultTableModel tableModel;
-    public CashierItemAdd(String itemName, Double itemPrice, DefaultTableModel tableModel) {
-        this.itemName = itemName;
-        this.itemPrice = itemPrice;
-        this.itemQuantity = 1;
+    QuantifiableItem itemToBeAdd;
+    int requestedItemQuantity;
+    BillDisplay billDisplay;
+    public CashierItemAdd(QuantifiableItem itemToBeAdd, BillDisplay billDisplay) {
+        this.itemToBeAdd = itemToBeAdd;
+        this.requestedItemQuantity = 1;
 
-        this.tableModel = tableModel;
+        this.billDisplay = billDisplay;
 
 
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -58,7 +58,7 @@ public class CashierItemAdd extends JDialog {
         ((GridBagLayout)contentPane.getLayout()).rowWeights = new double[] {1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0E-4};
 
         //---- itemDesc ----
-        itemDesc.setText(this.itemName + " - " + Double.toString(this.itemPrice));
+        itemDesc.setText(this.itemToBeAdd.getName() + " - " + Double.toString(this.itemToBeAdd.getCost()));
         itemDesc.setHorizontalAlignment(SwingConstants.CENTER);
         contentPane.add(itemDesc, new GridBagConstraints(1, 0, 4, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
@@ -99,7 +99,26 @@ public class CashierItemAdd extends JDialog {
         saveItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                tableModel.addRow(new Object[]{itemName, itemQuantity, itemQuantity * itemPrice});
+                // update bill
+                //TODO : handle negative requested qty
+                if (billDisplay.getDisplayedBill().addItemID(itemToBeAdd.getID())) {
+                    try {
+                        billDisplay.getDisplayedBill().setItemIDQuantity(itemToBeAdd.getID(), requestedItemQuantity);
+                    } catch (NegativeQuantityException ex) {
+
+                    }
+                } else {
+                    try {
+                        //TODO : blacklist
+                        billDisplay.getDisplayedBill().setItemIDQuantity(itemToBeAdd.getID(), requestedItemQuantity);
+                    } catch (NegativeQuantityException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }
+
+                // update table model
+                billDisplay.updateTableModel();
+
 
                 // exit dialog
                 dispose();
@@ -109,22 +128,24 @@ public class CashierItemAdd extends JDialog {
         quantityAdd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                itemQuantity += 1;
+                requestedItemQuantity += 1;
 
-                itemAmount.setText(Integer.toString(itemQuantity));
+                itemAmount.setText(Integer.toString(requestedItemQuantity));
             }
         });
 
         quantityReduce.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                itemQuantity -= 1;
+                requestedItemQuantity -= 1;
 
-                itemAmount.setText(Integer.toString(itemQuantity));
+                itemAmount.setText(Integer.toString(requestedItemQuantity));
             }
         });
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
+
+//    void setTableModel(DefaultTableModel tableModel, )
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
     // Generated using JFormDesigner Evaluation license - Fakih Anugerah Pratama

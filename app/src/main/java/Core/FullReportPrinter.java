@@ -3,6 +3,7 @@ package Core;
 import Core.Customer.Customer;
 import Core.DataStore.DataStore;
 import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
+import Core.Item.Bill.Exception.ItemInBillNotExist;
 import Core.Item.QuantifiableItem;
 import com.itextpdf.text.PageSize;
 
@@ -17,7 +18,7 @@ public class FullReportPrinter {
         this.customers = dataStore.getCustomers();
         this.filename = filename;
     }
-    public void printFullReport() {
+    public void printFullReport() throws ItemInBillNotExist {
         PDFPrinter pdfPrinter = new PDFPrinter(this.filename, PageSize.A4.getWidth(), PageSize.A4.getHeight());
         Thread pdfThread = new Thread(pdfPrinter);
         pdfThread.start();

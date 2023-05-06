@@ -4,24 +4,15 @@
 
 package GUI;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
-
-import Core.Customer.Customer;
 import Core.Customer.MembershipState.MembershipStateName;
 import Core.Customer.PremiumCustomer;
 import Core.DataStore.DataStore;
-import Core.DataStore.Exception.CustomerNotExistException;
-import Core.DataStore.Exception.PromotedCustomerAlreadyExist;
 import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.ArrayList;
 
 /**
  * @author Marthen

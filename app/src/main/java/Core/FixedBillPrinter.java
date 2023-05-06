@@ -2,6 +2,7 @@ package Core;
 import Core.Customer.Customer;
 import Core.DataStore.DataStore;
 import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
+import Core.Item.Bill.Exception.ItemInBillNotExist;
 import Core.Item.Bill.FixedBill.FixedBill;
 import Core.Item.QuantifiableItem;
 
@@ -20,7 +21,7 @@ public class FixedBillPrinter {
         this.fixedBill = history.get(fixedBillIdx);
         this.filename = filename;
     }
-    public void printFixedBill() {
+    public void printFixedBill() throws ItemInBillNotExist {
         PDFPrinter pdfPrinter = new PDFPrinter(this.filename, 250, 1000);
         Thread pdfThread = new Thread(pdfPrinter);
         pdfThread.start();

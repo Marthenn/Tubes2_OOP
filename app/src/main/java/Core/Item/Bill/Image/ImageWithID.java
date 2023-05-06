@@ -1,6 +1,6 @@
 package Core.Item.Bill.Image;
 
-import Core.IDAble;
+import Core.IDAble.IDAble;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor

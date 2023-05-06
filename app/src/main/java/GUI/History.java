@@ -4,26 +4,24 @@
 
 package GUI;
 
-import Core.Customer.MembershipState.MembershipStateName;
+import Core.Customer.Customer;
 import Core.Customer.PremiumCustomer;
 import Core.DataStore.DataStore;
-import Core.Customer.Customer;
-import Core.DataStore.Exception.CustomerNotExistException;
-import Core.DataStore.Exception.PromotedCustomerAlreadyExist;
 import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
+import Core.IDAble.IDAbleListener;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.swing.*;
 
 /**
  * @author Marthen
  */
-public class History extends JPanel {
+public class History extends JPanel implements IDAbleListener<Customer> {
     DataStore dataStore;
     Customer selectedCustomer;
     public History() {
@@ -33,15 +31,15 @@ public class History extends JPanel {
         dataStore.createNewCustomer();
         dataStore.createNewCustomer();
         dataStore.createNewCustomer();
-        try {
+//        try {
+////
+//            dataStore.promoteCustomer(1, "Bembi", "10", "11", MembershipStateName.MEMBER);
 //
-            dataStore.promoteCustomer(1, "Bembi", "10", "11", MembershipStateName.MEMBER);
-
-        } catch (CustomerNotExistException e) {
-            System.out.println("a");
-        } catch (PromotedCustomerAlreadyExist e) {
-            System.out.println("b");
-        }
+//        } catch (CustomerNotExistException e) {
+//            System.out.println("a");
+//        } catch (PromotedCustomerAlreadyExist e) {
+//            System.out.println("b");
+//        }
         // HAPUS KALO GA DIPAKE //
 
 
@@ -56,6 +54,8 @@ public class History extends JPanel {
         List<? extends Customer> listOfAllCustomers = Stream.of(dataStore.getCustomers(), dataStore.getPremiumCustomers())
                                                         .flatMap(x -> x.stream())
                                                         .collect(Collectors.toList());
+
+        DataStore.getInstance().listenToCustomer(this);
 
         for (Customer customer : listOfAllCustomers) {
             customerListModel.addElement(customer.getID());
@@ -165,5 +165,10 @@ public class History extends JPanel {
             PremiumCustomer _premiumCustomer = (PremiumCustomer) selectedCustomer;
             Membership.setText(_premiumCustomer.getStatus().getName());
         }
+    }
+
+    @Override
+    public void onItemWithIDChange(Customer item) {
+
     }
 }
