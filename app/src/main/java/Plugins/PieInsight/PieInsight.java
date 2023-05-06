@@ -1,14 +1,23 @@
-package Plugins;
+package Plugins.PieInsight;
 
+import Core.Customer.Customer;
+import Core.Customer.PremiumCustomer;
+import Core.DataStore.DataStore;
+import Core.Item.Bill.FixedBill.FixedBill;
+import Core.Item.QuantifiableItem;
 import GUI.MainMenu;
+import Plugins.Plugin;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PieInsight implements Plugin {
     private MainMenu mainMenu = MainMenu.getInstance();
+    private static DataStore ds = DataStore.getInstance();
 
     public void load() {
         System.out.println("Loading PieChart based insight");
@@ -57,4 +66,31 @@ public class PieInsight implements Plugin {
         return items;
     }
 
+    public static Map<Integer, Integer> getSoldItems(){
+        Map<Integer, Integer> soldItems = new HashMap<>();
+        for (Customer cs : ds.getCustomers()){
+            for (FixedBill fb : cs.getHistory()){
+                for (QuantifiableItem qi : fb.getItems()) {
+                    System.out.println(qi.getID() + " " + qi.getQuantity());
+                    if (soldItems.containsKey(qi.getID())) {
+                        soldItems.put(qi.getID(), soldItems.get(qi.getID()) + qi.getQuantity());
+                    } else {
+                        soldItems.put(qi.getID(), qi.getQuantity());
+                    }
+                }
+            }
+        }
+        for (PremiumCustomer pc : ds.getPremiumCustomers()){
+            for (FixedBill fb : pc.getHistory()){
+                for (QuantifiableItem qi : fb.getItems()) {
+                    if (soldItems.containsKey(qi.getID())) {
+                        soldItems.put(qi.getID(), soldItems.get(qi.getID()) + qi.getQuantity());
+                    } else {
+                        soldItems.put(qi.getID(), qi.getQuantity());
+                    }
+                }
+            }
+        }
+        return soldItems;
+    }
 }
