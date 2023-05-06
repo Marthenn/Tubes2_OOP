@@ -7,7 +7,6 @@ package GUI;
 import Core.Customer.Customer;
 import Core.DataStore.DataStore;
 import Core.DataStore.StorerData.Exception.ItemWithIDAlreadyExist;
-import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
 import Core.DataStore.StorerData.StorerDataListener;
 import Core.IDAble.IDAbleListener;
 import Core.Item.Bill.FixedBill.FixedBill;
@@ -67,8 +66,8 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
         createNewBillTab(); // +
         subtotalTitle = new JLabel();
         subtotalAmount = new JLabel();
-        saveBill = new JButton();
-        printBill = new JButton();
+        deleteBill = new JButton();
+        checkoutBill = new JButton();
         addItem = new JButton();
 
         // browsed Items Table Model
@@ -89,7 +88,7 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
 
 
 
-        //// DEBUG DATA
+        // DEBUG DATA
 //        try {
 //            DataStore.getInstance().addNewItem("123", 2d, 3d, "sad", 4, "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAABzklEQVR4nOzavWtTURjHca9cScQgouAgCEEcTMggEgIJODgpGaMoxBA0JMQh4qCgqIvGoBjUQMjgImSw7ZRA20x9oVAKHQJtOhQS+kKhlLZ3SNsEQkmh/Qe++8OB5zt+zhB+nKGX3mtbxaVz1HiwiV4O3kG3vrInNhfRvQ+O0CP+2+ip/27086gGpQOk0wHS6QDp7FUnjAdXPn1Er/XG0K9HKuh72wvoxek36IMPL9FdhTi68TegA6TTAdLpAOns0iU/HngyLvQXqXfoPl8Q/XSEn+Nfd1bQyxf4dx/Z/HfD+BvQAdLpAOl0gHRW53kSD7y9a+iZcB3995cc+o+7t9Ar2WfosV6JvcG/a/wN6ADpdIB0OkA6a3SX/5/TfXIfveH5g/7wagi91R6i37gXQc+u83P/ZOgbuvE3oAOk0wHS6QDp7M+/jvGg7qTQ89/fovdbDvpj9yH6vrOGHkreRH8fraIbfwM6QDodIJ0OkM4+aXbxYCv9D30Qu4weCLxCb/aX0f9e5O+IcsMZ9Il0At34G9AB0ukA6XSAdLaT4/cAO7P83ejPOL/fzU9toM9V59FrVQ/60+gAvdA+QDf+BnSAdDpAOh0g3VkAAAD//+/NYfgVbkzvAAAAAElFTkSuQmCC");
 //        } catch (ItemWithIDAlreadyExist e) {
@@ -97,7 +96,7 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
 //        } catch (NegativeQuantityException e) {
 //            throw new RuntimeException(e);
 //        }
-        //// DEBUG DATA
+        // DEBUG DATA
 
 
         //---- title ----
@@ -129,9 +128,10 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
 //                billDetailPane.setViewportView(billItemTable);
 //            }
             //Bill 1
-            billTabPane.addTab("Bill 1", currentActiveBillDisplays.get(0));
+            billTabPane.addTab("DEBUG!", currentActiveBillDisplays.get(0));
             //+
             billTabPane.addTab("+", currentActiveBillDisplays.get(1));
+            updateBillTabTitle();
         }
 
         //---- subtotalTitle ----
@@ -141,10 +141,10 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
         subtotalAmount.setText("0");
 
         //---- saveBill ----
-        saveBill.setText("save");
+        deleteBill.setText("Delete Bill");
 
         //---- printBill ----
-        printBill.setText("print");
+        checkoutBill.setText("Checkout");
 
         addItem.setText("add");
 
@@ -174,9 +174,9 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
                                         .addComponent(billTabPane, GroupLayout.PREFERRED_SIZE, 290, GroupLayout.PREFERRED_SIZE)
                                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
                                                 .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                        .addComponent(saveBill, GroupLayout.PREFERRED_SIZE, 140, GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(deleteBill, GroupLayout.PREFERRED_SIZE, 140, GroupLayout.PREFERRED_SIZE)
                                                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(printBill, GroupLayout.PREFERRED_SIZE, 140, GroupLayout.PREFERRED_SIZE))
+                                                        .addComponent(checkoutBill, GroupLayout.PREFERRED_SIZE, 140, GroupLayout.PREFERRED_SIZE))
                                                 .addGroup(layout.createSequentialGroup()
                                                         .addComponent(subtotalTitle, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE)
                                                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
@@ -201,8 +201,8 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
                                                 .addComponent(billTabPane, GroupLayout.PREFERRED_SIZE, 320, GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(printBill)
-                                                        .addComponent(saveBill))))
+                                                        .addComponent(checkoutBill)
+                                                        .addComponent(deleteBill))))
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup()
                                         .addGroup(layout.createSequentialGroup()
@@ -273,8 +273,10 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
                 if (e.getSource() instanceof JTabbedPane) {
                     JTabbedPane pane = (JTabbedPane) e.getSource();
                     if (pane.getTitleAt(pane.getSelectedIndex()).equals("+")) {
-                        pane.setTitleAt(pane.getSelectedIndex(), "Bill");
-                        pane.add("+", createNewBillTab());
+                        BillDisplay newBillDisplay = createNewBillTab();
+                        pane.add("+", newBillDisplay);
+
+                        updateBillTabTitle();
                     }
                 }
             }
@@ -282,21 +284,31 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
 
 
         Cashier thisCashier = this;
-        saveBill.addActionListener(new ActionListener() {
+        deleteBill.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 //                browseObjects.get(0).setName(browseObjects.get(0).getName().concat(browseObjects.get(0).getName().substring(1)));
-                parentTabbedPane.setComponentAt(parentTabbedPane.getSelectedIndex(), new CashierCheckout(parentTabbedPane, thisCashier));
+                int selectedIdx = billTabPane.getSelectedIndex();
+
+                // TO AVOID AUTO BILL TAB CREATION BECAUSE OF SELECTED INDEX INHERITANCE
+                if (selectedIdx == currentActiveBillDisplays.size()-2) {
+                  billTabPane.setSelectedIndex(selectedIdx-1);
+                }
+                billTabPane.removeTabAt(selectedIdx);
+                currentActiveBillDisplays.remove(selectedIdx);
+
+                updateBillTabTitle();
             }
         });
 
-        printBill.addActionListener(new ActionListener() {
-            @SneakyThrows
+        checkoutBill.addActionListener(new ActionListener() {
+//            @SneakyThrows
             @Override
             public void actionPerformed(ActionEvent e) {
-                Customer customer = DataStore.getInstance().createNewCustomer(); //dummy customer yang diassign
-                currentActiveBillDisplays.get(billTabPane.getSelectedIndex()).getDisplayedBill().setOwner(customer);
-                FixedBill toBePrinted = currentActiveBillDisplays.get(billTabPane.getSelectedIndex()).getDisplayedBill().getFixedBill();// dummy fixedbill
+//                Customer customer = DataStore.getInstance().createNewCustomer(); //dummy customer yang diassign
+//                currentActiveBillDisplays.get(billTabPane.getSelectedIndex()).getDisplayedBill().setOwner(customer);
+//                FixedBill toBePrinted = currentActiveBillDisplays.get(billTabPane.getSelectedIndex()).getDisplayedBill().getFixedBill();// dummy fixedbill
+                parentTabbedPane.setComponentAt(parentTabbedPane.getSelectedIndex(), new CashierCheckout(parentTabbedPane, thisCashier));
             }
         });
 
@@ -337,8 +349,21 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
     BillDisplay createNewBillTab() {
         currentActiveBillDisplays.add(new BillDisplay());
 
+        updateBillTabTitle();
+
         // return latest created BillDisplay
         return currentActiveBillDisplays.get(currentActiveBillDisplays.size() - 1);
+    }
+
+    void updateBillTabTitle() {
+        for (int i = 0; i < billTabPane.getTabCount(); i++){
+            if (i == currentActiveBillDisplays.size() - 1) {
+                billTabPane.setTitleAt(i, "+");
+                continue;
+            }
+
+            billTabPane.setTitleAt(i, Integer.toString(currentActiveBillDisplays.get(i).getDisplayedBill().getID()));
+        }
     }
 
     public void onItemWithIDChange(QuantifiableItem item) {
@@ -381,8 +406,8 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
 //    private JTable billItemTable;
     private JLabel subtotalTitle;
     private JLabel subtotalAmount;
-    private JButton saveBill;
-    private JButton printBill;
+    private JButton deleteBill;
+    private JButton checkoutBill;
     private JButton addItem;
 
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
