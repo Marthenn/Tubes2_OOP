@@ -3,6 +3,7 @@ package Core;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.SneakyThrows;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,13 +41,10 @@ public class Settings {
     }
 
     // TODO: Add settings for plugins
+    @SneakyThrows
     public void addPlugin(JarInputStream pluginDirectory) throws Exception {
         ArrayList<String> classNames = null;
-        try{
-            classNames = getClassNames(pluginDirectory);
-        } catch (Exception e){
-            throw new Exception("Failed to load plugin");
-        }
+        classNames = getClassNames(pluginDirectory);
         for (String className : classNames) {
             System.out.println(className);
         }

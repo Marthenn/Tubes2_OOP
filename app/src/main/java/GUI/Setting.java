@@ -4,6 +4,8 @@
 
 package GUI;
 
+import lombok.SneakyThrows;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -66,21 +68,16 @@ public class Setting extends JPanel {
         }
     }
 
-    private void loadButtonMousePressed(MouseEvent e) throws IOException {
+    @SneakyThrows
+    private void loadButtonMousePressed(MouseEvent e) {
         // TODO: handle loading of plugins
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         fileChooser.setFileFilter(new FileNameExtensionFilter("JAR File", "jar"));
         int result = fileChooser.showOpenDialog(Setting.this);
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
-            try {
-                JarInputStream jarFile = new JarInputStream(selectedFile.toURI().toURL().openStream());
-                settings.addPlugin(jarFile);
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
-            }
+            JarInputStream jarFile = new JarInputStream(selectedFile.toURI().toURL().openStream());
+            settings.addPlugin(jarFile);
         }
     }
 
@@ -155,11 +152,7 @@ public class Setting extends JPanel {
             loadButton.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
-                    try {
-                        loadButtonMousePressed(e);
-                    } catch (IOException ex) {
-                        throw new RuntimeException(ex);
-                    }
+                    loadButtonMousePressed(e);
                 }
             });
             panel1.add(loadButton);
