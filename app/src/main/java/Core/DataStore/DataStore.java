@@ -18,10 +18,15 @@ import Core.Item.Bill.Image.ImageWithID;
 import Core.Item.Exception.NegativeQuantityException;
 import Core.Item.Item;
 import Core.Item.QuantifiableItem;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.SneakyThrows;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DataStore {
     private static DataStore instance = null;
@@ -30,6 +35,11 @@ public class DataStore {
     private StorerData<PremiumCustomer> premiumCustomers = new StorerData<>("Premium Customer");
     private StorerData<ImageWithID> images = new StorerData<>("ImageWithID");
     private StorerData<Bill> bills = new StorerData<>("Bill");
+
+    @Setter @Getter(AccessLevel.PUBLIC)
+    private String path;
+    @Getter(AccessLevel.PUBLIC)
+    private Map<String, Boolean> fileType = new HashMap<>();
     private transient ArrayList<IDAbleListener<QuantifiableItem>> itemListeners = new ArrayList<>();
 
     private transient ArrayList<IDAbleListener<Customer>> customerListeners = new ArrayList<>();

@@ -1,0 +1,80 @@
+JFDML JFormDesigner: "8.0.3.0.246" Java: "17.0.6" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+			name: "this"
+			"preferredSize": new java.awt.Dimension( 800, 600 )
+			add( new FormContainer( "javax.swing.JMenuBar", new FormLayoutManager( class javax.swing.JMenuBar ) ) {
+				name: "menuBar"
+				add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
+					name: "homeMenu"
+					"text": "Home"
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mousePressed", "homeMenuMousePressed", true ) )
+				} )
+				add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
+					name: "storeMenu"
+					"text": "Store"
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "cashierMenu"
+						"text": "Cashier"
+						addEvent( new FormEvent( "java.awt.event.MouseListener", "mousePressed", "cashierMenuMousePressed", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "inventoryMenu"
+						"text": "Inventory"
+						addEvent( new FormEvent( "java.awt.event.MouseListener", "mousePressed", "inventoryMenuMousePressed", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "historyMenu"
+						"text": "History"
+						addEvent( new FormEvent( "java.awt.event.MouseListener", "mousePressed", "historyMenuMousePressed", true ) )
+					} )
+				} )
+				add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
+					name: "memberMenu"
+					"text": "Member"
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "registerMenu"
+						"text": "Register"
+						addEvent( new FormEvent( "java.awt.event.MouseListener", "mousePressed", "registerMenuMousePressed", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "updateMenu"
+						"text": "Update"
+						addEvent( new FormEvent( "java.awt.event.MouseListener", "mousePressed", "updateMenuMousePressed", true ) )
+					} )
+				} )
+				add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
+					name: "settingMenu"
+					"text": "Setting"
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mousePressed", "settingMenuMousePressed", true ) )
+				} )
+				add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
+					name: "exitMenu"
+					"text": "Exit"
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mousePressed", "exitMenuMousePressed", true ) )
+				} )
+			}, new FormLayoutConstraints( class java.lang.String ) {
+				"value": "North"
+			} )
+			add( new FormContainer( "javax.swing.JTabbedPane", new FormLayoutManager( class javax.swing.JTabbedPane ) ) {
+				name: "tabbedPane"
+				addEvent( new FormEvent( "java.awt.event.MouseListener", "mousePressed", "closeTabMiddleMouse", true ) )
+			}, new FormLayoutConstraints( class java.lang.String ) {
+				"value": "Center"
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "dateTime"
+				"text": "text"
+				"componentOrientation": sfield java.awt.ComponentOrientation RIGHT_TO_LEFT
+			}, new FormLayoutConstraints( class java.lang.String ) {
+				"value": "South"
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 125, 70 )
+			"size": new java.awt.Dimension( 800, 600 )
+		} )
+	}
+}

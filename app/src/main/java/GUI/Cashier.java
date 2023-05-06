@@ -35,7 +35,10 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
     private ArrayList<BillDisplay> currentActiveBillDisplays = new ArrayList<>();
     ArrayList<QuantifiableItem> browseObjects = new ArrayList<>();
     DefaultTableModel browseListTableModel = new DefaultTableModel();
-    public Cashier() {
+    JTabbedPane parentTabbedPane = new JTabbedPane();
+    public Cashier(JTabbedPane parentTabbedPane) {
+        this.parentTabbedPane = parentTabbedPane;
+
         initComponents();
     }
 
@@ -278,11 +281,12 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
         });
 
 
+        Cashier thisCashier = this;
         saveBill.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 //                browseObjects.get(0).setName(browseObjects.get(0).getName().concat(browseObjects.get(0).getName().substring(1)));
-
+                parentTabbedPane.setComponentAt(parentTabbedPane.getSelectedIndex(), new CashierCheckout(parentTabbedPane, thisCashier));
             }
         });
 

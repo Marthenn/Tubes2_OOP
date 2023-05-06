@@ -3,12 +3,18 @@ package Core.Item.Bill;
 import Core.Customer.Customer;
 import Core.DataStore.DataStore;
 import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
+import Core.Deserializer.BillDeserializer;
 import Core.IDAble.IDAble;
 import Core.Item.Bill.Exception.ItemInBillNotExist;
 import Core.Item.Bill.FixedBill.FixedBill;
 import Core.Item.Exception.NegativeQuantityException;
 import Core.Item.Price.Priceable;
 import Core.Item.QuantifiableItem;
+import Core.Serializer.BillSerializer;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +24,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 @RequiredArgsConstructor
+@AllArgsConstructor
+@JsonSerialize(using = BillSerializer.class)
 public class Bill implements Priceable, IDAble {
 
     @NonNull
@@ -28,6 +36,7 @@ public class Bill implements Priceable, IDAble {
     private Integer ownerId;
 
     @NonNull
+    @JsonProperty("map")
     protected HashMap<Integer, Integer> itemsQuantity = new HashMap<Integer, Integer>();
 
     protected Bill(HashMap<Integer, Integer> itemsQuantity) {

@@ -4,48 +4,43 @@ import Core.DataStore.DataStore;
 import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
 import Core.Item.Bill.Exception.ItemInBillNotExist;
 import Core.Item.Bill.Image.ImageWithID;
+import Core.Serializer.QuantifiableItemSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.annotation.Nullable;
 
 @AllArgsConstructor
-@NoArgsConstructor
-@SuperBuilder
 @EqualsAndHashCode
+@JsonSerialize(using = QuantifiableItemSerializer.class)
 public class Item implements Cloneable, ItemInterface {
 
     @Nullable
     private Integer id;
 
-    @Nullable
     @Getter
     @Setter
     private String name;
 
-    @Nullable
     @Setter
     @Getter
     private Double price;
 
-    @Nullable
     @Getter
     @Setter
     private Double cost;
 
-    @Nullable
     @Getter
     @Setter
     private String category;
 
-    @Nullable
     @Setter
     @Getter
     private Integer imageID;
 
-    @Getter
     @Setter
-    @Builder.Default
+    @Getter
     private boolean deleted = false;
 
     @Override
@@ -103,4 +98,6 @@ public class Item implements Cloneable, ItemInterface {
         ImageWithID addedImage = DataStore.getInstance().createNewImageWithID(base64Image);
         this.imageID = addedImage.getID();
     }
+
+
 }

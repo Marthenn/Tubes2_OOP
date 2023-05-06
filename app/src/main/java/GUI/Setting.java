@@ -10,16 +10,19 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.xml.crypto.Data;
 import java.io.File;
 import java.io.IOException;
 import java.util.jar.JarInputStream;
 
+import Core.DataStore.DataStore;
 import Core.Settings;
 
 /**
  * @author Marthen
  */
 public class Setting extends JPanel {
+    private DataStore dataStore = DataStore.getInstance();
     private Settings settings = Settings.getInstance();
 //    private JButton saveButton;
     private JFileChooser fileChooser = new JFileChooser();
@@ -31,20 +34,26 @@ public class Setting extends JPanel {
 
         Thread settingThread = new Thread(() -> {
             while (true) {
-                if (settings.getDirectoryPath() != null) {
-                    directoryLabel.setText(settings.getDirectoryPath());
+                if (dataStore.getPath() != null) {
+                    directoryLabel.setText(dataStore.getPath());
                 }
-                if (settings.getFileType().get("OBJ")) {
+                if(dataStore.getFileType().get("OBJ") == null){
+                    objBox.setSelected(false);
+                } else if (dataStore.getFileType().get("OBJ")) {
                     objBox.setSelected(true);
                 } else {
                     objBox.setSelected(false);
                 }
-                if (settings.getFileType().get("XML")) {
+                if(dataStore.getFileType().get("XML") == null){
+                    objBox.setSelected(false);
+                } else if (dataStore.getFileType().get("XML")) {
                     xmlBox.setSelected(true);
                 } else {
                     xmlBox.setSelected(false);
                 }
-                if (settings.getFileType().get("JSON")) {
+                if(dataStore.getFileType().get("JSON") == null){
+                    objBox.setSelected(false);
+                } else if (dataStore.getFileType().get("JSON")) {
                     jsonBox.setSelected(true);
                 } else {
                     jsonBox.setSelected(false);
@@ -64,7 +73,7 @@ public class Setting extends JPanel {
         int result = fileChooser.showOpenDialog(Setting.this);
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
-            settings.setDirectoryPath(selectedFile.getAbsolutePath());
+            dataStore.setPath(selectedFile.getAbsolutePath());
         }
     }
 
@@ -88,25 +97,25 @@ public class Setting extends JPanel {
 
     private void objBoxItemStateChanged(ItemEvent e) {
         if (e.getStateChange() == ItemEvent.SELECTED) {
-            settings.getFileType().put("OBJ", true);
+            dataStore.getFileType().put("OBJ", true);
         } else {
-            settings.getFileType().put("OBJ", false);
+            dataStore.getFileType().put("OBJ", false);
         }
     }
 
     private void jsonBoxItemStateChanged(ItemEvent e) {
         if (e.getStateChange() == ItemEvent.SELECTED) {
-            settings.getFileType().put("JSON", true);
+            dataStore.getFileType().put("JSON", true);
         } else {
-            settings.getFileType().put("JSON", false);
+            dataStore.getFileType().put("JSON", false);
         }
     }
 
     private void xmlBoxItemStateChanged(ItemEvent e) {
         if (e.getStateChange() == ItemEvent.SELECTED) {
-            settings.getFileType().put("XML", true);
+            dataStore.getFileType().put("XML", true);
         } else {
-            settings.getFileType().put("XML", false);
+            dataStore.getFileType().put("XML", false);
         }
     }
 
