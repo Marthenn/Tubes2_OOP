@@ -1,12 +1,20 @@
 package Plugins;
 
+import GUI.Setting;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 
 public interface Plugin {
     public void load();
     public void unload();
-    public String getName();
+    default public String getName(){
+        return this.getClass().getSimpleName();
+    }
+
+    public ArrayList<String> getItems();
+
     default Field findField(Class<?> clazz, String name) {
         try {
             return clazz.getDeclaredField(name);
@@ -45,5 +53,10 @@ public interface Plugin {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public default void addToSetting(String name, ArrayList<String> items){
+        Setting setting = Setting.getInstance();
+        setting.addPlugin(name, items);
     }
 }

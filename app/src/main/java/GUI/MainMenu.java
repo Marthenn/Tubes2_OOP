@@ -110,7 +110,7 @@ public class MainMenu extends JPanel {
 
     private void settingMenuMousePressed(MouseEvent e) {
         if(tabbedPane.indexOfTab("Setting") == -1){
-            tabbedPane.addTab("Setting", new Setting());
+            tabbedPane.addTab("Setting", Setting.getInstance());
         }
         tabbedPane.setSelectedIndex(tabbedPane.indexOfTab("Setting"));
     }
