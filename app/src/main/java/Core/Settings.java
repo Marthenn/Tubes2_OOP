@@ -48,15 +48,21 @@ public class Settings {
         for (Class<?> cls : classes) {
             try{
                 Object obj = cls.newInstance();
-                if (obj instanceof Plugin){
-                    Plugin plugin = (Plugin) obj;
-                    System.out.println(plugin.getName());
-                    this.plugins.add(plugin.getName());
-                }
+                System.out.println(obj.getClass().getSimpleName());
+//                if (obj instanceof Plugin){
+//                    Plugin plugin = (Plugin) obj;
+//                    System.out.println(plugin);
+//                    System.out.println(plugin.getName());
+//                    this.plugins.add(plugin.getName());
+//                }
             } catch (Exception e){
-                System.out.println("Failed to load plugin");
+                System.out.println("Failed to load plugin: " + cls.getName() + "\n " + e.getMessage());
             }
         }
+    }
+    public void removePlugin(String pluginName){
+        // unload the plugin
+        this.plugins.remove(pluginName);
     }
     public void savePath() throws IOException {
         String json = new ObjectMapper().writeValueAsString(this.path);
@@ -75,10 +81,6 @@ public class Settings {
     public void loadFileType() throws IOException {
         String json = new String(Files.readAllBytes(Paths.get("jsonConfig/fileType_config.json")));
         this.fileType = new ObjectMapper().readValue(json, Map.class);
-    }
-    public void removePlugin(String pluginName){
-        // unload the plugin
-        this.plugins.remove(pluginName);
     }
 }
 
