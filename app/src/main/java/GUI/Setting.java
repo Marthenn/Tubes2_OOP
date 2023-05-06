@@ -7,7 +7,10 @@ package GUI;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
+import java.io.IOException;
+import java.util.jar.JarInputStream;
 
 import Core.Settings;
 
@@ -63,12 +66,28 @@ public class Setting extends JPanel {
         }
     }
 
-    private void loadButtonMousePressed(MouseEvent e) {
+    private void loadButtonMousePressed(MouseEvent e) throws IOException {
         // TODO: handle loading of plugins
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fileChooser.setFileFilter(new FileNameExtensionFilter("JAR File", "jar"));
+        int result = fileChooser.showOpenDialog(Setting.this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            try {
+                JarInputStream jarFile = new JarInputStream(selectedFile.toURI().toURL().openStream());
+                settings.addPlugin(jarFile);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        }
     }
 
     private void resetButtonMousePressed(MouseEvent e) {
-        // TODO: handle reset of plugins
+//        for (String plugin : settings.getPlugins()) {
+//            settings.getPlugins().removePlugin(plugin);
+//        }
     }
 
     private void objBoxItemStateChanged(ItemEvent e) {
@@ -94,53 +113,6 @@ public class Setting extends JPanel {
             settings.getFileType().put("XML", false);
         }
     }
-
-//    private void initComponents() {
-//        // create the JFileChooser component
-//        fileChooser = new JFileChooser();
-//
-//        // create label for file format
-//        JLabel fileFormat = new JLabel("File Format:");
-//
-//        // create the radio button group
-//        ButtonGroup buttonGroup = new ButtonGroup();
-//
-//        // create the radio buttons
-//        JRadioButton objRadioButton = new JRadioButton("Object");
-//        JRadioButton xmlRadioButton = new JRadioButton("XML");
-//        JRadioButton jsonRadioButton = new JRadioButton("JSON");
-//
-//        // add the radio buttons to the group
-//        buttonGroup.add(objRadioButton);
-//        buttonGroup.add(xmlRadioButton);
-//        buttonGroup.add(jsonRadioButton);
-//
-//        // create the button to trigger the file chooser
-//        saveButton = new JButton("Configure Save Location");
-//        saveButton.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                // open the file chooser dialog
-//                int result = fileChooser.showSaveDialog(Setting.this);
-//
-//                // TODO: check if file > 1 -> folder
-//                if (result == JFileChooser.APPROVE_OPTION) {
-//                    // get the selected file
-//                    File selectedFile = fileChooser.getSelectedFile();
-//
-//                    // TODO: truly saving file
-//                }
-//            }
-//        });
-//
-//        // add the radio buttons and save button to the panel
-//        add(fileFormat);
-//        add(objRadioButton);
-//        add(xmlRadioButton);
-//        add(jsonRadioButton);
-//        add(saveButton);
-//        // TODO: plugin setting
-//    }
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
@@ -183,7 +155,11 @@ public class Setting extends JPanel {
             loadButton.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
-                    loadButtonMousePressed(e);
+                    try {
+                        loadButtonMousePressed(e);
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 }
             });
             panel1.add(loadButton);
