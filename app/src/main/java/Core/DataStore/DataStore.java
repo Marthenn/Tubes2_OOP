@@ -9,6 +9,7 @@ import Core.DataStore.StorerData.Exception.ItemWithIDAlreadyExist;
 import Core.DataStore.StorerData.Exception.RemovedItemNotExist;
 import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
 import Core.DataStore.StorerData.StorerData;
+import Core.DataStore.StorerData.StorerDataListener;
 import Core.IDAble.IDAbleListener;
 import Core.Item.Bill.Bill;
 import Core.Item.Bill.Image.ImageWithID;
@@ -17,7 +18,6 @@ import Core.Item.Item;
 import Core.Item.QuantifiableItem;
 import lombok.SneakyThrows;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 public class DataStore {
@@ -28,10 +28,19 @@ public class DataStore {
     private StorerData<ImageWithID> images = new StorerData<>("ImageWithID");
     private StorerData<Bill> bills = new StorerData<>("Bill");
     private transient ArrayList<IDAbleListener<QuantifiableItem>> itemListeners = new ArrayList<>();
+
     private transient ArrayList<IDAbleListener<Customer>> customerListeners = new ArrayList<>();
 
-    private DataStore() {
+    private transient ArrayList<StorerDataListener> itemStoreListeners = new ArrayList<>();
 
+    private transient ArrayList<StorerDataListener> customerStoreListeners = new ArrayList<>();
+
+
+
+    private DataStore() {
+        items.setListenerList(itemStoreListeners);
+        customers.setListenerList(customerStoreListeners);
+        premiumCustomers.setListenerList(customerStoreListeners);
     }
 
     public static DataStore getInstance() {
@@ -196,14 +205,38 @@ public class DataStore {
         return newQItem;
     }
 
+    /**
+     * Add listener list of listener of changes to the individual Customer and PremiumCustomer stored in here
+     * @param listener
+     */
     public void listenToCustomer(IDAbleListener<Customer> listener) {
         customerListeners.add(listener);
     }
 
+    /**
+     * Add listener list of listener of changes to the individual QuantifiableItem (i.e. item sold in the store) stored in here
+     * @param listener
+     */
     public void listenToItem(IDAbleListener<QuantifiableItem> listener) {
         itemListeners.add(listener);
     }
 
+    /**
+     * Add listener list of listener of changes to the addition/removal of Customer / PremiumCustomer stored in here
+     * @param listener
+     */
+    public void listenToCustomerStore(StorerDataListener listener) {
+        customerStoreListeners.add(listener);
+    }
+
+
+    /**
+     * Add listener list of listener of changes to the addition/removal of QuantifiableItem (i.e. item sold in the store) stored in here
+     * @param listener
+     */
+    public void listenToItemStore(StorerDataListener listener){
+        itemStoreListeners.add(listener);
+    }
 
 
 
