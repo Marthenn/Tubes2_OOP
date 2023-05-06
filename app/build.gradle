@@ -9,7 +9,6 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
-    // id 'io.freefair.lombok' version '6.2.0'
 }
 
 repositories {
@@ -41,7 +40,7 @@ application {
     mainClass = 'Main'
 }
 
-tasks.named('test') {
+test {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
 }
