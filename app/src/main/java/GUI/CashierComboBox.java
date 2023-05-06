@@ -69,7 +69,8 @@ public class CashierComboBox extends JComboBox {
 
         displayedList = customerList
                             .stream()
-                            .filter(customer -> customer.getName().contains(lastInput))
+                            .filter(customer -> customer.getName().toLowerCase()
+                                    .contains(lastInput.toLowerCase()))
                             .collect(Collectors
                             .toCollection(ArrayList::new));
 

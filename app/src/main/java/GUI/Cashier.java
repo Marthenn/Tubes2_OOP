@@ -224,11 +224,14 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
                 if(!listSelectionModel.isSelectionEmpty()) {
                     setSelectedBrowseObject(browseObjects
                                             .stream()
-                                            .filter(qItem -> qItem.getName().contains(searchText.getText()) ||
-                                                    qItem.getCategory().contains(searchText.getText()) ||
-                                                    Double.toString(qItem.getSingularPrice()).contains(searchText.getText()))
+                                            .filter(qItem ->    qItem.getName().toLowerCase()
+                                                                        .contains(searchText.getText().toLowerCase()) ||
+                                                                qItem.getCategory().toLowerCase()
+                                                                        .contains(searchText.getText().toLowerCase()) ||
+                                                                Double.toString(qItem.getSingularPrice()).toLowerCase()
+                                                                        .contains(searchText.getText().toLowerCase()))
                                             .collect(Collectors.toCollection(ArrayList::new))
-                                                .get(listSelectionModel.getMinSelectionIndex()));
+                                            .get(listSelectionModel.getMinSelectionIndex()));
                 }
             }
         });
@@ -333,9 +336,12 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
         ArrayList<QuantifiableItem> filteredBrowseObjects =
                 browseObjects
                 .stream()
-                .filter(qItem ->    qItem.getName().contains(filterText) ||
-                                    qItem.getCategory().contains(filterText) ||
-                                    Double.toString(qItem.getSingularPrice()).contains(filterText))
+                .filter(qItem ->    qItem.getName().toLowerCase()
+                                            .contains(filterText.toLowerCase()) ||
+                                    qItem.getCategory().toLowerCase()
+                                            .contains(filterText.toLowerCase()) ||
+                                    Double.toString(qItem.getSingularPrice()).toLowerCase()
+                                            .contains(filterText.toLowerCase()))
                 .collect(Collectors.toCollection(ArrayList::new));
 
         // Update tableModel
