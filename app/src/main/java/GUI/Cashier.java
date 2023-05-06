@@ -248,7 +248,7 @@ public class Cashier extends JPanel {
                 CashierItemAdd cashierItemAddDialog = new CashierItemAdd(selectedSoldItem,
                                                         currentActiveBillDisplays
                                                         .get(billTabPane.getSelectedIndex())
-                                                        .getDisplayedTableModel());
+                                                    );
             }
         });
 
@@ -265,6 +265,12 @@ public class Cashier extends JPanel {
             }
         });
 
+        saveBill.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
 
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }

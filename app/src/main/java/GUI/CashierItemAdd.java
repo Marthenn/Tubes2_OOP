@@ -4,6 +4,7 @@
 
 package GUI;
 
+import Core.Item.Exception.NegativeQuantityException;
 import Core.Item.QuantifiableItem;
 
 import javax.swing.*;
@@ -18,12 +19,12 @@ import java.awt.event.ActionListener;
 public class CashierItemAdd extends JDialog {
     QuantifiableItem itemToBeAdd;
     int requestedItemQuantity;
-    DefaultTableModel tableModel;
-    public CashierItemAdd(QuantifiableItem itemToBeAdd, DefaultTableModel tableModel) {
+    BillDisplay billDisplay;
+    public CashierItemAdd(QuantifiableItem itemToBeAdd, BillDisplay billDisplay) {
         this.itemToBeAdd = itemToBeAdd;
         this.requestedItemQuantity = 1;
 
-        this.tableModel = tableModel;
+        this.billDisplay = billDisplay;
 
 
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -99,7 +100,26 @@ public class CashierItemAdd extends JDialog {
         saveItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                tableModel.addRow(new Object[]{itemToBeAdd.getName(), requestedItemQuantity, requestedItemQuantity * itemToBeAdd.getCost()});
+                // update bill
+                //TODO : handle negative requested qty
+                if (billDisplay.getDisplayedBill().addItemID(itemToBeAdd.getID())) {
+                    try {
+                        billDisplay.getDisplayedBill().setItemIDQuantity(itemToBeAdd.getID(), requestedItemQuantity);
+                    } catch (NegativeQuantityException ex) {
+
+                    }
+                } else {
+                    try {
+                        //TODO : blacklist
+                        billDisplay.getDisplayedBill().setItemIDQuantity(itemToBeAdd.getID(), requestedItemQuantity);
+                    } catch (NegativeQuantityException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }
+
+                // update table model
+                billDisplay.updateTableModel();
+
 
                 // exit dialog
                 dispose();

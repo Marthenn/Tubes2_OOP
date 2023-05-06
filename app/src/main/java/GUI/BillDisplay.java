@@ -2,6 +2,7 @@ package GUI;
 
 import Core.Item.Bill.Bill;
 import Core.DataStore.DataStore;
+import Core.Item.QuantifiableItem;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,13 +14,12 @@ import java.awt.*;
 public class BillDisplay extends JScrollPane {
 
     @Getter
-    Bill displayedBill;
+    private Bill displayedBill;
 
-    @Getter(AccessLevel.PROTECTED)
-    JTable displayedTable;
-    @Getter
-    @Setter
-    DefaultTableModel displayedTableModel;
+    @Getter(AccessLevel.PRIVATE)
+    private JTable displayedTable;
+
+    private DefaultTableModel displayedTableModel;
     public BillDisplay() {
         this.displayedBill = DataStore.getInstance().createNewBill();
 
@@ -32,6 +32,14 @@ public class BillDisplay extends JScrollPane {
         this.displayedTable.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 
         this.setViewportView(this.displayedTable);
+    }
+
+    public void updateTableModel() {
+        this.displayedTableModel.setRowCount(0);
+
+        for (QuantifiableItem qItem : this.displayedBill.getItemList()) {
+            this.displayedTableModel.addRow(new String[]{qItem.getName(), qItem.getCategory(), Double.toString(qItem.getCost())});
+        }
     }
 
 
