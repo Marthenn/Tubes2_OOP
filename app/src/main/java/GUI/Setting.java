@@ -45,14 +45,14 @@ public class Setting extends JPanel {
                     objBox.setSelected(false);
                 }
                 if(dataStore.getFileType().get("XML") == null){
-                    objBox.setSelected(false);
+                    xmlBox.setSelected(false);
                 } else if (dataStore.getFileType().get("XML")) {
                     xmlBox.setSelected(true);
                 } else {
                     xmlBox.setSelected(false);
                 }
                 if(dataStore.getFileType().get("JSON") == null){
-                    objBox.setSelected(false);
+                    jsonBox.setSelected(false);
                 } else if (dataStore.getFileType().get("JSON")) {
                     jsonBox.setSelected(true);
                 } else {
