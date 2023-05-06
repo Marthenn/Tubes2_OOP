@@ -22,7 +22,7 @@ public class LoadingScreen {
                 Settings.getInstance().loadPath();
                 Settings.getInstance().loadFileType();
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                JOptionPane.showMessageDialog(null, "Error loading settings: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
             progress = 100;
             int finalProgress = progress;

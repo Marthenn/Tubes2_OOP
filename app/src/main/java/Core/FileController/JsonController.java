@@ -42,7 +42,7 @@ public class JsonController implements FileController{
     public void saveBill(StorerDataBill bills) throws IOException {
         String json = new ObjectMapper().writeValueAsString(bills);
         ObjectMapper mapper = new ObjectMapper();
-
+        System.out.println(Settings.getInstance().getPath());
         mapper.writeValue(Paths.get(Settings.getInstance().getPath()+"/bill.json").toFile(), json);
     }
 

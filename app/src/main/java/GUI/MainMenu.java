@@ -51,6 +51,8 @@ public class MainMenu extends JPanel {
     private void exitMenuMousePressed(MouseEvent e) {
         try {
             DataStore.getInstance().saveBill();
+            DataStore.getInstance().saveImage();
+            DataStore.getInstance().saveItem();
         } catch (Exception error) {
             System.out.println(error);
         }

@@ -263,16 +263,16 @@ public class DataStore {
 
     public void saveImage() throws IOException {
         FileController controller = new DataStoreController();
-        controller.saveImage(images);
+        controller.saveImage(this.images);
     }
     public void saveItem() throws IOException {
         FileController controller = new DataStoreController();
-        controller.saveItem(items);
+        controller.saveItem(this.items);
     }
 
     public void saveBill() throws IOException {
         FileController controller = new DataStoreController();
-        controller.saveBill(bills);
+        controller.saveBill(this.bills);
     }
 
 
