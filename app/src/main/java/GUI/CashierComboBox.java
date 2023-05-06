@@ -1,13 +1,9 @@
 package GUI;
 
-import Core.Customer.Customer;
 import Core.Customer.PremiumCustomer;
-import Core.DataStore.DataStore;
 import lombok.SneakyThrows;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

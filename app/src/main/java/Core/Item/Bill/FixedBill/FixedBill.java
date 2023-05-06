@@ -1,16 +1,22 @@
 package Core.Item.Bill.FixedBill;
 
+import Core.Deserializer.FixedBillDeserializer;
 import Core.IDAble.IDAble;
 import Core.Item.Bill.Exception.ItemInBillNotExist;
 import Core.Item.Bill.FixedBill.FixedBillModifier.FixedBillModifier;
 import Core.Item.Profit.Profitable;
 import Core.Item.QuantifiableItem;
+import Core.Serializer.FixedBillSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.*;
 
 import java.util.ArrayList;
 
 @RequiredArgsConstructor
 @AllArgsConstructor
+@JsonSerialize(using = FixedBillSerializer.class)
+@JsonDeserialize(using = FixedBillDeserializer.class)
 public class FixedBill implements Profitable, IDAble {
 
     @NonNull

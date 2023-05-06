@@ -1,16 +1,13 @@
 package Core.Serializer.StorerData;
 
-import Core.DataStore.StorerData.StorerData;
 import Core.DataStore.StorerData.StorerDataImageWithID;
 import Core.Item.Bill.Image.ImageWithID;
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import lombok.SneakyThrows;
 
-import java.awt.*;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.HashMap;

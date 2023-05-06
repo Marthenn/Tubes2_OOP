@@ -8,8 +8,12 @@ import Core.Customer.MembershipState.MembershipStateFactory;
 import Core.Customer.MembershipState.MembershipStateInterface;
 import Core.Customer.MembershipState.MembershipStateName;
 import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
+import Core.Deserializer.Customer.PremiumCustomerDeserializer;
 import Core.Item.Bill.FixedBill.FixedBill;
 import Core.Item.Bill.FixedBill.FixedBillModifier.FixedBillModifier;
+import Core.Serializer.Customer.PremiumCustomerSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
@@ -18,6 +22,8 @@ import lombok.Setter;
 import java.util.ArrayList;
 
 
+@JsonSerialize(using = PremiumCustomerSerializer.class)
+@JsonDeserialize(using = PremiumCustomerDeserializer.class)
 public class PremiumCustomer extends Customer implements MembershipStateInterface {
     private MembershipState state;
 

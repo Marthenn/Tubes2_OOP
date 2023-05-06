@@ -1,6 +1,5 @@
 package GUI;
 
-import Core.DataStore.DataStore;
 import Core.Settings;
 
 import javax.swing.*;

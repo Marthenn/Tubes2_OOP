@@ -6,8 +6,10 @@ import Core.Item.Bill.Exception.ItemInBillNotExist;
 import Core.Item.Bill.Image.ImageWithID;
 import Core.Serializer.QuantifiableItemSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import lombok.*;
-import lombok.experimental.SuperBuilder;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.annotation.Nullable;
 

@@ -1,5 +1,6 @@
 package Core;
 
+import Plugins.Plugin;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -9,7 +10,10 @@ import lombok.SneakyThrows;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static Plugins.Helper.loadClasses;
 
@@ -45,7 +49,16 @@ public class Settings {
     public void addPlugin(String pluginDirectory) {
         List<Class<?>> classes = loadClasses(pluginDirectory);
         for (Class<?> cls : classes) {
-            System.out.println(cls.getName());
+            try{
+                Object obj = cls.newInstance();
+                if (obj instanceof Plugin){
+                    Plugin plugin = (Plugin) obj;
+                    System.out.println(plugin.getName());
+                    this.plugins.add(plugin.getName());
+                }
+            } catch (Exception e){
+                System.out.println("Failed to load plugin");
+            }
         }
     }
     public void savePath() throws IOException {

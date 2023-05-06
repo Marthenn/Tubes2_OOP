@@ -1,20 +1,11 @@
 package Core.FileController;
 
-import Core.DataStore.DataStore;
-import Core.DataStore.StorerData.StorerData;
 import Core.DataStore.StorerData.StorerDataBill;
 import Core.DataStore.StorerData.StorerDataImageWithID;
 import Core.DataStore.StorerData.StorerDataQuantifiableItem;
-import Core.Item.Bill.Bill;
-import Core.Item.Bill.Image.ImageWithID;
-import Core.Item.QuantifiableItem;
-import Core.Settings;
-import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 
 import java.io.IOException;
-import java.util.Map;
 
 public class DataStoreController implements FileController{
     private FileController fileController;

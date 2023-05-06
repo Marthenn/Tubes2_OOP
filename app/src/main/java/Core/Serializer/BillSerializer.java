@@ -1,7 +1,6 @@
 package Core.Serializer;
 
 import Core.Item.Bill.Bill;
-import Core.Item.Bill.FixedBill.FixedBillModifier.FixedBillModifier;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,9 +8,8 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import lombok.SneakyThrows;
 
-import java.lang.reflect.*;
-
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.HashMap;
 
 public class BillSerializer extends StdSerializer<Bill> {

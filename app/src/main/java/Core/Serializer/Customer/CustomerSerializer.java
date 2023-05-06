@@ -1,7 +1,6 @@
-package Core.Serializer;
+package Core.Serializer.Customer;
 
-import Core.Item.Bill.FixedBill.FixedBillModifier.FixedBillModifier;
-import Core.Item.QuantifiableItem;
+import Core.Customer.Customer;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,24 +9,25 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 import java.io.IOException;
 
-public class FixedBillModifierSerializer extends StdSerializer<FixedBillModifier> {
+public class CustomerSerializer extends StdSerializer<Customer> {
     private ObjectMapper mapper = new ObjectMapper();
 
-    public FixedBillModifierSerializer() {
+    public CustomerSerializer() {
         this(null);
     }
 
-    public FixedBillModifierSerializer(Class<FixedBillModifier> t) {
+    public CustomerSerializer(Class<Customer> t) {
         super(t);
     }
 
     @Override
-    public void serialize(FixedBillModifier value,
+    public void serialize(Customer value,
                           JsonGenerator jgen,
                           SerializerProvider serializers)
             throws IOException, JsonProcessingException {
         jgen.writeStartObject();
-
+        CustomerSerializerUtility utility = new CustomerSerializerUtility();
+        utility.writeCustomerProperty(value, jgen);
         jgen.writeEndObject();
     }
 }
