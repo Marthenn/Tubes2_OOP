@@ -32,16 +32,6 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem> 
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner Evaluation license - Fakih Anugerah Pratama
 
-        //// DEBUG DATA
-        try {
-            DataStore.getInstance().addNewItem("makan", 2.3, 2.4, "ayam", 3, "");
-            DataStore.getInstance().addNewItem("tidak", 2.3, 2.4, "bebek", 4, "");
-        } catch (ItemWithIDAlreadyExist e) {
-            throw new RuntimeException(e);
-        } catch (NegativeQuantityException e) {
-            throw new RuntimeException(e);
-        }
-
         // add this to listener list
         DataStore.getInstance().listenToItem(this);
 
@@ -208,7 +198,7 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem> 
                                             .stream()
                                             .filter(qItem -> qItem.getName().contains(searchText.getText()) ||
                                                     qItem.getCategory().contains(searchText.getText()) ||
-                                                    Double.toString(qItem.getCost()).contains(searchText.getText()))
+                                                    Double.toString(qItem.getSingularPrice()).contains(searchText.getText()))
                                             .collect(Collectors.toCollection(ArrayList::new))
                                                 .get(listSelectionModel.getMinSelectionIndex()));
                 }
@@ -284,12 +274,12 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem> 
                 .stream()
                 .filter(qItem ->    qItem.getName().contains(filterText) ||
                                     qItem.getCategory().contains(filterText) ||
-                                    Double.toString(qItem.getCost()).contains(filterText))
+                                    Double.toString(qItem.getSingularPrice()).contains(filterText))
                 .collect(Collectors.toCollection(ArrayList::new));
 
         // Update tableModel
         for (QuantifiableItem qItem : filteredBrowseObjects) {
-            browseListTableModel.addRow(new String[]{qItem.getName(), qItem.getCategory(), Double.toString(qItem.getCost())});
+            browseListTableModel.addRow(new String[]{qItem.getName(), qItem.getCategory(), Double.toString(qItem.getSingularPrice())});
         }
     }
 

@@ -150,12 +150,24 @@ public class QuantifiableItem implements ItemLikeInterface, IDAbleEmitter<IDAble
     public void setSingularCost(Double cost) {
         this.item.setCost(cost);
         notifyListener();
-
     }
 
+    /**
+     *
+     * @return The cost of one item
+     */
     public Double getSingularCost() {
         return this.item.getCost();
     }
+
+    /**
+     *
+     * @return The price of one item
+     */
+    public Double getSingularPrice() {
+        return this.item.getPrice();
+    }
+
 
     public void setSingularPrice(Double price) {
         this.item.setPrice(price);
