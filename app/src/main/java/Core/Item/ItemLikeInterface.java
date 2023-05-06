@@ -1,7 +1,6 @@
 package Core.Item;
 
-import Core.IDAble;
-import Core.Item.Bill.Image.ImageWithID;
+import Core.IDAble.IDAble;
 import Core.Item.Profit.Profitable;
 
 interface ItemLikeInterface extends IDAble, Profitable {

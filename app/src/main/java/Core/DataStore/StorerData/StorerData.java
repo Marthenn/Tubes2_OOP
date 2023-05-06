@@ -4,7 +4,7 @@ package Core.DataStore.StorerData;
 import Core.DataStore.StorerData.Exception.ItemWithIDAlreadyExist;
 import Core.DataStore.StorerData.Exception.RemovedItemNotExist;
 import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
-import Core.IDAble;
+import Core.IDAble.IDAble;
 import lombok.Getter;
 import lombok.NonNull;
 

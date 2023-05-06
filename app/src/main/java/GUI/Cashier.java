@@ -6,6 +6,7 @@ package GUI;
 
 import Core.DataStore.DataStore;
 import Core.DataStore.StorerData.Exception.ItemWithIDAlreadyExist;
+import Core.IDAble.IDAbleListener;
 import Core.Item.Bill.Bill;
 import Core.Item.Exception.NegativeQuantityException;
 import Core.Item.QuantifiableItem;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-public class Cashier extends JPanel {
+public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem> {
 
     private ArrayList<BillDisplay> currentActiveBillDisplays = new ArrayList<>();
     public Cashier() {
@@ -296,6 +297,10 @@ public class Cashier extends JPanel {
         return currentActiveBillDisplays.get(currentActiveBillDisplays.size() - 1);
     }
 
+    public void onItemWithIDChange(QuantifiableItem item) {
+
+    }
+
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
     // Generated using JFormDesigner Evaluation license - Fakih Anugerah Pratama
     private JLabel title;
@@ -311,5 +316,6 @@ public class Cashier extends JPanel {
     private JButton saveBill;
     private JButton printBill;
     private JButton addItem;
+
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }

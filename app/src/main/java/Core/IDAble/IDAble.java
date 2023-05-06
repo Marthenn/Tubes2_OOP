@@ -1,4 +1,4 @@
-package Core;
+package Core.IDAble;
 
 public interface IDAble {
     /**

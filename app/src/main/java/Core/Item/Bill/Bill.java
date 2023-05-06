@@ -3,7 +3,7 @@ package Core.Item.Bill;
 import Core.Customer.Customer;
 import Core.DataStore.DataStore;
 import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
-import Core.IDAble;
+import Core.IDAble.IDAble;
 import Core.Item.Bill.Exception.ItemInBillNotExist;
 import Core.Item.Bill.FixedBill.FixedBill;
 import Core.Item.Exception.NegativeQuantityException;
