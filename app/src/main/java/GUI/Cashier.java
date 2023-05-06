@@ -18,6 +18,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class Cashier extends JPanel {
 
@@ -44,26 +45,15 @@ public class Cashier extends JPanel {
 
         //TODO : DATA PERSISTENCE AND NON_STATIC DATA FETCHING
         ArrayList<QuantifiableItem> browseObjects = DataStore.getInstance().getItems();
-        Object[][] browseObjectItemPool = new Object[browseObjects.size()][3];
-        for(int i = 0; i < browseObjects.size(); i++) {
-            browseObjectItemPool[i] = new Object[]{ browseObjects.get(i).getName(),
-                                                    browseObjects.get(i).getCategory(),
-                                                    Double.toString(browseObjects.get(i).getCost())
-                                                    };
-        }
 
+        // browsed Items Table Model
         DefaultTableModel browseListTableModel = new DefaultTableModel();
         browseListTableModel.addColumn("Nama");
         browseListTableModel.addColumn("Kategori");
         browseListTableModel.addColumn("Harga");
-        for(int i = 0; i < browseObjectItemPool.length; i++) {
-            browseListTableModel.addRow(browseObjectItemPool[i]);
-        }
 
-//        DefaultTableModel billItemTableModel = new DefaultTableModel();
-//        billItemTableModel.addColumn("nama");
-//        billItemTableModel.addColumn("quantity");
-//        billItemTableModel.addColumn("subtotal");
+        setTableModelContent(browseListTableModel, browseObjects);
+
 
         title = new JLabel();
         browsePane = new JScrollPane();
@@ -71,8 +61,6 @@ public class Cashier extends JPanel {
         searchText = new JTextField();
         searchButton = new JButton();
         billTabPane = new JTabbedPane();
-//        billDetailPane = new JScrollPane();
-//        billItemTable = new JTable(billItemTableModel);
         createNewBillTab(); // Bill1
         createNewBillTab(); // +
         subtotalTitle = new JLabel();
@@ -210,7 +198,13 @@ public class Cashier extends JPanel {
 
                 ListSelectionModel listSelectionModel = (ListSelectionModel) e.getSource();
                 if(!listSelectionModel.isSelectionEmpty()) {
-                    setSelectedBrowseObject(browseObjects.get(listSelectionModel.getMinSelectionIndex()));
+                    setSelectedBrowseObject(browseObjects
+                                            .stream()
+                                            .filter(qItem -> qItem.getName().contains(searchText.getText()) ||
+                                                    qItem.getCategory().contains(searchText.getText()) ||
+                                                    Double.toString(qItem.getCost()).contains(searchText.getText()))
+                                            .collect(Collectors.toCollection(ArrayList::new))
+                                                .get(listSelectionModel.getMinSelectionIndex()));
                 }
             }
         });
@@ -219,32 +213,26 @@ public class Cashier extends JPanel {
         searchText.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                Object[] _temp = Arrays.stream(browseObjectItemPool).filter(item ->
-                        item[0].toString().contains(searchText.getText()) ||
-                        item[1].toString().contains(searchText.getText()) ||
-                        item[2].toString().contains(searchText.getText())
-                ).toArray();
-                Object[][] newValue = new Object[_temp.length][3];
-                for(int i = 0; i < _temp.length; i++) {
-                    newValue[i] = new Object[]{((Object[]) _temp[i])[0], ((Object[]) _temp[i])[1], ((Object[]) _temp[i])[2]};
-                }
-
-                setTableModelContent(browseListTableModel, newValue);
+                setTableModelContent(browseListTableModel,
+                                        browseObjects
+                                            .stream()
+                                            .filter(qItem -> qItem.getName().contains(searchText.getText()) ||
+                                                            qItem.getCategory().contains(searchText.getText()) ||
+                                                            Double.toString(qItem.getCost()).contains(searchText.getText()))
+                                            .collect(Collectors.toCollection(ArrayList::new))
+                );
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                Object[] _temp = Arrays.stream(browseObjectItemPool).filter(item ->
-                        item[0].toString().contains(searchText.getText()) ||
-                                item[1].toString().contains(searchText.getText()) ||
-                                item[2].toString().contains(searchText.getText())
-                ).toArray();
-                Object[][] newValue = new Object[_temp.length][3];
-                for(int i = 0; i < _temp.length; i++) {
-                    newValue[i] = new Object[]{((Object[]) _temp[i])[0], ((Object[]) _temp[i])[1], ((Object[]) _temp[i])[2]};
-                }
-
-                setTableModelContent(browseListTableModel, newValue);
+                setTableModelContent(browseListTableModel,
+                        browseObjects
+                                .stream()
+                                .filter(qItem -> qItem.getName().contains(searchText.getText()) ||
+                                        qItem.getCategory().contains(searchText.getText()) ||
+                                        Double.toString(qItem.getCost()).contains(searchText.getText()))
+                                .collect(Collectors.toCollection(ArrayList::new))
+                );
             }
 
             @Override
@@ -257,7 +245,10 @@ public class Cashier extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (browseTableSM.isSelectionEmpty()) return;
-                CashierItemAdd cashierItemAddDialog = new CashierItemAdd(selectedSoldItem, currentActiveBillDisplays.get(billTabPane.getSelectedIndex()).getDisplayedTableModel());
+                CashierItemAdd cashierItemAddDialog = new CashierItemAdd(selectedSoldItem,
+                                                        currentActiveBillDisplays
+                                                        .get(billTabPane.getSelectedIndex())
+                                                        .getDisplayedTableModel());
             }
         });
 
@@ -282,14 +273,13 @@ public class Cashier extends JPanel {
         selectedSoldItem = soldItem;
     }
 
-    void setTableModelContent(DefaultTableModel tableModel, Object[][] newValue){
-//        for (int i = 0; i < tableModel.getRowCount(); i++){
-//            tableModel.removeRow(0);
-//        }
+    void setTableModelContent(DefaultTableModel tableModel, ArrayList<QuantifiableItem> newValue){
+        // Empty tableModel
         tableModel.setRowCount(0);
 
-        for (int i = 0; i < newValue.length; i++){
-            tableModel.addRow(new Object[]{newValue[i][0], newValue[i][1], newValue[i][2]});
+        // Update tableModel
+        for (QuantifiableItem qItem : newValue) {
+            tableModel.addRow(new String[]{qItem.getName(), qItem.getCategory(), Double.toString(qItem.getCost())});
         }
     }
 
