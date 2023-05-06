@@ -8,13 +8,19 @@ import Core.Customer.Customer;
 import Core.Customer.PremiumCustomer;
 import Core.DataStore.DataStore;
 import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
+import Core.FullReportPrinter;
 import Core.IDAble.IDAbleListener;
+import Core.Item.Bill.Exception.ItemInBillNotExist;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
 import java.util.List;
+import java.util.Date;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -68,6 +74,7 @@ public class History extends JPanel implements IDAbleListener<Customer> {
         SearchBox = new JTextField();
         HistoryTablePane = new JScrollPane();
         HistoryTable = new JTable();
+        PrintFullReport = new JButton();
 
         setLayout(new GridBagLayout());
         ((GridBagLayout)getLayout()).columnWidths = new int[] {0, 0, 0, 0, 0};
@@ -112,7 +119,22 @@ public class History extends JPanel implements IDAbleListener<Customer> {
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 0, 0), 0, 0));
 
-
+        //---- PrintFullReport ----
+        PrintFullReport.setText("Print Full Sales Report");
+        add(PrintFullReport, new GridBagConstraints(3, 2, 1, 1, 0.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(0, 0, 5, 5), 0, 0));
+        PrintFullReport.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                try {PrintFullReportPressed(e);
+                } catch (SearchedItemNotExist ex) {
+                    throw new RuntimeException(ex);
+                } catch (ItemInBillNotExist ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
         Name.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
@@ -130,6 +152,17 @@ public class History extends JPanel implements IDAbleListener<Customer> {
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
 
+    private void PrintFullReportPressed(MouseEvent e) throws SearchedItemNotExist, ItemInBillNotExist {
+        pathChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int result = pathChooser.showOpenDialog(History.this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = pathChooser.getSelectedFile();
+            FullReportPrinter fullReportPrinter = new FullReportPrinter(selectedFile.getAbsolutePath() + "/full_report-" + new Date() + ".pdf");
+            Thread reportThread = new Thread(fullReportPrinter::printFullReport);
+            reportThread.start();
+        }
+    }
+
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
     // Generated using JFormDesigner Evaluation license - Fakih Anugerah Pratama
     private JLabel NameLabel;
@@ -139,6 +172,8 @@ public class History extends JPanel implements IDAbleListener<Customer> {
     private JTextField SearchBox;
     private JScrollPane HistoryTablePane;
     private JTable HistoryTable;
+    private JButton PrintFullReport;
+    private JFileChooser pathChooser = new JFileChooser();
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 
     Boolean isMember(Customer customer) {

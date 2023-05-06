@@ -18,7 +18,7 @@ public class FullReportPrinter {
         this.customers = dataStore.getCustomers();
         this.filename = filename;
     }
-    public void printFullReport() throws ItemInBillNotExist {
+    public void printFullReport() {
         PDFPrinter pdfPrinter = new PDFPrinter(this.filename, PageSize.A4.getWidth(), PageSize.A4.getHeight());
         Thread pdfThread = new Thread(pdfPrinter);
         pdfThread.start();
@@ -35,7 +35,12 @@ public class FullReportPrinter {
                             item.getItem().getCost());
                     pdfPrinter.addText(text2);
                 }
-                double cost = this.customers.get(i).getHistory().get(j).getCost();
+                double cost = 0;
+                try {
+                    cost = this.customers.get(i).getHistory().get(j).getCost();
+                } catch (ItemInBillNotExist e) {
+                    throw new RuntimeException(e);
+                }
                 String text3 = Double.toString(cost);
                 pdfPrinter.addText("   Total: " + text3 + "\n\n");
             }
