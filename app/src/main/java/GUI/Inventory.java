@@ -466,19 +466,23 @@ public class Inventory extends JPanel {
         save_button.addActionListener(new ActionListener() { //save
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (Objects.equals(dialog1.getTitle(), "Add Item")){
-                    String newName = input_name.getText();
-                    Double newPrice = Double.valueOf(input_sellprice.getText());
-                    Double newOriginalPrice = Double.valueOf(input_buyprice.getText());
-                    Integer newQuantity = Integer.parseInt(input_stock.getText());
-                    String newCategory = input_category.getText();
-                    if (newName.equals("")){
-                        input_name.setText("INVALID");
-                    } else {
+                String newName = input_name.getText();
+                String newPrice = input_sellprice.getText();
+                String newOriginalPrice = input_buyprice.getText();
+                String newQuantity = input_stock.getText();
+                String newCategory = input_category.getText();
+                if (newName.equals("") || newPrice.equals("") || newOriginalPrice.equals("") || newQuantity.equals("") || newCategory.equals("")) {
+                    error_null_item.setVisible(true);
+                } else if (Objects.equals(dialog1.getTitle(), "Add Item")){
+                    try {
+                        Double newPriceD = Double.valueOf(input_sellprice.getText());
+                        Double newOriginalPriceD = Double.valueOf(input_buyprice.getText());
+                        Integer newQuantityI = Integer.parseInt(input_stock.getText());
+
                         QuantifiableItem newItem = null;
                         boolean addingSuccess = false;
                         try {
-                            newItem = DataStore.getInstance().addNewItem(newName, newPrice, newOriginalPrice, newCategory, newQuantity, base64Image);
+                            newItem = DataStore.getInstance().addNewItem(newName, newPriceD, newOriginalPriceD, newCategory, newQuantityI, base64Image);
                             addingSuccess = true;
                         } catch (Exception error) {
                             System.out.println(error.getMessage());
@@ -497,31 +501,37 @@ public class Inventory extends JPanel {
                                 throw new RuntimeException(ex);
                             }
                         }
+                    } catch (NumberFormatException nfe){
+                        error_wrong_types.setVisible(true);
                     }
                 } else { //edit
                     int idx = item_list.getSelectedIndex();
-                    QuantifiableItem editedItemDisplay = items.get(idx);
-                    editedItemDisplay.setName(input_name.getText());
-                    editedItemDisplay.setSingularPrice(Double.valueOf((input_sellprice.getText())));
-                    editedItemDisplay.setSingularCost(Double.valueOf(input_buyprice.getText()));
-                    editedItemDisplay.setQuantity(Integer.parseInt(input_stock.getText()));
-                    editedItemDisplay.setCategory(input_category.getText());
-                    editedItemDisplay.setImage(base64Image);
-                    items_list.setElementAt(input_name.getText(),idx);
-
-                    String itemImage = null;
                     try {
-                        itemImage = editedItemDisplay.getImage().getBase64Image();
-                    } catch (SearchedItemNotExist error) {
+                        QuantifiableItem editedItemDisplay = items.get(idx);
+                        editedItemDisplay.setName(input_name.getText());
+                        editedItemDisplay.setSingularPrice(Double.valueOf((input_sellprice.getText())));
+                        editedItemDisplay.setSingularCost(Double.valueOf(input_buyprice.getText()));
+                        editedItemDisplay.setQuantity(Integer.parseInt(input_stock.getText()));
+                        editedItemDisplay.setCategory(input_category.getText());
+                        editedItemDisplay.setImage(base64Image);
+                        items_list.setElementAt(input_name.getText(), idx);
 
+                        String itemImage = null;
+                        try {
+                            itemImage = editedItemDisplay.getImage().getBase64Image();
+                        } catch (SearchedItemNotExist error) {
+
+                        }
+
+                        assert (itemImage != null);
+
+                        setItemProperty(input_name.getText(), Double.parseDouble(input_sellprice.getText()), Double.parseDouble(input_buyprice.getText()), Integer.parseInt(input_stock.getText()), input_category.getText());
+                        displayImageInJLabel(itemImage, item_image);
+                        setBase64ImageToDefault();
+                        dialog1.setVisible(false);
+                    } catch (NumberFormatException nfe){
+                        error_wrong_types.setVisible(true);
                     }
-
-                    assert(itemImage != null);
-
-                    setItemProperty(input_name.getText(),Double.parseDouble(input_sellprice.getText()),Double.parseDouble(input_buyprice.getText()),Integer.parseInt(input_stock.getText()),input_category.getText());
-                    displayImageInJLabel(itemImage, item_image);
-                    setBase64ImageToDefault();
-                    dialog1.setVisible(false);
                 }
             }
         });
@@ -531,11 +541,9 @@ public class Inventory extends JPanel {
 
                 JFileChooser file = new JFileChooser();
                 file.setCurrentDirectory(new File(System.getProperty("user.home")));
-                //filter the files
                 FileNameExtensionFilter filter = new FileNameExtensionFilter("*.Images", "jpg","gif","png");
                 file.addChoosableFileFilter(filter);
                 int result = file.showSaveDialog(null);
-                //if the user click on save in Jfilechooser
                 if(result == JFileChooser.APPROVE_OPTION){
                     File selectedFile = file.getSelectedFile();
                     String path = selectedFile.getAbsolutePath();
@@ -550,10 +558,7 @@ public class Inventory extends JPanel {
 
                     displayImageInJLabel(base64Image,image_editdisplay);
 
-//                    image_editdisplay.setIcon(ResizeImage(image2));
-//                    imgPath = path;
                 }
-                //if the user click on save in Jfilechooser
                 else if(result == JFileChooser.CANCEL_OPTION){
                     System.out.println("No File Select");
                 }
