@@ -4,22 +4,31 @@
 
 package GUI;
 
+import Core.Customer.Customer;
 import Core.DataStore.DataStore;
 import Core.DataStore.StorerData.Exception.ItemWithIDAlreadyExist;
+import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
+import Core.DataStore.StorerData.StorerDataListener;
 import Core.IDAble.IDAbleListener;
 import Core.Item.Exception.NegativeQuantityException;
 import Core.Item.QuantifiableItem;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.stream.Collectors;
 
-public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem> {
+public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>, StorerDataListener {
 
     private ArrayList<BillDisplay> currentActiveBillDisplays = new ArrayList<>();
     ArrayList<QuantifiableItem> browseObjects = new ArrayList<>();
@@ -34,13 +43,22 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem> 
 
         // add this to listener list
         DataStore.getInstance().listenToItem(this);
+        DataStore.getInstance().listenToItemStore(this);
 
         //// DEBUG DATA
+//        try {
+//            DataStore.getInstance().addNewItem("123", 2d, 3d, "sad", 4, "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAABzklEQVR4nOzavWtTURjHca9cScQgouAgCEEcTMggEgIJODgpGaMoxBA0JMQh4qCgqIvGoBjUQMjgImSw7ZRA20x9oVAKHQJtOhQS+kKhlLZ3SNsEQkmh/Qe++8OB5zt+zhB+nKGX3mtbxaVz1HiwiV4O3kG3vrInNhfRvQ+O0CP+2+ip/27086gGpQOk0wHS6QDp7FUnjAdXPn1Er/XG0K9HKuh72wvoxek36IMPL9FdhTi68TegA6TTAdLpAOns0iU/HngyLvQXqXfoPl8Q/XSEn+Nfd1bQyxf4dx/Z/HfD+BvQAdLpAOl0gHRW53kSD7y9a+iZcB3995cc+o+7t9Ar2WfosV6JvcG/a/wN6ADpdIB0OkA6a3SX/5/TfXIfveH5g/7wagi91R6i37gXQc+u83P/ZOgbuvE3oAOk0wHS6QDp7M+/jvGg7qTQ89/fovdbDvpj9yH6vrOGHkreRH8fraIbfwM6QDodIJ0OkM4+aXbxYCv9D30Qu4weCLxCb/aX0f9e5O+IcsMZ9Il0At34G9AB0ukA6XSAdLaT4/cAO7P83ejPOL/fzU9toM9V59FrVQ/60+gAvdA+QDf+BnSAdDpAOh0g3VkAAAD//+/NYfgVbkzvAAAAAElFTkSuQmCC");
+//        } catch (ItemWithIDAlreadyExist e) {
+//            throw new RuntimeException(e);
+//        } catch (NegativeQuantityException e) {
+//            throw new RuntimeException(e);
+//        }
 
 
         //TODO : DATA PERSISTENCE AND NON_STATIC DATA FETCHING
         // FIRST TIME FETCH
          browseObjects = DataStore.getInstance().getItems();
+
 
         title = new JLabel();
         browsePane = new JScrollPane();
@@ -60,10 +78,18 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem> 
         browseListTableModel.addColumn("Nama");
         browseListTableModel.addColumn("Kategori");
         browseListTableModel.addColumn("Harga");
+        browseListTableModel.addColumn("Gambar");
 
         updateBrowseTableModel();
 
         browseTable.setModel(browseListTableModel);
+
+        // set last column as jlabel
+        browseTable.getColumnModel().getColumn(3).setCellRenderer(new JTableCellRenderer());
+
+        // set table row height
+        browseTable.setRowHeight(128);
+
 
 
 
@@ -279,7 +305,12 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem> 
 
         // Update tableModel
         for (QuantifiableItem qItem : filteredBrowseObjects) {
-            browseListTableModel.addRow(new String[]{qItem.getName(), qItem.getCategory(), Double.toString(qItem.getSingularPrice())});
+
+            try {
+                browseListTableModel.addRow(new Object[]{qItem.getName(), qItem.getCategory(), Double.toString(qItem.getSingularCost()), base64ImageDecode(qItem.getImage().getBase64Image())});
+            } catch (Exception e) {
+                System.out.println(e.toString());
+            }
         }
     }
 
@@ -298,6 +329,18 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem> 
         System.out.println("TRIGGERED OBSERVER");
     }
 
+    private ImageIcon base64ImageDecode(String base64img){
+        try {
+            byte[] btDataFile = Base64.getDecoder().decode(base64img);
+            BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(btDataFile));
+            return new ImageIcon(bufferedImage);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+        return null;
+    }
+
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
     // Generated using JFormDesigner Evaluation license - Fakih Anugerah Pratama
     private JLabel title;
@@ -314,5 +357,24 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem> 
     private JButton printBill;
     private JButton addItem;
 
+    @Override
+    public void onStorerDataChange(String storerName) {
+    }
+
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
+}
+
+class JTableCellRenderer extends DefaultTableCellRenderer {
+    JLabel label = new JLabel();
+
+    @Override
+    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        //TODO : onselect
+        label.setIcon((Icon) value);
+        label.setHorizontalAlignment(JLabel.CENTER);
+//        label.setText((String) value);
+        return label;
+    }
+
+
 }
