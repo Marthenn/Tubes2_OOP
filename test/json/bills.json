@@ -1,1 +1,1 @@
-{"storedItemName":"Bill","store":"{\"1\":{\"id\":1,\"ownerId\":3,\"itemsQuantity\":\"{\\\"3\\\":4}\"},\"2\":{\"id\":2,\"itemsQuantity\":\"{}\"},\"3\":{\"id\":3,\"itemsQuantity\":\"{}\"}}"}
+{"storedItemName":"Bill","store":"{\"1\":{\"id\":1,\"itemsQuantity\":\"{}\"},\"2\":{\"id\":2,\"itemsQuantity\":\"{}\"}}"}

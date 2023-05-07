@@ -39,6 +39,4 @@ public class BillDeserializer extends StdDeserializer<Bill> {
         HashMap<Integer, Integer> itemsQuantity = objectMapper.readValue(node.get("itemsQuantity").asText(), typeRef);
         return new Bill(id, ownerId, itemsQuantity);
     }
-
-
 }

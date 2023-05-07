@@ -419,6 +419,7 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
     public void onItemWithIDChange(QuantifiableItem item) {
         // NOTE : MIGHT CHANGE INTO MORE OPTIMIZED SOLUTION
         // should we update cost and qty realtime?
+        System.out.println(item.getName());
         browseObjects = DataStore.getInstance().getItems();
         updateBrowseTableModel();
     }

@@ -1,5 +1,6 @@
 package Core.Deserializer.StorerData;
 
+import Core.DataStore.StorerData.Exception.StorerDataOfEmitter;
 import Core.DataStore.StorerData.StorerData;
 import Core.IDAble.IDAble;
 import Core.Pair;
@@ -26,6 +27,18 @@ public class StorerDataDeserializerUtility<T extends IDAble> {
     public void setDeserializedProperty(StorerData<?> storerData, Pair<String, HashMap<Integer, T>> attribute) throws IOException {
         Field storeNameField = storerData.getClass().getSuperclass().getDeclaredField("storedItemName");
         Field storeField = storerData.getClass().getSuperclass().getDeclaredField("store");
+
+        storeNameField.setAccessible(true);
+        storeField.setAccessible(true);
+
+        storeNameField.set(storerData, attribute.getFirst());
+        storeField.set(storerData, attribute.getSecond());
+    }
+
+    @SneakyThrows
+    public void setDeserializedPropertyStorerEmitter(StorerDataOfEmitter<?, ?> storerData, Pair<String, HashMap<Integer, T>> attribute) throws IOException {
+        Field storeNameField = storerData.getClass().getSuperclass().getSuperclass().getDeclaredField("storedItemName");
+        Field storeField = storerData.getClass().getSuperclass().getSuperclass().getDeclaredField("store");
 
         storeNameField.setAccessible(true);
         storeField.setAccessible(true);

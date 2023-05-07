@@ -66,6 +66,13 @@ public class DataStore {
             retMap.put("Images", 0);
         }
 
+        retMap.put("Items", 1);
+        try {
+            this.items = controller.loadItem();
+        } catch (IOException ignored) {
+            retMap.put("Items", 0);
+        }
+
         retMap.put("Customers", 1);
         try {
             this.customers = controller.loadCustomer();
@@ -73,12 +80,6 @@ public class DataStore {
             retMap.put("Customers", 0);
         }
 
-        retMap.put("Items", 1);
-        try {
-            this.items = controller.loadItem();
-        } catch (IOException ignored) {
-            retMap.put("Items", 0);
-        }
 
         retMap.put("Premium Customers", 1);
         try {
@@ -98,6 +99,8 @@ public class DataStore {
         items.setListenerList(itemStoreListeners);
         customers.setListenerList(customerStoreListeners);
         premiumCustomers.setListenerList(customerStoreListeners);
+
+        items.updateStoredItemListenerList(itemListeners);
 
 
         return retMap;
@@ -259,8 +262,8 @@ public class DataStore {
     public QuantifiableItem addNewItem(String name, Double price, Double originalPrice, String category, Integer quantity, String img) throws ItemWithIDAlreadyExist, NegativeQuantityException {
         ImageWithID image = createNewImageWithID(img);
         QuantifiableItem newQItem = new QuantifiableItem(new Item(items.getNewID(), name, price, originalPrice, category, image.getID(), false), quantity);
-        items.addItem(newQItem);
         newQItem.setListenerList(itemListeners);
+        items.addItem(newQItem);
         return newQItem;
     }
 

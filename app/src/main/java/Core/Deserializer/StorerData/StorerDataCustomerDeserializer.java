@@ -38,7 +38,7 @@ public class StorerDataCustomerDeserializer extends StdDeserializer<StorerDataCu
         HashMap<Integer, Customer> store = new ObjectMapper().readValue(node.get("store").asText(), typeRef);
         StorerDataCustomer loadedStorerData = new StorerDataCustomer();
         Pair<String, HashMap<Integer, Customer>> attribute = new Pair<>(utility.getName(node), store);
-        utility.setDeserializedProperty(loadedStorerData, attribute);
+        utility.setDeserializedPropertyStorerEmitter(loadedStorerData, attribute);
         return loadedStorerData;
     }
 

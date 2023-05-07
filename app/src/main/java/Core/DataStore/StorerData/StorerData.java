@@ -5,6 +5,7 @@ import Core.DataStore.StorerData.Exception.ItemWithIDAlreadyExist;
 import Core.DataStore.StorerData.Exception.RemovedItemNotExist;
 import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
 import Core.IDAble.IDAble;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import java.util.HashMap;
 
 @RequiredArgsConstructor
 public class StorerData<T extends IDAble> implements StorerDataEmitter<StorerDataListener>, Serializable {
+    @Getter(AccessLevel.PROTECTED)
     private HashMap<Integer, T> store = new HashMap<Integer, T>();
 
     @NonNull

@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import lombok.SneakyThrows;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.HashMap;
 
 public class StorerDataQuantifiableItemDeserializer extends StdDeserializer<StorerDataQuantifiableItem> {
@@ -36,7 +37,8 @@ public class StorerDataQuantifiableItemDeserializer extends StdDeserializer<Stor
         HashMap<Integer, QuantifiableItem> store = new ObjectMapper().readValue(node.get("store").asText(), typeRef);
         StorerDataQuantifiableItem loadedStorerData = new StorerDataQuantifiableItem();
         Pair<String, HashMap<Integer, QuantifiableItem>> attribute = new Pair<>(utility.getName(node), store);
-        utility.setDeserializedProperty(loadedStorerData, attribute);
+        utility.setDeserializedPropertyStorerEmitter(loadedStorerData, attribute);
+
         return loadedStorerData;
     }
 
