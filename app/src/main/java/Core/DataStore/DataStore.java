@@ -101,6 +101,7 @@ public class DataStore {
         premiumCustomers.setListenerList(customerStoreListeners);
 
         items.updateStoredItemListenerList(itemListeners);
+        customers.updateStoredItemListenerList(customerListeners);
 
 
         return retMap;
