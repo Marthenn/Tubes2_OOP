@@ -53,6 +53,12 @@ public class JsonController implements FileController{
     }
 
     @Override
+    public StorerDataBill loadBill() throws IOException {
+        String json = new String(Files.readAllBytes(Paths.get(Settings.getInstance().getPath() + "/bill.json")));
+        return new ObjectMapper().readValue(json, StorerDataBill.class);
+    }
+
+    @Override
     public StorerDataImageWithID loadImage() throws IOException {
         String json = new String(Files.readAllBytes(Paths.get(Settings.getInstance().getPath() + "/image.json")));
         return new ObjectMapper().readValue(json, StorerDataImageWithID.class);

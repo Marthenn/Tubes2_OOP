@@ -83,6 +83,12 @@ public class DataStore {
             System.out.println("pc error");
             return 4;
         }
+
+        try {
+            this.bills = controller.loadBill();
+        } catch (IOException ignored){
+            return -1;
+        }
         return 0;
     }
 
