@@ -1,5 +1,6 @@
 package GUI;
 
+import Core.DataStore.DataStore;
 import Core.Settings;
 
 import javax.swing.*;
@@ -23,6 +24,14 @@ public class LoadingScreen {
                 Settings.getInstance().loadFileType();
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null, "Error loading settings: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+            System.out.println("sdklmkdsjkl");
+
+            try {
+                DataStore.getInstance();
+            } catch (Exception e) {
+
             }
             progress = 100;
             int finalProgress = progress;
