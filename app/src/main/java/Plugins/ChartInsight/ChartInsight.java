@@ -75,6 +75,17 @@ public class ChartInsight implements Plugin {
             throw new RuntimeException(e);
         }
         removeFromSetting("ChartInsight");
+
+        Field tabbedPaneField = findField(MainMenu.class, "tabbedPane");
+        tabbedPaneField.setAccessible(true);
+        JTabbedPane tabbedPane = null;
+        try {
+            tabbedPane = (JTabbedPane) tabbedPaneField.get(mainMenu);
+            if (tabbedPane.indexOfTab("ChartInsight") != -1)
+                tabbedPane.remove(tabbedPane.indexOfTab("ChartInsight"));
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
     public static Map<Integer, Integer> getSoldItems(){

@@ -71,6 +71,17 @@ public class PieInsight implements Plugin {
             e.printStackTrace();
         }
         removeFromSetting("PieChart");
+
+        Field tabbedPaneField = findField(MainMenu.class, "tabbedPane");
+        tabbedPaneField.setAccessible(true);
+        JTabbedPane tabbedPane = null;
+        try {
+            tabbedPane = (JTabbedPane) tabbedPaneField.get(mainMenu);
+            if (tabbedPane.indexOfTab("PieChart") != -1)
+                tabbedPane.removeTabAt(tabbedPane.indexOfTab("PieChart"));
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
     public ArrayList<String> getItems() {
