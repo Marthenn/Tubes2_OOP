@@ -237,7 +237,7 @@ public class MainMenu extends JPanel {
 
             //======== exitMenu ========
             {
-                exitMenu.setText("Exit");
+                exitMenu.setText("Save and Exit");
                 exitMenu.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mousePressed(MouseEvent e) {
