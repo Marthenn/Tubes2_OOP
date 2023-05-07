@@ -69,6 +69,7 @@ public class ObjController extends ConcreteFileController {
         }
         in.close();
         fileIn.close();
+        bill.initializeListener();
         return bill;
     }
 
@@ -84,6 +85,7 @@ public class ObjController extends ConcreteFileController {
         }
         in.close();
         fileIn.close();
+        image.initializeListener();
         return image;
     }
 
@@ -99,6 +101,7 @@ public class ObjController extends ConcreteFileController {
         }
         in.close();
         fileIn.close();
+        item.initializeListener();
         return item;
     }
 
@@ -114,12 +117,13 @@ public class ObjController extends ConcreteFileController {
         }
         in.close();
         fileIn.close();
+        customer.initializeListener();
         return customer;
     }
 
     @Override
     public StorerDataPremiumCustomer loadPremiumCustomer() throws IOException {
-        FileInputStream fileIn = new FileInputStream(getFile("premium_customer"));
+        FileInputStream fileIn = new FileInputStream(getFile("premiumCustomer"));
         ObjectInputStream in = new ObjectInputStream(fileIn);
         StorerDataPremiumCustomer premiumCustomer = null;
         try {
@@ -129,6 +133,7 @@ public class ObjController extends ConcreteFileController {
         }
         in.close();
         fileIn.close();
+        premiumCustomer.initializeListener();
         return premiumCustomer;
     }
 }

@@ -86,6 +86,7 @@ public class DataStore {
 
         retMap.put("Premium Customers", 1);
         try {
+            System.out.println("premiumCustomers");
             this.premiumCustomers = controller.loadPremiumCustomer();
         } catch (IOException ignored) {
             retMap.put("Premium Customers", 0);
