@@ -1,10 +1,11 @@
-package Plugins;
+package Plugins.Payment;
 
 import Core.Customer.Customer;
 import Core.Customer.PremiumCustomer;
 import Core.DataStore.DataStore;
 import Core.Item.Bill.FixedBill.FixedBill;
 import GUI.Setting;
+import Plugins.Plugin;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,7 +15,7 @@ import java.io.FileOutputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
-public class Payment implements Plugin{
+public class Payment implements Plugin {
     ArrayList<FixedBill> bills = new ArrayList<>();
     private Double tax = 0.0;
     Thread paymentThread = new Thread(new Runnable() {
@@ -112,7 +113,7 @@ public class Payment implements Plugin{
 
         paymentThread.start();
         // make pop up
-        JOptionPane.showMessageDialog(null, "Change the discount rate in the setting menu");
+        JOptionPane.showMessageDialog(null, "Change the tax and service charge rate in the setting menu (accumulative)");
     }
 
     @Override
