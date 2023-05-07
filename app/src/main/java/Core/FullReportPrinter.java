@@ -21,7 +21,7 @@ public class FullReportPrinter {
         this.premiumCustomers = dataStore.getPremiumCustomers();
         this.filename = filename;
     }
-    private void printFormat(PDFPrinter pdfPrinter, ArrayList<? extends Customer> arrCust){
+    private void printFormat(PDFPrinter pdfPrinter, ArrayList<? extends Customer> arrCust) throws ItemInBillNotExist {
         for(int i = 0; i < arrCust.size(); i++) {
             pdfPrinter.addText((i + 1) + ". Customer ID:" + arrCust.get(i).getID());
             if(arrCust.get(i) instanceof PremiumCustomer customer1){
@@ -34,18 +34,14 @@ public class FullReportPrinter {
                 pdfPrinter.addText("   FixedBill " + (j + 1));
                 for(int k = 0; k < arrCust.get(i).getHistory().get(j).getItems().size(); k++) {
                     QuantifiableItem item = arrCust.get(i).getHistory().get(j).getItems().get(k);
-                    String text2 = String.format("   %d. Item ID: %d\n    Name: %s\n    Category: %s\n    Cost: $%.2f\n",
+                    String text2 = String.format("%d. Item ID: %d\n    Name: %s\n    Category: %s\n    Price: $%.2f\n    Quantity: %d\n    Sub-Total: $%.2f\n",
                             k + 1, item.getItem().getID(), item.getItem().getName(), item.getItem().getCategory(),
-                            item.getItem().getCost());
+                            item.getItem().getPrice(), item.getQuantity(), item.getPrice());
                     pdfPrinter.addText(text2);
                 }
-                double cost = 0;
-                try {
-                    cost = arrCust.get(i).getHistory().get(j).getCost();
-                } catch (ItemInBillNotExist e) {
-                    throw new RuntimeException(e);
-                }
-                String text3 = Double.toString(cost);
+                double price = 0;
+                price = arrCust.get(i).getHistory().get(j).getPrice();
+                String text3 = Double.toString(price);
                 pdfPrinter.addText("   Total: " + text3 + "\n\n");
             }
         }
@@ -56,8 +52,12 @@ public class FullReportPrinter {
         pdfThread.start();
         pdfPrinter.addText("Full Report");
         pdfPrinter.addText("-----------\n\n");
-        printFormat(pdfPrinter, this.customers);
-        printFormat(pdfPrinter, this.premiumCustomers);
+        try {
+            printFormat(pdfPrinter, this.customers);
+            printFormat(pdfPrinter, this.premiumCustomers);
+        } catch (ItemInBillNotExist e) {
+            throw new RuntimeException(e);
+        }
 
         // wait for the PDF thread to finish
         try {

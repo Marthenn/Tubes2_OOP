@@ -36,6 +36,28 @@ java {
     }
 }
 
+sourceSets {
+    main {
+        java {
+            // plugin
+            // use : gradle run -Pplugin=variabel_tanpa_quote
+            if (project.hasProperty('plugin')) {
+                include("Plugins/" + property('plugin'))
+            }
+            // main program
+            else
+            {
+                // atau buat include all(?)
+                include("Core/**")
+                include("GUI/**")
+                include("Plugins/**")
+
+                include("Main.java")
+            }
+        }
+    }
+}
+
 application {
     // Define the main class for the application.
     mainClass = 'Main'
