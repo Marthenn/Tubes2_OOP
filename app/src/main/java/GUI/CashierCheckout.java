@@ -156,8 +156,8 @@ public class CashierCheckout extends JPanel implements StorerDataListener {
 //                System.out.println(DataStore.getInstance().getBillWithID(billToBeCheckedOut).getID());
 
                 // pay
+                // TODO : add modifiers if exists
                 billOwner.pay();
-
 
                 // pop up print bill
                 int custId = billOwner.getID();

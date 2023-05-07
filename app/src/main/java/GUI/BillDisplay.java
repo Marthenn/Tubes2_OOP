@@ -6,6 +6,7 @@ import Core.Item.Bill.Exception.ItemInBillNotExist;
 import Core.Item.QuantifiableItem;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.SneakyThrows;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -21,7 +22,9 @@ public class BillDisplay extends JScrollPane {
 
     @Getter(AccessLevel.PUBLIC)
     private DefaultTableModel displayedTableModel;
-    public BillDisplay() {
+
+    private  JLabel totalPriceLabel;
+    public BillDisplay(JLabel totalPriceLabel) {
         this.displayedBill = DataStore.getInstance().createNewBill();
 
         this.displayedTableModel = new DefaultTableModel();
@@ -32,19 +35,23 @@ public class BillDisplay extends JScrollPane {
         this.displayedTable = new JTable(this.displayedTableModel);
         this.displayedTable.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 
+        this.totalPriceLabel = totalPriceLabel;
+
         this.setViewportView(this.displayedTable);
     }
 
+    @SneakyThrows
     public void updateTableModel() {
+        Double totalPrice = 0d;
+
         this.displayedTableModel.setRowCount(0);
 
         for (QuantifiableItem qItem : this.displayedBill.getItemList()) {
-            try {
-                this.displayedTableModel.addRow(new String[]{qItem.getName(), Integer.toString(qItem.getQuantity()), Double.toString(qItem.getPrice())});
-            } catch (ItemInBillNotExist e) {
-                throw new RuntimeException(e);
-            }
+            this.displayedTableModel.addRow(new String[]{qItem.getName(), Integer.toString(qItem.getQuantity()), Double.toString(qItem.getPrice())});
+            totalPrice += qItem.getPrice();
         }
+
+        this.totalPriceLabel.setText(Double.toString(totalPrice));
     }
 
 

@@ -86,10 +86,10 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
         searchText = new JTextField();
         searchButton = new JButton();
         billTabPane = new JTabbedPane();
-        createNewBillTab(); // Bill1
-        createNewBillTab(); // +
         subtotalTitle = new JLabel();
         subtotalAmount = new JLabel();
+        createNewBillTab(); // Bill1
+        createNewBillTab(); // +
         deleteBill = new JButton();
         checkoutBill = new JButton();
         addItem = new JButton();
@@ -413,7 +413,8 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
     }
 
     BillDisplay createNewBillTab() {
-        currentActiveBillDisplays.add(new BillDisplay());
+        // TODO : currently getprice doesnt display de
+        currentActiveBillDisplays.add(new BillDisplay(subtotalAmount));
 
         updateBillTabTitle();
 
