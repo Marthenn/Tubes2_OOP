@@ -3,6 +3,7 @@ package Core.FileController;
 import Core.DataStore.StorerData.StorerDataBill;
 import Core.DataStore.StorerData.StorerDataImageWithID;
 import Core.DataStore.StorerData.StorerDataQuantifiableItem;
+import Core.Settings;
 import lombok.Setter;
 
 import java.io.IOException;
@@ -13,11 +14,9 @@ public class DataStoreController implements FileController{
     @Setter
     private String fileType;
     public DataStoreController(){
-//        Map<String, Boolean> fileType = DataStore.getInstance().getFileType();
-////        System.out.println(fileType.keySet());
-        fileController = new JsonController();
-//        if (fileType.get("JSON")){
-//        }
+        if (Settings.getInstance().getFileType().get("JSON")){
+            fileController = new JsonController();
+        }
     }
 
     @Override

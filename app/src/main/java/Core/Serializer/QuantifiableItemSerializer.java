@@ -28,6 +28,8 @@ public class QuantifiableItemSerializer extends StdSerializer<QuantifiableItem> 
         jgen.writeStartObject();
         jgen.writeNumberField("id", value.getID());
         jgen.writeStringField("name", value.getName());
+        System.out.println(value.getSingularCost());
+        System.out.println(value.getSingularPrice());
         jgen.writeNumberField("singularCost", value.getSingularCost());
         jgen.writeNumberField("singularPrice" , value.getSingularPrice());
         jgen.writeNumberField("quantity", value.getQuantity());

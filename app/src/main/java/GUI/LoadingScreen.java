@@ -35,9 +35,14 @@ public class LoadingScreen {
             try {
                 Settings.getInstance().loadPath();
                 Settings.getInstance().loadFileType();
-                DataStore.getInstance();
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null, "Error loading settings: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+            try {
+                DataStore.getInstance();
+            } catch (Exception e){
+
             }
             finished = true;
         }).start();
