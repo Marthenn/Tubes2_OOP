@@ -1,27 +1,29 @@
 package Plugins;
 
-import GUI.Cashier;
-import GUI.MainMenu;
+import Core.Customer.Customer;
+import Core.Customer.PremiumCustomer;
+import Core.DataStore.DataStore;
+import Core.Item.Bill.FixedBill.FixedBill;
 import GUI.Setting;
-import Plugins.Plugin;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
-public class Payment implements Plugin {
-
-    final Double tax = 0.1;
-    final Double serviceCharge = 0.05;
-    private Double discount = 0.0;
+public class Payment implements Plugin{
+    ArrayList<FixedBill> bills = new ArrayList<>();
+    private Double tax = 0.0;
     Thread paymentThread = new Thread(new Runnable() {
         @Override
         public void run() {
             while (true) {
                 try {
                     Thread.sleep(1000);
-                    System.out.println("Current Discount: " + discount);
+                    System.out.println("Current tax: " + tax);
 
                     // read the currency chosen from the setting dropdown
                     Setting setting = Setting.getInstance();
@@ -40,9 +42,9 @@ public class Payment implements Plugin {
                                         for (Component component1 : ((JPanel) component.getParent()).getComponents()) {
                                             if (component1 instanceof JComboBox) {
                                                 // get the selected item from the JComboBox
-                                                String newDiscount = (String) ((JComboBox) component1).getSelectedItem();
-                                                discount = Double.parseDouble(newDiscount);
-                                                System.out.println("New Discount: " + discount);
+                                                String newTax = (String) ((JComboBox) component1).getSelectedItem();
+                                                tax = Double.parseDouble(newTax);
+                                                System.out.println("New Discount: " + tax);
                                             }
                                         }
                                     }
@@ -50,6 +52,8 @@ public class Payment implements Plugin {
                             }
                         }
                     }
+                    ArrayList<FixedBill> fb = getBills();
+                    // if fb is
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 } catch (IllegalAccessException e) {
@@ -59,10 +63,53 @@ public class Payment implements Plugin {
         }
     });
 
+    private ArrayList<FixedBill> getBills(){
+        ArrayList<FixedBill> fb = new ArrayList<>();
+        for (Customer c : DataStore.getInstance().getCustomers()){
+            for (FixedBill b : c.getHistory()){
+                fb.add(b);
+            }
+        }
+        for (PremiumCustomer c : DataStore.getInstance().getPremiumCustomers()){
+            for (FixedBill b : c.getHistory()){
+                fb.add(b);
+            }
+        }
+        return fb;
+    }
+
     @Override
     public void load() {
         System.out.println("Loading Payment");
+        initialize();
         addToSetting("Payment", getItems());
+
+        // set the dropdown
+        Setting setting = Setting.getInstance();
+        Field pluginField = findField(Setting.class, "viewportPanel");
+        pluginField.setAccessible(true);
+        try{
+            for (Component componentOuter : ((JPanel) pluginField.get(setting)).getComponents()) {
+                if (componentOuter instanceof JPanel) {
+                    for (Component component : ((JPanel) componentOuter).getComponents()) {
+                        if (component instanceof JLabel) {
+                            if (((JLabel) component).getText().equals("Payment")) {
+                                // get the JComboBox inside the JPanel
+                                for (Component component1 : ((JPanel) component.getParent()).getComponents()) {
+                                    if (component1 instanceof JComboBox) {
+                                        // set the selected item from the JComboBox
+                                        ((JComboBox) component1).setSelectedItem(tax.toString());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
         paymentThread.start();
         // make pop up
         JOptionPane.showMessageDialog(null, "Change the discount rate in the setting menu");
@@ -83,5 +130,30 @@ public class Payment implements Plugin {
             items.add(d.toString());
         }
         return items;
+    }
+
+    private void initialize(){
+        File file = new File("tax.txt");
+        if (!file.exists()){
+            try {
+                file.createNewFile();
+                FileOutputStream fos = new FileOutputStream(file);
+                fos.write("0.0".getBytes());
+                fos.close();
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                byte[] bytes = new byte[100];
+                FileInputStream fis = new FileInputStream(file);
+                fis.read(bytes);
+                fis.close();
+                String s = new String(bytes);
+                tax = Double.parseDouble(s);
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        }
     }
 }
