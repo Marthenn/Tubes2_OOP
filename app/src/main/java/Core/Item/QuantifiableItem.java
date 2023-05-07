@@ -15,12 +15,13 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 @Getter
 @JsonSerialize(using = QuantifiableItemSerializer.class)
 @JsonDeserialize(using = QuantifiableItemDeserializer.class)
-public class QuantifiableItem implements ItemLikeInterface, IDAbleEmitter<IDAbleListener<QuantifiableItem>> {
+public class QuantifiableItem implements ItemLikeInterface, IDAbleEmitter<IDAbleListener<QuantifiableItem>>, Serializable {
     @Setter
     private int quantity = 0;
 

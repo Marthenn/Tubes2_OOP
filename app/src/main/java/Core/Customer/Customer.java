@@ -17,12 +17,13 @@ import lombok.Getter;
 import lombok.NonNull;
 
 import javax.annotation.Nullable;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 @Data
 @JsonSerialize(using = CustomerSerializer.class)
 @JsonDeserialize(using = CustomerDeserializer.class)
-public class Customer implements IDAbleEmitter<IDAbleListener<Customer>>, CanPay {
+public class Customer implements IDAbleEmitter<IDAbleListener<Customer>>, CanPay, Serializable {
     @NonNull
     private Integer id;
 

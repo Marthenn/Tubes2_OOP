@@ -12,11 +12,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.annotation.Nullable;
+import java.io.Serializable;
 
 @AllArgsConstructor
 @EqualsAndHashCode
 @JsonSerialize(using = QuantifiableItemSerializer.class)
-public class Item implements Cloneable, ItemInterface {
+public class Item implements Cloneable, ItemInterface, Serializable {
 
     @Nullable
     private Integer id;

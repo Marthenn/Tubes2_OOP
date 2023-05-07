@@ -10,10 +10,12 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 @AllArgsConstructor
 @JsonSerialize(using = ImageWithIDSerializer.class)
 @JsonDeserialize(using = ImageWithIDDeserializer.class)
-public class ImageWithID implements IDAble {
+public class ImageWithID implements IDAble, Serializable {
 
     private Integer id;
 

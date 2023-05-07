@@ -4,7 +4,8 @@
 
 package GUI;
 
-import Core.Settings;
+import Core.Settings.SaveFileType;
+import Core.Settings.Settings;
 import Plugins.Plugin;
 import lombok.SneakyThrows;
 
@@ -17,10 +18,6 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.jar.JarInputStream;
-
-import Core.DataStore.DataStore;
-import Core.Settings;
 
 /**
  * @author Marthen
@@ -42,26 +39,21 @@ public class Setting extends JPanel {
                 if (settings.getPath() != null) {
                     directoryLabel.setText(settings.getPath());
                 }
-                if(settings.getFileType().get("OBJ") == null){
-                    objBox.setSelected(false);
-                } else if (settings.getFileType().get("OBJ")) {
-                    objBox.setSelected(true);
-                } else {
-                    objBox.setSelected(false);
-                }
-                if(settings.getFileType().get("XML") == null){
-                    xmlBox.setSelected(false);
-                } else if (settings.getFileType().get("XML")) {
-                    xmlBox.setSelected(true);
-                } else {
-                    xmlBox.setSelected(false);
-                }
-                if(settings.getFileType().get("JSON") == null){
-                    jsonBox.setSelected(false);
-                } else if (settings.getFileType().get("JSON")) {
-                    jsonBox.setSelected(true);
-                } else {
-                    jsonBox.setSelected(false);
+
+                objBox.setSelected(false);
+                xmlBox.setSelected(false);
+                jsonBox.setSelected(false);
+
+                switch (settings.getSaveFileType()) {
+                    case OBJ -> {
+                        objBox.setSelected(true);
+                    }
+                    case XML -> {
+                        xmlBox.setSelected(true);
+                    }
+                    case JSON -> {
+                        jsonBox.setSelected(true);
+                    }
                 }
                 try {
                     Thread.sleep(300);
@@ -109,16 +101,15 @@ public class Setting extends JPanel {
 
     private void resetButtonMousePressed(MouseEvent e) {
         for (Plugin plugin : settings.getPlugins()) {
-            plugin.unload();
+            settings.removePlugin(plugin);
         }
     }
 
     private void objBoxItemStateChanged(ItemEvent e) {
         if (e.getStateChange() == ItemEvent.SELECTED) {
-            settings.getFileType().put("OBJ", true);
-        } else {
-            settings.getFileType().put("OBJ", false);
+            Settings.getInstance().setSaveFileType(SaveFileType.OBJ);
         }
+
         // save settings_config
         try {
             Settings.getInstance().saveFileType();
@@ -129,11 +120,8 @@ public class Setting extends JPanel {
 
     private void jsonBoxItemStateChanged(ItemEvent e) {
         if (e.getStateChange() == ItemEvent.SELECTED) {
-            settings.getFileType().put("JSON", true);
-        } else {
-            settings.getFileType().put("JSON", false);
-        }
-        // save settings_config
+            Settings.getInstance().setSaveFileType(SaveFileType.JSON);
+        }        // save settings_config
         try {
             Settings.getInstance().saveFileType();
         } catch (IOException er) {
@@ -143,9 +131,7 @@ public class Setting extends JPanel {
 
     private void xmlBoxItemStateChanged(ItemEvent e) {
         if (e.getStateChange() == ItemEvent.SELECTED) {
-            settings.getFileType().put("XML", true);
-        } else {
-            settings.getFileType().put("XML", false);
+            Settings.getInstance().setSaveFileType(SaveFileType.XML);
         }
         // save settings_config
         try {

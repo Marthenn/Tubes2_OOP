@@ -5,13 +5,11 @@
 package GUI;
 
 import Core.DataStore.DataStore;
-import Core.Settings;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
 
 /**
  * @author Marthen
@@ -50,8 +48,8 @@ public class MainMenu extends JPanel {
 
     private void exitMenuMousePressed(MouseEvent e) {
         try {
-            DataStore.getInstance().saveBill();
             DataStore.getInstance().saveImage();
+            DataStore.getInstance().saveBill();
             DataStore.getInstance().saveItem();
             DataStore.getInstance().saveCustomers();
             DataStore.getInstance().savePremiumCustomers();
