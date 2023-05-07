@@ -10,6 +10,9 @@ import Core.Item.Bill.Bill;
 import Core.Item.Bill.Exception.ItemOverOrderedException;
 import Core.Item.Bill.FixedBill.FixedBill;
 import Core.Item.Bill.FixedBill.FixedBillModifier.FixedBillModifier;
+import Core.Item.Exception.NegativeQuantityException;
+import Core.Item.Exception.NegativeQuantityModifierException;
+import Core.Item.QuantifiableItem;
 import Core.Serializer.Customer.CustomerSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -87,6 +90,13 @@ public class Customer implements IDAbleEmitter<IDAbleListener<Customer>>, CanPay
         }
 
         assert(getOngoingPurchase() != null);
+        Bill ourBill = this.getOngoingPurchase();
+        for (QuantifiableItem item : ourBill.getItemList()) {
+            try {
+                DataStore.getInstance().getItemWithID(item.getID()).decreaseQuantity(ourBill.getQuantityOfItemWithID(item.getID()));
+            } catch (NegativeQuantityModifierException | NegativeQuantityException ignored) {
+            }
+        }
         FixedBill finalBill = getOngoingPurchase().getFixedBill();
         addFixedBill(finalBill);
         return finalBill;

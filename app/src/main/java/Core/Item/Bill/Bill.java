@@ -107,6 +107,14 @@ public class Bill implements Priceable, IDAble, Serializable {
     }
 
     /**
+     * @param itemId
+     * @return The quantity of an item with the given ID. Null if it doesn't exist.
+     */
+    public Integer getQuantityOfItemWithID(Integer itemId) {
+        return this.itemsQuantity.get(itemId);
+    }
+
+    /**
      * Will ignore error of if Item in a bill does not exist in the datastore
      */
     public void assertBillValid() throws ItemOverOrderedException {
