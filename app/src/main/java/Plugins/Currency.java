@@ -116,6 +116,7 @@ public class Currency implements Plugin {
     public void unload() {
         System.out.println("Unloading Currency based insight.....");
         revertCurrency();
+        currencyThread.interrupt();
         removeFromSetting("Currency");
     }
 

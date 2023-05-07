@@ -1,15 +1,14 @@
 package GUI;
 
-import Core.DataStore.DataStore;
-import Core.Settings.Settings;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
-import java.util.HashMap;
 
 public class LoadingScreen {
     private JProgressBar progressBar = new JProgressBar();
+    @Setter @Getter
     private boolean finished = false;
 
     public LoadingScreen() {
@@ -24,33 +23,12 @@ public class LoadingScreen {
                 progressBar.setValue(progress);
                 progress = progress + 1;
                 try {
-                    Thread.sleep(50);
+                    Thread.sleep(30);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-        }).start();
-
-        new Thread(() -> {
-            try {
-                Settings.getInstance().loadPath();
-                Settings.getInstance().loadFileType();
-            } catch (IOException e) {
-                JOptionPane.showMessageDialog(null, "Error loading settings: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            }
-            if(Settings.getInstance().getPath() != null){
-                try {
-                    DataStore ds = DataStore.getInstance();
-                    HashMap<String, Integer> retMap = ds.load();
-                    String message = String.join(", ", retMap.keySet().stream().filter(key -> retMap.get(key) == 0).toList());
-                    if (!message.equals("")) {
-                        JOptionPane.showMessageDialog(null, message + " wasn't loaded");
-                    }
-                } catch (Exception e){
-                    JOptionPane.showMessageDialog(null, "Error loading data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-            finished = true;
+            progressBar.setValue(100);
         }).start();
     }
 
@@ -61,7 +39,4 @@ public class LoadingScreen {
         return panel;
     }
 
-    public boolean isFinished() {
-        return finished;
-    }
 }
