@@ -1,4 +1,4 @@
-package Core;
+package Core.Printer;
 
 import Core.Customer.Customer;
 import Core.Customer.PremiumCustomer;

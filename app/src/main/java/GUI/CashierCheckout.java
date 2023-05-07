@@ -10,7 +10,7 @@ import Core.DataStore.DataStore;
 import Core.DataStore.Exception.CustomerNotExistException;
 import Core.DataStore.Exception.PromotedCustomerAlreadyExist;
 import Core.DataStore.StorerData.StorerDataListener;
-import Core.FixedBillPrinter;
+import Core.Printer.FixedBillPrinter;
 import Core.Item.Bill.Bill;
 import Core.Item.Bill.FixedBill.FixedBillModifier.FixedBillModifier;
 import Core.Item.QuantifiableItem;

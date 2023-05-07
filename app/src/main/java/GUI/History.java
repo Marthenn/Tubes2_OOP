@@ -12,7 +12,7 @@ import Core.DataStore.Exception.CustomerNotExistException;
 import Core.DataStore.Exception.PromotedCustomerAlreadyExist;
 import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
 import Core.DataStore.StorerData.StorerDataListener;
-import Core.FullReportPrinter;
+import Core.Printer.FullReportPrinter;
 import Core.IDAble.IDAbleListener;
 import Core.Item.Bill.Exception.ItemInBillNotExist;
 import Core.Item.Bill.FixedBill.FixedBill;

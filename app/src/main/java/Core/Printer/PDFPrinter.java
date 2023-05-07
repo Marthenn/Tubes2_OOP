@@ -1,4 +1,4 @@
-package Core;
+package Core.Printer;
 
 import com.itextpdf.text.*;
 import com.itextpdf.text.Font.FontFamily;
