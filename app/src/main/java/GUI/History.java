@@ -166,7 +166,7 @@ public class History extends JPanel implements IDAbleListener<Customer>, StorerD
         int result = pathChooser.showOpenDialog(History.this);
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = pathChooser.getSelectedFile();
-            FullReportPrinter fullReportPrinter = new FullReportPrinter(selectedFile.getAbsolutePath() + "/full_report-" + new Date() + ".pdf");
+            FullReportPrinter fullReportPrinter = new FullReportPrinter(selectedFile.getAbsolutePath() + File.separator + "full_report-" + new Date() + ".pdf");
             Thread reportThread = new Thread(fullReportPrinter::printFullReport);
             reportThread.start();
         }
