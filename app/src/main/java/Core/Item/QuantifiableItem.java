@@ -65,7 +65,7 @@ public class QuantifiableItem implements ItemLikeInterface, IDAbleEmitter<IDAble
         if (this.quantity - number < 0) {
             throw new NegativeQuantityException();
         }
-        modifyQuantity(number);
+        modifyQuantity(-1*number);
     }
 
     /**
