@@ -50,8 +50,8 @@ public class MainMenu extends JPanel {
 
     private void exitMenuMousePressed(MouseEvent e) {
         try {
-            DataStore.getInstance().saveBill();
             DataStore.getInstance().saveImage();
+            DataStore.getInstance().saveBill();
             DataStore.getInstance().saveItem();
             DataStore.getInstance().saveCustomers();
             DataStore.getInstance().savePremiumCustomers();

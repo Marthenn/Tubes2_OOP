@@ -11,12 +11,15 @@ import java.io.IOException;
 public class DataStoreController implements FileController{
     private FileController fileController;
 
-    @Setter
-    private String fileType;
     public DataStoreController(){
         if (Settings.getInstance().getFileType().get("JSON")){
             fileController = new JsonController();
         }
+    }
+
+    @Override
+    public String getFileType() {
+        return fileController.getFileType();
     }
 
     @Override
@@ -66,5 +69,6 @@ public class DataStoreController implements FileController{
     public StorerDataPremiumCustomer loadPremiumCustomer() throws IOException{
         return fileController.loadPremiumCustomer();
     }
+
 
 }

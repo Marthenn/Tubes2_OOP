@@ -7,6 +7,7 @@ import Core.DataStore.StorerData.*;
 import java.io.IOException;
 
 public interface FileController{
+    String getFileType();
 
     void saveItem(StorerDataQuantifiableItem items) throws IOException;
     void saveImage(StorerDataImageWithID images) throws IOException;

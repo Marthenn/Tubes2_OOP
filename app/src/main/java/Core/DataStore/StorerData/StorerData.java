@@ -9,11 +9,12 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 @RequiredArgsConstructor
-public class StorerData<T extends IDAble> implements StorerDataEmitter<StorerDataListener>{
+public class StorerData<T extends IDAble> implements StorerDataEmitter<StorerDataListener>, Serializable {
     private HashMap<Integer, T> store = new HashMap<Integer, T>();
 
     @NonNull

@@ -11,13 +11,14 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 @RequiredArgsConstructor
 @AllArgsConstructor
 @JsonSerialize(using = FixedBillSerializer.class)
 @JsonDeserialize(using = FixedBillDeserializer.class)
-public class FixedBill implements Profitable, IDAble {
+public class FixedBill implements Profitable, IDAble, Serializable {
 
     @NonNull
     private Integer id;

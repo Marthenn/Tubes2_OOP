@@ -18,13 +18,14 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import javax.annotation.Nullable;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 @RequiredArgsConstructor
 @AllArgsConstructor
 @JsonSerialize(using = BillSerializer.class)
-public class Bill implements Priceable, IDAble {
+public class Bill implements Priceable, IDAble, Serializable {
 
     @NonNull
     private Integer id;
