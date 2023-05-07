@@ -41,7 +41,7 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
         return instance;
     }
 
-    private Cashier(JTabbedPane parentTabbedPane) {
+    protected Cashier(JTabbedPane parentTabbedPane) {
         this.parentTabbedPane = parentTabbedPane;
 
         initComponents();
