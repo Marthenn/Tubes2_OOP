@@ -167,8 +167,8 @@ public class DataStore {
         return bills.getItem(bill);
     }
 
-    public Item getItemWithID(int id) throws SearchedItemNotExist {
-        return items.getItem(id).getItem();
+    public QuantifiableItem getItemWithID(int id) throws SearchedItemNotExist {
+        return items.getItem(id);
     }
 
     /**

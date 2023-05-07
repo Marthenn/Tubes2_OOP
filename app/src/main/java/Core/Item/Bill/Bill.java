@@ -5,6 +5,7 @@ import Core.DataStore.DataStore;
 import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
 import Core.IDAble.IDAble;
 import Core.Item.Bill.Exception.ItemInBillNotExist;
+import Core.Item.Bill.Exception.ItemOverOrderedException;
 import Core.Item.Bill.FixedBill.FixedBill;
 import Core.Item.Exception.NegativeQuantityException;
 import Core.Item.Price.Priceable;
@@ -97,12 +98,39 @@ public class Bill implements Priceable, IDAble, Serializable {
         for (int id : itemsQuantity.keySet()) {
             try {
                 // The below error should not be possible because the quantity is asserted to not have error
-                list.add(new QuantifiableItem(DataStore.getInstance().getItemWithID(id), itemsQuantity.get(id)));
+                list.add(new QuantifiableItem(DataStore.getInstance().getItemWithID(id).getItem(), itemsQuantity.get(id)));
             } catch (NegativeQuantityException | SearchedItemNotExist ignored) {
             }
 
         }
         return list;
+    }
+
+    /**
+     * Will ignore error of if Item in a bill does not exist in the datastore
+     */
+    public void assertBillValid() throws ItemOverOrderedException {
+        for (Integer itemId : itemsQuantity.keySet()) {
+            QuantifiableItem item = null;
+            try {
+                item = DataStore.getInstance().getItemWithID(itemId);
+            } catch (SearchedItemNotExist ignored) {
+            }
+
+            assert(item != null);
+
+
+            Integer itemQuantity = itemsQuantity.get(itemId);
+
+            if (itemQuantity == null){
+                continue;
+            }
+
+            if (itemQuantity > item.getQuantity()) {
+                throw new ItemOverOrderedException(itemId);
+            }
+
+        }
     }
 
     /**
@@ -113,8 +141,8 @@ public class Bill implements Priceable, IDAble, Serializable {
         return id;
     }
 
-    public FixedBill getFixedBill() {
-
+    public FixedBill getFixedBill() throws ItemOverOrderedException {
+        assertBillValid();
         return new FixedBill(this.id, getItemList(), new ArrayList<>()
         );
     }

@@ -7,6 +7,7 @@ import Core.Deserializer.Customer.CustomerDeserializer;
 import Core.IDAble.IDAbleEmitter;
 import Core.IDAble.IDAbleListener;
 import Core.Item.Bill.Bill;
+import Core.Item.Bill.Exception.ItemOverOrderedException;
 import Core.Item.Bill.FixedBill.FixedBill;
 import Core.Item.Bill.FixedBill.FixedBillModifier.FixedBillModifier;
 import Core.Serializer.Customer.CustomerSerializer;
@@ -55,12 +56,12 @@ public class Customer implements IDAbleEmitter<IDAbleListener<Customer>>, CanPay
     }
 
     @Override
-    public FixedBill pay() throws NoOngoingPurchaseException, SearchedItemNotExist {
+    public FixedBill pay() throws NoOngoingPurchaseException, SearchedItemNotExist, ItemOverOrderedException {
         return this.pay(new ArrayList<FixedBillModifier>());
     }
 
     @Override
-    public FixedBill pay(ArrayList<FixedBillModifier> externalModifier) throws NoOngoingPurchaseException, SearchedItemNotExist {
+    public FixedBill pay(ArrayList<FixedBillModifier> externalModifier) throws NoOngoingPurchaseException, SearchedItemNotExist, ItemOverOrderedException {
         FixedBill finalBill = finalizeOngoingPurchase();
         for (FixedBillModifier modifier : externalModifier) {
             finalBill.addFixedBillModifier(modifier);
@@ -80,7 +81,7 @@ public class Customer implements IDAbleEmitter<IDAbleListener<Customer>>, CanPay
      * @return The Bill from ongoingPurchase converted to FixedBill
      * @throws NoOngoingPurchaseException The Customer has no current bill
      */
-    public FixedBill finalizeOngoingPurchase() throws NoOngoingPurchaseException, SearchedItemNotExist {
+    public FixedBill finalizeOngoingPurchase() throws NoOngoingPurchaseException, SearchedItemNotExist, ItemOverOrderedException {
         if (isNoOngoingPurchase()) {
             throw new NoOngoingPurchaseException();
         }

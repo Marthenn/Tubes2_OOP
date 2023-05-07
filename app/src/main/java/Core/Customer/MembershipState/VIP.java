@@ -5,6 +5,7 @@ import Core.Customer.Exception.PointInaccessibleIfNotMemberException;
 import Core.Customer.Exception.ZeroPointException;
 import Core.Customer.PremiumCustomer;
 import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
+import Core.Item.Bill.Exception.ItemOverOrderedException;
 import Core.Item.Bill.FixedBill.FixedBill;
 import Core.Item.Bill.FixedBill.FixedBillModifier.DiscountFixedBillModifier;
 import Core.Item.Bill.FixedBill.FixedBillModifier.FixedBillModifier;
@@ -23,12 +24,12 @@ public class VIP extends MembershipState{
 
 
     @Override
-    public FixedBill pay() throws NoOngoingPurchaseException, SearchedItemNotExist {
+    public FixedBill pay() throws NoOngoingPurchaseException, SearchedItemNotExist, ItemOverOrderedException {
         return this.pay(new ArrayList<FixedBillModifier>());
     }
 
     @Override
-    public FixedBill pay(ArrayList<FixedBillModifier> externalModifier) throws NoOngoingPurchaseException, SearchedItemNotExist {
+    public FixedBill pay(ArrayList<FixedBillModifier> externalModifier) throws NoOngoingPurchaseException, SearchedItemNotExist, ItemOverOrderedException {
         FixedBill finalBill = getContext().finalizeOngoingPurchase();
         for (FixedBillModifier modifier : externalModifier) {
             finalBill.addFixedBillModifier(modifier);
@@ -38,12 +39,12 @@ public class VIP extends MembershipState{
     }
 
     @Override
-    public FixedBill payWithPoint() throws ZeroPointException, PointInaccessibleIfNotMemberException, NoOngoingPurchaseException, SearchedItemNotExist {
+    public FixedBill payWithPoint() throws ZeroPointException, PointInaccessibleIfNotMemberException, NoOngoingPurchaseException, SearchedItemNotExist, ItemOverOrderedException {
         return this.payWithPoint(new ArrayList<FixedBillModifier>());
     }
 
     @Override
-    public FixedBill payWithPoint(ArrayList<FixedBillModifier> externalModifier) throws ZeroPointException, PointInaccessibleIfNotMemberException, NoOngoingPurchaseException, SearchedItemNotExist {
+    public FixedBill payWithPoint(ArrayList<FixedBillModifier> externalModifier) throws ZeroPointException, PointInaccessibleIfNotMemberException, NoOngoingPurchaseException, SearchedItemNotExist, ItemOverOrderedException {
 
         if (getContext().isNoPoint()) {
             throw new ZeroPointException();
