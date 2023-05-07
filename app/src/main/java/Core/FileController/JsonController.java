@@ -26,14 +26,12 @@ public class JsonController implements FileController{
 
     @Override
     public void saveImage(StorerDataImageWithID images) throws IOException {
-//        String json = new ObjectMapper().writeValueAsString(images);
         ObjectMapper mapper = new ObjectMapper();
         mapper.writeValue(Paths.get(Settings.getInstance().getPath()+"/image.json").toFile(), images);
     }
 
     @Override
     public void saveItem(StorerDataQuantifiableItem item) throws IOException {
-//        String json = new ObjectMapper().writeValueAsString(item);
         ObjectMapper mapper = new ObjectMapper();
         mapper.writeValue(Paths.get(Settings.getInstance().getPath()+"/item.json").toFile(), item);
     }
