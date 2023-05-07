@@ -1,6 +1,6 @@
 package Plugins;
 
-import Core.Settings;
+import Core.Settings.Settings;
 import GUI.Setting;
 
 import java.io.*;
