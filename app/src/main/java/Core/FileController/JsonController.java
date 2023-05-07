@@ -74,7 +74,7 @@ public class JsonController extends ConcreteFileController {
 
     @Override
     public StorerDataPremiumCustomer loadPremiumCustomer() throws IOException {
-        String json = new String(Files.readAllBytes(Paths.get(getFilePath("premiumCustomer"))));
+        String json = new String(Files.readAllBytes(Paths.get(getFilePath("premiumCustomers"))));
         return new ObjectMapper().readValue(json, StorerDataPremiumCustomer.class);
     }
 
