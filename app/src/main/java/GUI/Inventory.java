@@ -381,7 +381,7 @@ public class Inventory extends JPanel {
                     try {
                         if (idx!=-1) {
                             QuantifiableItem x = items.get(idx);
-                            setItemProperty(x.getName(),x.getItem().getPrice(), x.getItem().getCost(),x.getQuantity(),x.getCategory(),x.getItem().isDeleted());
+                            setItemProperty(x.getName(),x.getItem().getPrice(), x.getItem().getCost(),x.getQuantity(),x.getCategory(),x.isDeleted());
                             displayImageInJLabel(x.getImage().getBase64Image(),item_image);
                         }
                     } catch (SearchedItemNotExist ignored) {
@@ -396,13 +396,13 @@ public class Inventory extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 int index = item_list.getSelectedIndex();
                 if (index != -1){
-                    if (items.get(item_list.getSelectedIndex()).getItem().isDeleted()){
+                    if (items.get(item_list.getSelectedIndex()).isDeleted()){
                         error_message.setText("Error: Item Already Deleted");
                         error_popup.setVisible(true);
                     } else {
-                        items.get(index).getItem().setAsDeleted();
+                        items.get(index).setDeleted(true);
                         QuantifiableItem x = items.get(index);
-                        setItemProperty(x.getName(), x.getItem().getPrice(), x.getItem().getCost(), x.getQuantity(), x.getCategory(), x.getItem().isDeleted());
+                        setItemProperty(x.getName(), x.getItem().getPrice(), x.getItem().getCost(), x.getQuantity(), x.getCategory(), x.isDeleted());
                         items_list.setElementAt(x.getName()+" (deleted)",index);
                     }
                 }
@@ -413,7 +413,7 @@ public class Inventory extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (item_list.getSelectedIndex()!=-1) {
-                    if (items.get(item_list.getSelectedIndex()).getItem().isDeleted()){
+                    if (items.get(item_list.getSelectedIndex()).isDeleted()){
                         error_message.setText("Error: Item Already Deleted");
                         error_popup.setVisible(true);
                     } else {
