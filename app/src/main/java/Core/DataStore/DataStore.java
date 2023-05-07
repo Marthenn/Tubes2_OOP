@@ -42,18 +42,18 @@ public class DataStore {
 
     private DataStore() {
 
-//        FileController controller = new DataStoreController();
-//        try {
-//            this.images = controller.loadImage();
-//        } catch (IOException ignored) {
-//
-//        }
-//
-//        try {
-//            this.items = controller.loadItem();
-//        } catch (IOException ignored) {
-//
-//        }
+        FileController controller = new DataStoreController();
+        try {
+            this.images = controller.loadImage();
+        } catch (IOException ignored) {
+
+        }
+
+        try {
+            this.items = controller.loadItem();
+        } catch (IOException ignored) {
+
+        }
 
         items.setListenerList(itemStoreListeners);
         customers.setListenerList(customerStoreListeners);
