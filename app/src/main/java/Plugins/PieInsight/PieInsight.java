@@ -18,6 +18,7 @@ import java.util.Map;
 public class PieInsight implements Plugin {
     private MainMenu mainMenu = MainMenu.getInstance();
     private static DataStore ds = DataStore.getInstance();
+    private static JMenuItem pieChart = new JMenuItem("PieChart");
 
     public void load() {
         System.out.println("Loading PieChart based insight");
@@ -30,7 +31,6 @@ public class PieInsight implements Plugin {
         JMenuBar menuBar = null;
         try {
             menuBar = (JMenuBar) menuBarField.get(mainMenu);
-            JMenuItem pieChart = new JMenuItem("PieChart");
             pieChart.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -64,7 +64,7 @@ public class PieInsight implements Plugin {
         JMenuBar menuBar = null;
         try {
             menuBar = (JMenuBar) menuBarField.get(mainMenu);
-            menuBar.remove(menuBar.getMenuCount() - 2);
+            menuBar.remove(pieChart);
             System.out.println("Successfully removed PieChart menuItem");
         } catch (IllegalAccessException e) {
             e.printStackTrace();
