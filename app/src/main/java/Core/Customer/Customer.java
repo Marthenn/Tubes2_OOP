@@ -109,7 +109,7 @@ public class Customer implements IDAbleEmitter<IDAbleListener<Customer>>, CanPay
         if (billID == null) {
             throw new NoOngoingPurchaseException();
         }
-        return DataStore.getInstance().getBillWithID(this.id);
+        return DataStore.getInstance().getBillWithID(this.billID);
     }
 
     @Override

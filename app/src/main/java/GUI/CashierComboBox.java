@@ -51,7 +51,9 @@ public class CashierComboBox extends JComboBox {
         this.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println(getSelectedIndex());
+//                System.out.println(getSelectedIndex());
+
+
             }
         });
     }
@@ -69,7 +71,8 @@ public class CashierComboBox extends JComboBox {
 
         displayedList = customerList
                             .stream()
-                            .filter(customer -> customer.getName().contains(lastInput))
+                            .filter(customer -> customer.getName().toLowerCase()
+                                    .contains(lastInput.toLowerCase()))
                             .collect(Collectors
                             .toCollection(ArrayList::new));
 
