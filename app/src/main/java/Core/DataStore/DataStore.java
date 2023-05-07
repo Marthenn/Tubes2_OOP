@@ -81,7 +81,6 @@ public class DataStore {
         try {
             this.customers = controller.loadCustomer();
         } catch (IOException ignored) {
-            System.out.println("c error");
             retMap.put("Customers", 0);
         }
 
@@ -89,7 +88,6 @@ public class DataStore {
         try {
             this.premiumCustomers = controller.loadPremiumCustomer();
         } catch (IOException ignored) {
-            System.out.println("pc error");
             retMap.put("Premium Customers", 0);
         }
 
