@@ -19,6 +19,7 @@ import Core.Item.Item;
 import Core.Item.QuantifiableItem;
 import lombok.SneakyThrows;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -54,20 +55,21 @@ public class DataStore {
         return DataStore.instance;
     }
 
-    public void load() {
+    public int load() {
         FileController controller = new DataStoreController();
 
         try {
             this.images = controller.loadImage();
         } catch (IOException ignored) {
-
+            return -1;
         }
 
         try {
             this.items = controller.loadItem();
         } catch (IOException ignored) {
-
+            return -1;
         }
+        return 0;
     }
 
     /**
