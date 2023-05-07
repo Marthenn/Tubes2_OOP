@@ -44,7 +44,6 @@ public class Settings {
         return Settings.instance;
     }
 
-    // TODO: Add settings for plugins
     @SneakyThrows
     public void addPlugin(String pluginDirectory) {
         List<Class<?>> classes = loadClasses(pluginDirectory);
@@ -57,6 +56,7 @@ public class Settings {
                     System.out.println(plugin.getName());
                     this.plugins.add(plugin);
                     plugin.load();
+                    Plugin.write(pluginDirectory);
                 }
             } catch (Exception e){
                 System.out.println("Failed to load plugin: " + cls.getName() + "\n " + e.getMessage());
@@ -69,6 +69,7 @@ public class Settings {
             if (pl.getName().equals(plugin.getName())){
                 pl.unload();
                 this.plugins.remove(pl);
+                Plugin.remove(plugin);
                 break;
             }
         }
