@@ -4,6 +4,7 @@ import Core.Customer.Customer;
 import Core.Item.Bill.FixedBill.FixedBill;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.IntNode;
 import lombok.SneakyThrows;
 
@@ -24,7 +25,7 @@ public class CustomerDeserializerUtility {
             billId = (Integer) ((IntNode) node.get("billId")).numberValue();
         }
 
-        JsonNode fixedBillJsonArray = node.get("history");
+        JsonNode fixedBillJsonArray = (ArrayNode) node.get("history");
         ArrayList<FixedBill> fixedBill = new ArrayList<>();
         ObjectMapper objectMapper = new ObjectMapper();
         if (fixedBillJsonArray.isArray()) {
@@ -35,7 +36,7 @@ public class CustomerDeserializerUtility {
 
         Customer loadedCustomer = new Customer(id);
 
-        Field billIdField = loadedCustomer.getClass().getDeclaredField("billId");
+        Field billIdField = loadedCustomer.getClass().getDeclaredField("billID");
         Field historyField = loadedCustomer.getClass().getDeclaredField("history");
 
         billIdField.setAccessible(true);
