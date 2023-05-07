@@ -1,6 +1,6 @@
 package Core.FileController;
 
-import Core.Settings;
+import Core.Settings.Settings;
 
 import java.io.File;
 import java.nio.file.Paths;
@@ -17,6 +17,4 @@ public abstract class ConcreteFileController implements FileController {
         new File(directoryPath).mkdirs();
         return ret;
     }
-
-
 }

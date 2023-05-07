@@ -5,13 +5,11 @@
 package GUI;
 
 import Core.DataStore.DataStore;
-import Core.Settings;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
 
 /**
  * @author Marthen

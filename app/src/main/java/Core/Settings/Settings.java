@@ -1,4 +1,4 @@
-package Core;
+package Core.Settings;
 
 import Plugins.Plugin;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,11 +25,9 @@ public class Settings {
     private String path;
 
     @Getter(AccessLevel.PUBLIC)
-    private Map<String, Boolean> fileType = new HashMap<>(){{
-        put("OBJ", false);
-        put("JSON", true);
-        put("XML", false);
-    }};
+    @Setter
+    private SaveFileType saveFileType = SaveFileType.JSON;
+
 
     @Getter(AccessLevel.PUBLIC)
     private ArrayList<Plugin> plugins = new ArrayList<>();
@@ -73,13 +71,14 @@ public class Settings {
             }
         }
     }
+
     public void savePath() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.writeValue(Paths.get("jsonConfig/path_config.json").toFile(), this.path);
     }
     public void saveFileType() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        mapper.writeValue(Paths.get("jsonConfig/filetype_config.json").toFile(), this.fileType);
+        mapper.writeValue(Paths.get("jsonConfig/filetype_config.json").toFile(), this.saveFileType);
     }
     public void loadPath() throws IOException {
         String json = new String(Files.readAllBytes(Paths.get("jsonConfig/path_config.json")));
@@ -87,7 +86,7 @@ public class Settings {
     }
     public void loadFileType() throws IOException {
         String json = new String(Files.readAllBytes(Paths.get("jsonConfig/filetype_config.json")));
-        this.fileType = new ObjectMapper().readValue(json, Map.class);
+        this.saveFileType = new ObjectMapper().readValue(json, SaveFileType.class);
     }
 }
 
