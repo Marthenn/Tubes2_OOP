@@ -301,9 +301,6 @@ public class DataStore {
     }
     public void saveItem() throws IOException {
         FileController controller = new DataStoreController();
-        for (QuantifiableItem qItem : items.getItemList()) {
-            System.out.println(qItem);
-        }
         controller.saveItem(this.items);
     }
 

@@ -43,7 +43,9 @@ public class LoadingScreen {
                 DataStore ds = DataStore.getInstance();
                 HashMap<String, Integer> retMap = ds.load();
                 String message = String.join(", ", retMap.keySet().stream().filter(key -> retMap.get(key) == 0).toList());
-                JOptionPane.showMessageDialog(null, message + " wasn't loaded");
+                if (!message.equals("")) {
+                    JOptionPane.showMessageDialog(null, message + " wasn't loaded");
+                }
             } catch (Exception e){
                 JOptionPane.showMessageDialog(null, "Error loading data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }

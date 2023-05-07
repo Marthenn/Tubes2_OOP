@@ -50,32 +50,32 @@ public class XmlController extends ConcreteFileController {
 
     @Override
     public StorerDataBill loadBill() throws IOException {
-        String json = new String(Files.readAllBytes(Paths.get(getFilePath("bills"))));
-        return new XmlMapper().readValue(json, StorerDataBill.class);
+        String xml = new String(Files.readAllBytes(Paths.get(getFilePath("bills"))));
+        return new XmlMapper().readValue(xml, StorerDataBill.class);
     }
 
     @Override
     public StorerDataImageWithID loadImage() throws IOException {
-        String json = new String(Files.readAllBytes(Paths.get(getFilePath("images"))));
-        return new XmlMapper().readValue(json, StorerDataImageWithID.class);
+        String xml = new String(Files.readAllBytes(Paths.get(getFilePath("images"))));
+        return new XmlMapper().readValue(xml, StorerDataImageWithID.class);
     }
 
     @Override
     public StorerDataQuantifiableItem loadItem() throws IOException {
-        String json = new String(Files.readAllBytes(Paths.get(getFilePath("items"))));
-        return new XmlMapper().readValue(json, StorerDataQuantifiableItem.class);
+        String xml = new String(Files.readAllBytes(Paths.get(getFilePath("items"))));
+        return new XmlMapper().readValue(xml, StorerDataQuantifiableItem.class);
     }
 
     @Override
     public StorerDataCustomer loadCustomer() throws IOException {
-        String json = new String(Files.readAllBytes(Paths.get(getFilePath("customers"))));
-        return new XmlMapper().readValue(json, StorerDataCustomer.class);
+        String xml = new String(Files.readAllBytes(Paths.get(getFilePath("customers"))));
+        return new XmlMapper().readValue(xml, StorerDataCustomer.class);
     }
 
     @Override
     public StorerDataPremiumCustomer loadPremiumCustomer() throws IOException {
-        String json = new String(Files.readAllBytes(Paths.get(getFilePath("premiumCustomer"))));
-        return new XmlMapper().readValue(json, StorerDataPremiumCustomer.class);
+        String xml = new String(Files.readAllBytes(Paths.get(getFilePath("premiumCustomers"))));
+        return new XmlMapper().readValue(xml, StorerDataPremiumCustomer.class);
     }
 
 }
