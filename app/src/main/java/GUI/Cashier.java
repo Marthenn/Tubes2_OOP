@@ -303,10 +303,10 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
 //            @SneakyThrows
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (currentActiveBillDisplays.get(billTabPane.getSelectedIndex()).getDisplayedTableModel().getRowCount() == 0) {
-                    System.out.println("bill kosong");
-//                    return;
-                }
+//                if (currentActiveBillDisplays.get(billTabPane.getSelectedIndex()).getDisplayedTableModel().getRowCount() == 0) {
+//                    System.out.println("bill kosong");
+////                    return;
+//                }
 
 //                Customer customer = DataStore.getInstance().createNewCustomer(); //dummy customer yang diassign
 //                currentActiveBillDisplays.get(billTabPane.getSelectedIndex()).getDisplayedBill().setOwner(customer);

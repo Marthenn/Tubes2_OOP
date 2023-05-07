@@ -170,9 +170,10 @@ public class CashierCheckout extends JPanel implements StorerDataListener {
                     int result = fileChooser.showSaveDialog(null);
                     if (result == JFileChooser.APPROVE_OPTION) {
                         File fileToSave = fileChooser.getSelectedFile();
-                        FixedBillPrinter fbp = new FixedBillPrinter(fileToSave.getAbsolutePath()+"/bill_"+custId+"_"+fixedbillidx+".pdf", custId,
+                        FixedBillPrinter fixedBillPrinter = new FixedBillPrinter(fileToSave.getAbsolutePath()+"/bill_"+custId+"_"+fixedbillidx+".pdf", custId,
                                 fixedbillidx);
-                        fbp.printFixedBill();
+                        Thread printThread = new Thread(fixedBillPrinter::printFixedBill);
+                        printThread.start();
                     }
                 } else {
                     // Don't save file
