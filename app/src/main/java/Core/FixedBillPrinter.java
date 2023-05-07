@@ -27,7 +27,7 @@ public class FixedBillPrinter {
         this.fixedBill = history.get(fixedBillIdx);
         this.filename = filename;
     }
-    public void printFixedBill() throws ItemInBillNotExist {
+    public void printFixedBill() {
         PDFPrinter pdfPrinter = new PDFPrinter(this.filename, 250, 1000);
         Thread pdfThread = new Thread(pdfPrinter);
         pdfThread.start();
@@ -44,9 +44,14 @@ public class FixedBillPrinter {
         }
         for(int i = 0; i < this.fixedBill.getItems().size(); i++) {
             QuantifiableItem item = this.fixedBill.getItems().get(i);
-            String text2 = String.format("%d. Item ID: %d\n    Name: %s\n    Category: %s\n    Price: $%.2f\n    Quantity: %d\n    Sub-Total: $%.2f\n",
-                    i + 1, item.getItem().getID(), item.getItem().getName(), item.getItem().getCategory(),
-                    item.getItem().getPrice(), item.getQuantity(), item.getPrice());
+            String text2 = null;
+            try {
+                text2 = String.format("%d. Item ID: %d\n    Name: %s\n    Category: %s\n    Price: $%.2f\n    Quantity: %d\n    Sub-Total: $%.2f\n",
+                        i + 1, item.getItem().getID(), item.getItem().getName(), item.getItem().getCategory(),
+                        item.getItem().getPrice(), item.getQuantity(), item.getPrice());
+            } catch (ItemInBillNotExist e) {
+                throw new RuntimeException(e);
+            }
             pdfPrinter.addText(text2);
         }
         double price = this.fixedBill.getPrice();
