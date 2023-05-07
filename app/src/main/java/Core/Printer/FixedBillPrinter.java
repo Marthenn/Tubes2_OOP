@@ -55,8 +55,7 @@ public class FixedBillPrinter {
             pdfPrinter.addText(text2);
         }
         double price = this.fixedBill.getPrice();
-        String text3 = Double.toString(price);
-        pdfPrinter.addText("Total: " + text3 + "\n");
+        pdfPrinter.addText(String.format("Total: $%.2f\n", price));
         pdfPrinter.addText("-------------------------------");
         // wait for the PDF thread to finish
         try {
