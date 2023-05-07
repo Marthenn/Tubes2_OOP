@@ -42,9 +42,12 @@ public class LoadingScreen {
 
             try {
                 DataStore ds = DataStore.getInstance();
-                ds.load();
+                int retcode = ds.load();
+                if(retcode == -1){
+                    JOptionPane.showMessageDialog(null, "Some data wasn't loaded");
+                }
             } catch (Exception e){
-
+                JOptionPane.showMessageDialog(null, "Error loading data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
             finished = true;
         }).start();
