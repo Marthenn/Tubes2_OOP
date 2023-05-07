@@ -22,6 +22,9 @@ import lombok.SneakyThrows;
 import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 
 public class DataStore {
     private static DataStore instance = null;
@@ -55,41 +58,49 @@ public class DataStore {
         return DataStore.instance;
     }
 
-    public int load() {
+    public HashMap<String, Integer> load() {
         FileController controller = new DataStoreController();
 
+        HashMap<String, Integer> retMap = new HashMap<>();
+
+        retMap.put("Images", 1);
         try {
             this.images = controller.loadImage();
         } catch (IOException ignored) {
-            return 1;
+            retMap.put("Images", 0);
         }
 
+        retMap.put("Items", 1);
         try {
             this.items = controller.loadItem();
         } catch (IOException ignored) {
-            return 2;
+            retMap.put("Items", 0);
         }
 
+        retMap.put("Customers", 1);
         try {
             this.customers = controller.loadCustomer();
         } catch (IOException ignored) {
             System.out.println("c error");
-            return 3;
+            retMap.put("Customers", 0);
         }
 
+        retMap.put("Premium Customers", 1);
         try {
             this.premiumCustomers = controller.loadPremiumCustomer();
         } catch (IOException ignored) {
             System.out.println("pc error");
-            return 4;
+            retMap.put("Premium Customers", 0);
         }
 
+        retMap.put("Ongoing Purchase", 1);
         try {
             this.bills = controller.loadBill();
         } catch (IOException ignored){
-            return -1;
+            retMap.put("Ongoing Purchase", 0);
         }
-        return 0;
+
+        return retMap;
     }
 
     /**

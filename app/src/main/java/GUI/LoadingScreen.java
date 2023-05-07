@@ -8,6 +8,7 @@ import javax.xml.crypto.Data;
 import java.awt.*;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 
 public class LoadingScreen {
     private JProgressBar progressBar = new JProgressBar();
@@ -42,16 +43,9 @@ public class LoadingScreen {
 
             try {
                 DataStore ds = DataStore.getInstance();
-                int retcode = ds.load();
-                if(retcode == 1){
-                    JOptionPane.showMessageDialog(null, "Image wasn't loaded");
-                } else if(retcode == 2){
-                    JOptionPane.showMessageDialog(null, "Item wasn't loaded");
-                } else if(retcode == 3){
-                    JOptionPane.showMessageDialog(null, "Customer data wasn't loaded");
-                } else if(retcode == 4){
-                    JOptionPane.showMessageDialog(null, "Premium customer data wasn't loaded");
-                }
+                HashMap<String, Integer> retMap = ds.load();
+                String message = String.join(", ", retMap.keySet().stream().filter(key -> retMap.get(key) == 0).toList());
+                JOptionPane.showMessageDialog(null, message + " wasn't loaded");
             } catch (Exception e){
                 JOptionPane.showMessageDialog(null, "Error loading data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
