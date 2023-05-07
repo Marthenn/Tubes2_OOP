@@ -25,6 +25,13 @@ public class StorerData<T extends IDAble> implements StorerDataEmitter<StorerDat
     private String storedItemName;
 
     /**
+     * Initialize the listener with an empty array
+     */
+    public void initializeListener() {
+        this.storerListeners = new ArrayList<>();
+    }
+
+    /**
      * Add a new Item to the StorerData
      * @param item Item to add
      * @param overwrite Whether to overwrite existing value or not if they already exist
