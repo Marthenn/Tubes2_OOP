@@ -77,28 +77,32 @@ public class Settings {
 
     public void savePath() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        mapper.writeValue(Paths.get("jsonConfig/path_config.json").toFile(), this.path);
+        mapper.writeValue(Paths.get("jsonConfig" + File.separator + "path_config.json").toFile(), this.path);
     }
+
     public void saveFileType() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        mapper.writeValue(Paths.get("jsonConfig/filetype_config.json").toFile(), this.saveFileType);
+        mapper.writeValue(Paths.get("jsonConfig" + File.separator + "filetype_config.json").toFile(), this.saveFileType);
     }
+
     public void loadPath() throws IOException {
         try {
-            String json = new String(Files.readAllBytes(Paths.get("jsonConfig/path_config.json")));
+            String json = new String(Files.readAllBytes(Paths.get("jsonConfig" + File.separator + "path_config.json")));
             this.path = new ObjectMapper().readValue(json, String.class);
         } catch (IOException e){
-            new FileWriter("jsonConfig/path_config.json");
+            new FileWriter("jsonConfig" + File.separator + "path_config.json");
         }
     }
+
     public void loadFileType() throws IOException {
         try {
-            String json = new String(Files.readAllBytes(Paths.get("jsonConfig/filetype_config.json")));
+            String json = new String(Files.readAllBytes(Paths.get("jsonConfig" + File.separator + "filetype_config.json")));
             this.saveFileType = new ObjectMapper().readValue(json, SaveFileType.class);
         } catch (IOException e){
             String filetype = "JSON";
-            new ObjectMapper().writeValue(new File("jsonConfig/filetype_config.json"), filetype);
+            new ObjectMapper().writeValue(new File("jsonConfig" + File.separator + "filetype_config.json"), filetype);
         }
     }
+
 }
 

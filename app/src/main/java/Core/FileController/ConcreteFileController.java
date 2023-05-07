@@ -12,8 +12,8 @@ public abstract class ConcreteFileController implements FileController {
     }
 
     public String getFilePath(String fileName) {
-        String directoryPath = String.format("%s/%s", Settings.getInstance().getPath(), this.getFileType());
-        String ret = String.format("%s/%s.%s", directoryPath, fileName, this.getFileType());
+        String directoryPath = String.format("%s%s%s", Settings.getInstance().getPath(), File.separator, this.getFileType());
+        String ret = String.format("%s%s%s.%s", directoryPath, File.separator, fileName, this.getFileType());
         new File(directoryPath).mkdirs();
         return ret;
     }

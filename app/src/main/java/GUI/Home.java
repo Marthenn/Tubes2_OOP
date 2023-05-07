@@ -6,6 +6,7 @@ package GUI;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 
 public class Home extends JPanel {
     public Home() {
@@ -16,7 +17,8 @@ public class Home extends JPanel {
         setMaximumSize(size);
 
         // set logo
-        logo.setIcon(new ImageIcon("app/src/main/java/GUI/ObjectEnjoyer_Logo.png"));
+        String path = "app" + File.separator + "src" + File.separator + "main" + File.separator + "java" + File.separator + "GUI" + File.separator + "ObjectEnjoyer_Logo.png";
+        logo.setIcon(new ImageIcon(path));
     }
 
     private void initComponents() {
