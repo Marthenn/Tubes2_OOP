@@ -81,6 +81,12 @@ public class DataStore {
         } catch (IOException ignored) {
             return -1;
         }
+
+        try {
+            this.bills = controller.loadBill();
+        } catch (IOException ignored){
+            return -1;
+        }
         return 0;
     }
 

@@ -20,10 +20,8 @@ public interface FileController{
     void savePremiumCustomers(StorerDataPremiumCustomer premiumCustomer) throws IOException;
 
     StorerDataImageWithID loadImage() throws IOException;
-
-//     StorerDataBill loadBill() throws IOException;
-
     StorerDataQuantifiableItem loadItem() throws IOException;
+    StorerDataBill loadBill() throws IOException;
     StorerDataCustomer loadCustomer() throws IOException;
     StorerDataPremiumCustomer loadPremiumCustomer() throws IOException;
 

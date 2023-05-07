@@ -45,6 +45,7 @@ public class DataStoreController implements FileController{
         fileController.saveBill(bills);
     }
 
+
     public void saveCustomers(StorerDataCustomer customer) throws IOException{
         fileController.saveCustomers(customer);
     }
@@ -59,6 +60,11 @@ public class DataStoreController implements FileController{
     @Override
     public StorerDataPremiumCustomer loadPremiumCustomer() throws IOException{
         return fileController.loadPremiumCustomer();
+    }
+
+    @Override
+    public StorerDataBill loadBill() throws  IOException {
+        return fileController.loadBill();
     }
 
 //    @Override
