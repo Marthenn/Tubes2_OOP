@@ -331,7 +331,7 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
         checkoutBill.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (currentActiveBillDisplays.get(billTabPane.getSelectedIndex()).getDisplayedTableModel().getRowCount() == 0) {
+                if (currentActiveBillDisplays.get(billTabPane.getSelectedIndex()).getDisplayedBill().getItemList().size() == 0) {
                     System.out.println("bill kosong");
 //                    return;
                 }
@@ -415,6 +415,7 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
         currentActiveBillDisplays.remove(selectedIdx);
 
         updateBillTabTitle();
+        currentActiveBillDisplays.get(billTabPane.getSelectedIndex()).updateTotalPriceLabel();
     }
 
     private ImageIcon base64ImageDecode(String base64img){

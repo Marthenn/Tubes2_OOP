@@ -4,6 +4,7 @@
 
 package GUI;
 
+import Core.Item.Bill.Bill;
 import Core.Item.Exception.NegativeQuantityException;
 import Core.Item.QuantifiableItem;
 
