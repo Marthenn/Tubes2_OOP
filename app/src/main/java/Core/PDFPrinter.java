@@ -28,7 +28,7 @@ public class PDFPrinter implements Runnable {
     @Override
     public void run() {
         try {
-            Thread.sleep(10); // simulate long PDF print time
+            Thread.sleep(10000); // simulate long PDF print time
             Document document = new Document(new Rectangle(w, h));
             document.setMargins(10, 10, 5, 5);
             PdfWriter.getInstance(document, new FileOutputStream(fileName));

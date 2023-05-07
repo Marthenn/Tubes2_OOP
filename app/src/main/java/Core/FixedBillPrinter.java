@@ -44,13 +44,13 @@ public class FixedBillPrinter {
         }
         for(int i = 0; i < this.fixedBill.getItems().size(); i++) {
             QuantifiableItem item = this.fixedBill.getItems().get(i);
-            String text2 = String.format("%d. Item ID: %d\n    Name: %s\n    Category: %s\n    Cost: $%.2f\n",
+            String text2 = String.format("%d. Item ID: %d\n    Name: %s\n    Category: %s\n    Price: $%.2f\n    Quantity: %d\n    Sub-Total: $%.2f\n",
                     i + 1, item.getItem().getID(), item.getItem().getName(), item.getItem().getCategory(),
-                    item.getItem().getCost());
+                    item.getItem().getPrice(), item.getQuantity(), item.getPrice());
             pdfPrinter.addText(text2);
         }
-        double cost = this.fixedBill.getCost();
-        String text3 = Double.toString(cost);
+        double price = this.fixedBill.getPrice();
+        String text3 = Double.toString(price);
         pdfPrinter.addText("Total: " + text3 + "\n");
         pdfPrinter.addText("-------------------------------");
         // wait for the PDF thread to finish
