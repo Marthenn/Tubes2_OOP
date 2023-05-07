@@ -28,7 +28,6 @@ public class PieInsightGUI extends JPanel {
 //            System.out.println("PieInsightGUI: updateData thread started");
             while (true) {
                 try {
-                    Thread.sleep(1000);
                     Map<Integer,Integer> soldItems = PieInsight.getSoldItems();
                     if (soldItems.equals(items)) {
 //                        System.out.println("PieInsightGUI: chart data is equal to soldItems");
@@ -48,6 +47,7 @@ public class PieInsightGUI extends JPanel {
                         }
                         items = soldItems;
                     }
+                    Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (SearchedItemNotExist searchedItemNotExist) {

@@ -41,6 +41,7 @@ public class ChartInsight implements Plugin {
                             if(tabbedPane.indexOfTab("ChartInsight") == -1){
                                 tabbedPane.addTab("ChartInsight", new ChartInsightGUI());
                             }
+                            tabbedPane.setSelectedIndex(tabbedPane.indexOfTab("ChartInsight"));
                         } catch (IllegalAccessException e) {
                             e.printStackTrace();
                         }

@@ -24,7 +24,6 @@ public class ChartInsightGUI extends JPanel {
         Thread updateData = new Thread (() -> {
             while(true){
                 try{
-                    Thread.sleep(1000);
                     Map<Integer,Integer> soldItems = ChartInsight.getSoldItems();
                     if(soldItems.equals(items)){
                         continue;
@@ -39,6 +38,7 @@ public class ChartInsightGUI extends JPanel {
                         }
                         items = soldItems;
                     }
+                    Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 } catch (SearchedItemNotExist e) {

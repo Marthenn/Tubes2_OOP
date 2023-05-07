@@ -41,6 +41,7 @@ public class PieInsight implements Plugin {
                             if(tabbedPane.indexOfTab("PieChart") == -1){
                                 tabbedPane.addTab("PieChart", new PieInsightGUI());
                             }
+                            tabbedPane.setSelectedIndex(tabbedPane.indexOfTab("PieChart"));
                         } catch (IllegalAccessException e) {
                             e.printStackTrace();
                         }
