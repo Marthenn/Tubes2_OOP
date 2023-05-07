@@ -347,16 +347,7 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
             @Override
             public void actionPerformed(ActionEvent e) {
 //                browseObjects.get(0).setName(browseObjects.get(0).getName().concat(browseObjects.get(0).getName().substring(1)));
-                int selectedIdx = billTabPane.getSelectedIndex();
-
-                // TO AVOID AUTO BILL TAB CREATION BECAUSE OF SELECTED INDEX INHERITANCE
-                if (selectedIdx == currentActiveBillDisplays.size()-2 && selectedIdx > 0) {
-                  billTabPane.setSelectedIndex(selectedIdx-1);
-                }
-                billTabPane.removeTabAt(selectedIdx);
-                currentActiveBillDisplays.remove(selectedIdx);
-
-                updateBillTabTitle();
+                removeCurrentBillTab();
             }
         });
 
@@ -446,7 +437,19 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
             browseObjects = DataStore.getInstance().getItems();
             updateBrowseTableModel();
         }
+    }
 
+    void removeCurrentBillTab() {
+        int selectedIdx = billTabPane.getSelectedIndex();
+
+        // TO AVOID AUTO BILL TAB CREATION BECAUSE OF SELECTED INDEX INHERITANCE
+        if (selectedIdx == currentActiveBillDisplays.size()-2 && selectedIdx > 0) {
+            billTabPane.setSelectedIndex(selectedIdx-1);
+        }
+        billTabPane.removeTabAt(selectedIdx);
+        currentActiveBillDisplays.remove(selectedIdx);
+
+        updateBillTabTitle();
     }
 
     private ImageIcon base64ImageDecode(String base64img){
