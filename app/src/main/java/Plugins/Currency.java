@@ -13,8 +13,6 @@ import Core.Customer.PremiumCustomer;
 import Core.DataStore.DataStore;
 import Core.Item.Bill.FixedBill.FixedBill;
 import Core.Item.QuantifiableItem;
-import Core.Settings;
-import GUI.MainMenu;
 import GUI.Setting;
 import lombok.Getter;
 import lombok.NonNull;

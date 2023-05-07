@@ -1,10 +1,7 @@
 package Core.FileController;
 
-import Core.Customer.Customer;
-import Core.Customer.PremiumCustomer;
 import Core.DataStore.StorerData.*;
-import Core.Settings;
-import lombok.Setter;
+import Core.Settings.Settings;
 
 import java.io.IOException;
 
@@ -12,8 +9,17 @@ public class DataStoreController implements FileController{
     private FileController fileController;
 
     public DataStoreController(){
-        if (Settings.getInstance().getFileType().get("JSON")){
-            fileController = new JsonController();
+        switch (Settings.getInstance().getSaveFileType()) {
+
+            case XML -> {
+                fileController = new XmlController();
+            }
+            case OBJ -> {
+
+            }
+            case JSON -> {
+                fileController = new JsonController();
+            }
         }
     }
 

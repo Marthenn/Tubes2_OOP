@@ -1,13 +1,11 @@
 package GUI;
 
 import Core.DataStore.DataStore;
-import Core.Settings;
+import Core.Settings.Settings;
 
 import javax.swing.*;
-import javax.xml.crypto.Data;
 import java.awt.*;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
 public class LoadingScreen {
