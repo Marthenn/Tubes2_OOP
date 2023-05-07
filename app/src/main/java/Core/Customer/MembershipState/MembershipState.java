@@ -6,9 +6,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NonNull;
 
+import java.io.Serializable;
+
 
 @AllArgsConstructor
-public abstract class MembershipState implements MembershipStateInterface{
+public abstract class MembershipState implements MembershipStateInterface, Serializable {
     @NonNull
     @Getter(AccessLevel.PROTECTED)
     private PremiumCustomer context;
