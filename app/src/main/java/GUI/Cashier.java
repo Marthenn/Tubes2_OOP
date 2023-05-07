@@ -149,7 +149,7 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
         //---- printBill ----
         checkoutBill.setText("Checkout");
 
-        addItem.setText("add");
+        addItem.setText("Add item");
 
         GroupLayout layout = new GroupLayout(this);
         setLayout(layout);
