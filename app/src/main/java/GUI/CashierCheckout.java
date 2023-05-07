@@ -181,6 +181,9 @@ public class CashierCheckout extends JPanel implements StorerDataListener {
                 // hide this page (TODO: destroy or recycle instead)
                 parentTabbedPane.setComponentAt(parentTabbedPane.getSelectedIndex(), parentCashier);
                 parentTabbedPane.repaint();
+
+                // close bill tab
+                parentCashier.removeCurrentBillTab();
                 removeAll();
             }
         });
