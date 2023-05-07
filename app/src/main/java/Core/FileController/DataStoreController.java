@@ -24,15 +24,23 @@ public class DataStoreController implements FileController{
         fileController.saveItem(items);
     }
 
-
     @Override
     public void saveImage(StorerDataImageWithID images) throws IOException {
         fileController.saveImage(images);
     }
 
     @Override
-    public StorerDataImageWithID loadImage() throws IOException {
-        return fileController.loadImage();
+    public void saveBill (StorerDataBill bills) throws IOException {
+        fileController.saveBill(bills);
+    }
+
+    @Override
+    public void saveCustomers(StorerDataCustomer customer) throws IOException{
+        fileController.saveCustomers(customer);
+    }
+
+    public void savePremiumCustomers(StorerDataPremiumCustomer premiumCustomer) throws IOException{
+        fileController.savePremiumCustomers(premiumCustomer);
     }
 
     @Override
@@ -41,18 +49,15 @@ public class DataStoreController implements FileController{
     }
 
     @Override
-    public void saveBill (StorerDataBill bills) throws IOException {
-        fileController.saveBill(bills);
+    public StorerDataImageWithID loadImage() throws IOException {
+        return fileController.loadImage();
     }
 
-
-    public void saveCustomers(StorerDataCustomer customer) throws IOException{
-        fileController.saveCustomers(customer);
+    @Override
+    public StorerDataBill loadBill() throws  IOException {
+        return fileController.loadBill();
     }
 
-    public void savePremiumCustomers(StorerDataPremiumCustomer premiumCustomer) throws IOException{
-        fileController.savePremiumCustomers(premiumCustomer);
-    }
     @Override
     public StorerDataCustomer loadCustomer() throws IOException{
         return fileController.loadCustomer();
@@ -61,20 +66,5 @@ public class DataStoreController implements FileController{
     public StorerDataPremiumCustomer loadPremiumCustomer() throws IOException{
         return fileController.loadPremiumCustomer();
     }
-
-    @Override
-    public StorerDataBill loadBill() throws  IOException {
-        return fileController.loadBill();
-    }
-
-//    @Override
-//    public StorerData<ImageWithID> loadImage() throws IOException {
-//
-//    }
-//
-////    @Override
-//    public StorerData<QuantifiableItem> loadItem() throws IOException {
-//
-//    }
 
 }

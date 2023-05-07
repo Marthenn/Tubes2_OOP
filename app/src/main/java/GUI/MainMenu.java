@@ -58,13 +58,6 @@ public class MainMenu extends JPanel {
         } catch (Exception error) {
             System.out.println(error);
         }
-//        // save settings_config
-//        try {
-//            Settings.getInstance().savePath();
-//            Settings.getInstance().saveFileType();
-//        } catch (IOException er) {
-//            throw new RuntimeException(er);
-//        }
         System.exit(0);
     }
 
