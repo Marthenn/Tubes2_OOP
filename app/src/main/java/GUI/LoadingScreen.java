@@ -43,6 +43,7 @@ public class LoadingScreen {
             try {
                 DataStore ds = DataStore.getInstance();
                 int retcode = ds.load();
+                DataStore.getInstance().load();
                 if(retcode == -1){
                     JOptionPane.showMessageDialog(null, "Some data wasn't loaded");
                 }
