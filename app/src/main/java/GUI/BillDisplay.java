@@ -14,13 +14,11 @@ import java.awt.*;
 
 public class BillDisplay extends JScrollPane {
 
-    @Getter
+    @Getter(AccessLevel.PUBLIC)
     private Bill displayedBill;
 
-    @Getter(AccessLevel.PRIVATE)
     private JTable displayedTable;
 
-    @Getter(AccessLevel.PUBLIC)
     private DefaultTableModel displayedTableModel;
 
     private  JLabel totalPriceLabel;
@@ -42,12 +40,20 @@ public class BillDisplay extends JScrollPane {
 
     @SneakyThrows
     public void updateTableModel() {
-        Double totalPrice = 0d;
-
         this.displayedTableModel.setRowCount(0);
 
         for (QuantifiableItem qItem : this.displayedBill.getItemList()) {
             this.displayedTableModel.addRow(new String[]{qItem.getName(), Integer.toString(qItem.getQuantity()), Double.toString(qItem.getPrice())});
+        }
+
+        updateTotalPriceLabel();
+    }
+
+    @SneakyThrows
+    public void updateTotalPriceLabel () {
+        Double totalPrice = 0d;
+
+        for (QuantifiableItem qItem : this.displayedBill.getItemList()) {
             totalPrice += qItem.getPrice();
         }
 
