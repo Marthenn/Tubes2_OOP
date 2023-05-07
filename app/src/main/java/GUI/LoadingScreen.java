@@ -4,6 +4,7 @@ import Core.DataStore.DataStore;
 import Core.Settings;
 
 import javax.swing.*;
+import javax.xml.crypto.Data;
 import java.awt.*;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -40,7 +41,8 @@ public class LoadingScreen {
             }
 
             try {
-                DataStore.getInstance();
+                DataStore ds = DataStore.getInstance();
+                ds.load();
             } catch (Exception e){
 
             }

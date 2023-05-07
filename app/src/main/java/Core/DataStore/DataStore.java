@@ -42,7 +42,21 @@ public class DataStore {
 
     private DataStore() {
 
+        items.setListenerList(itemStoreListeners);
+        customers.setListenerList(customerStoreListeners);
+        premiumCustomers.setListenerList(customerStoreListeners);
+    }
+
+    public static DataStore getInstance() {
+        if (DataStore.instance == null) {
+            DataStore.instance = new DataStore();
+        }
+        return DataStore.instance;
+    }
+
+    public void load() {
         FileController controller = new DataStoreController();
+
         try {
             this.images = controller.loadImage();
         } catch (IOException ignored) {
@@ -54,17 +68,6 @@ public class DataStore {
         } catch (IOException ignored) {
 
         }
-
-        items.setListenerList(itemStoreListeners);
-        customers.setListenerList(customerStoreListeners);
-        premiumCustomers.setListenerList(customerStoreListeners);
-    }
-
-    public static DataStore getInstance() {
-        if (DataStore.instance == null) {
-            DataStore.instance = new DataStore();
-        }
-        return DataStore.instance;
     }
 
     /**
