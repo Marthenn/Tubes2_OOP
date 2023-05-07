@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -22,7 +24,7 @@ public class Settings {
     // hal ini dilatarbelakangi oleh datanya yang berasal dari GUI
     private static Settings instance = null;
     @Setter @Getter(AccessLevel.PUBLIC)
-    private String path;
+    private String path = null;
 
     @Getter(AccessLevel.PUBLIC)
     @Setter
@@ -82,12 +84,21 @@ public class Settings {
         mapper.writeValue(Paths.get("jsonConfig/filetype_config.json").toFile(), this.saveFileType);
     }
     public void loadPath() throws IOException {
-        String json = new String(Files.readAllBytes(Paths.get("jsonConfig/path_config.json")));
-        this.path =  new ObjectMapper().readValue(json, String.class);
+        try {
+            String json = new String(Files.readAllBytes(Paths.get("jsonConfig/path_config.json")));
+            this.path = new ObjectMapper().readValue(json, String.class);
+        } catch (IOException e){
+            new FileWriter("jsonConfig/path_config.json");
+        }
     }
     public void loadFileType() throws IOException {
-        String json = new String(Files.readAllBytes(Paths.get("jsonConfig/filetype_config.json")));
-        this.saveFileType = new ObjectMapper().readValue(json, SaveFileType.class);
+        try {
+            String json = new String(Files.readAllBytes(Paths.get("jsonConfig/filetype_config.json")));
+            this.saveFileType = new ObjectMapper().readValue(json, SaveFileType.class);
+        } catch (IOException e){
+            String filetype = "JSON";
+            new ObjectMapper().writeValue(new File("jsonConfig/filetype_config.json"), filetype);
+        }
     }
 }
 
