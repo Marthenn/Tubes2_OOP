@@ -1,8 +1,6 @@
 package Core.FileController;
 
-import Core.DataStore.StorerData.StorerDataBill;
-import Core.DataStore.StorerData.StorerDataImageWithID;
-import Core.DataStore.StorerData.StorerDataQuantifiableItem;
+import Core.DataStore.StorerData.*;
 import Core.Settings;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -31,6 +29,18 @@ public class JsonController implements FileController{
     }
 
     @Override
+    public void saveCustomers(StorerDataCustomer customer) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.writeValue(Paths.get(Settings.getInstance().getPath()+"/customer.json").toFile(), customer);
+    }
+
+    @Override
+    public void savePremiumCustomers(StorerDataPremiumCustomer premiumCustomer) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.writeValue(Paths.get(Settings.getInstance().getPath()+"/premium_customer.json").toFile(), premiumCustomer);
+    }
+
+    @Override
     public void saveItem(StorerDataQuantifiableItem item) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.writeValue(Paths.get(Settings.getInstance().getPath()+"/item.json").toFile(), item);
@@ -53,4 +63,17 @@ public class JsonController implements FileController{
         String json = new String(Files.readAllBytes(Paths.get(Settings.getInstance().getPath() + "/item.json")));
         return new ObjectMapper().readValue(json, StorerDataQuantifiableItem.class);
     }
+
+    @Override
+    public StorerDataCustomer loadCustomer() throws IOException {
+        String json = new String(Files.readAllBytes(Paths.get(Settings.getInstance().getPath() + "/customer.json")));
+        return new ObjectMapper().readValue(json, StorerDataCustomer.class);
+    }
+
+    @Override
+    public StorerDataPremiumCustomer loadPremiumCustomer() throws IOException {
+        String json = new String(Files.readAllBytes(Paths.get(Settings.getInstance().getPath() + "/premium_customer.json")));
+        return new ObjectMapper().readValue(json, StorerDataPremiumCustomer.class);
+    }
+
 }

@@ -1,8 +1,8 @@
 package Core.FileController;
 
-import Core.DataStore.StorerData.StorerDataBill;
-import Core.DataStore.StorerData.StorerDataImageWithID;
-import Core.DataStore.StorerData.StorerDataQuantifiableItem;
+import Core.Customer.Customer;
+import Core.Customer.PremiumCustomer;
+import Core.DataStore.StorerData.*;
 import Core.Settings;
 import lombok.Setter;
 
@@ -43,6 +43,22 @@ public class DataStoreController implements FileController{
     @Override
     public void saveBill (StorerDataBill bills) throws IOException {
         fileController.saveBill(bills);
+    }
+
+    public void saveCustomers(StorerDataCustomer customer) throws IOException{
+        fileController.saveCustomers(customer);
+    }
+
+    public void savePremiumCustomers(StorerDataPremiumCustomer premiumCustomer) throws IOException{
+        fileController.savePremiumCustomers(premiumCustomer);
+    }
+    @Override
+    public StorerDataCustomer loadCustomer() throws IOException{
+        return fileController.loadCustomer();
+    }
+    @Override
+    public StorerDataPremiumCustomer loadPremiumCustomer() throws IOException{
+        return fileController.loadPremiumCustomer();
     }
 
 //    @Override

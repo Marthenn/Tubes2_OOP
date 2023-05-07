@@ -1,8 +1,8 @@
 package Core.FileController;
 
-import Core.DataStore.StorerData.StorerDataBill;
-import Core.DataStore.StorerData.StorerDataImageWithID;
-import Core.DataStore.StorerData.StorerDataQuantifiableItem;
+import Core.Customer.Customer;
+import Core.Customer.PremiumCustomer;
+import Core.DataStore.StorerData.*;
 
 import java.io.IOException;
 
@@ -15,11 +15,17 @@ public interface FileController{
 
     void saveImage(StorerDataImageWithID images) throws IOException;
 
-     StorerDataImageWithID loadImage() throws IOException;
+    void saveCustomers(StorerDataCustomer customer) throws IOException;
+
+    void savePremiumCustomers(StorerDataPremiumCustomer premiumCustomer) throws IOException;
+
+    StorerDataImageWithID loadImage() throws IOException;
 
 //     StorerDataBill loadBill() throws IOException;
 
-     StorerDataQuantifiableItem loadItem() throws IOException;
+    StorerDataQuantifiableItem loadItem() throws IOException;
+    StorerDataCustomer loadCustomer() throws IOException;
+    StorerDataPremiumCustomer loadPremiumCustomer() throws IOException;
 
 
 

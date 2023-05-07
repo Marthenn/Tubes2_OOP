@@ -53,6 +53,8 @@ public class MainMenu extends JPanel {
             DataStore.getInstance().saveBill();
             DataStore.getInstance().saveImage();
             DataStore.getInstance().saveItem();
+            DataStore.getInstance().saveCustomers();
+            DataStore.getInstance().savePremiumCustomers();
         } catch (Exception error) {
             System.out.println(error);
         }

@@ -69,6 +69,18 @@ public class DataStore {
         } catch (IOException ignored) {
             return -1;
         }
+
+        try {
+            this.customers = controller.loadCustomer();
+        } catch (IOException ignored) {
+            return -1;
+        }
+
+        try {
+            this.premiumCustomers = controller.loadPremiumCustomer();
+        } catch (IOException ignored) {
+            return -1;
+        }
         return 0;
     }
 
@@ -283,5 +295,13 @@ public class DataStore {
         controller.saveBill(this.bills);
     }
 
+    public void saveCustomers() throws IOException {
+        FileController controller = new DataStoreController();
+        controller.saveCustomers(this.customers);
+    }
 
+    public void savePremiumCustomers() throws IOException {
+        FileController controller = new DataStoreController();
+        controller.savePremiumCustomers(this.premiumCustomers);
+    }
 }
