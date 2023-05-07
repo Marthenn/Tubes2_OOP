@@ -9,7 +9,6 @@ import Core.Customer.MembershipState.MembershipStateInterface;
 import Core.Customer.MembershipState.MembershipStateName;
 import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
 import Core.Deserializer.Customer.PremiumCustomerDeserializer;
-import Core.Item.Bill.Exception.ItemOverOrderedException;
 import Core.Item.Bill.FixedBill.FixedBill;
 import Core.Item.Bill.FixedBill.FixedBillModifier.FixedBillModifier;
 import Core.Serializer.Customer.PremiumCustomerSerializer;
@@ -90,12 +89,12 @@ public class PremiumCustomer extends Customer implements MembershipStateInterfac
     }
 
     @Override
-    public FixedBill payWithPoint() throws ZeroPointException, PointInaccessibleIfNotMemberException, NoOngoingPurchaseException, SearchedItemNotExist, ItemOverOrderedException {
+    public FixedBill payWithPoint() throws ZeroPointException, PointInaccessibleIfNotMemberException, NoOngoingPurchaseException, SearchedItemNotExist {
         return state.payWithPoint();
     }
 
     @Override
-    public FixedBill payWithPoint(ArrayList<FixedBillModifier> externalModifier) throws ZeroPointException, PointInaccessibleIfNotMemberException, NoOngoingPurchaseException, SearchedItemNotExist, ItemOverOrderedException {
+    public FixedBill payWithPoint(ArrayList<FixedBillModifier> externalModifier) throws ZeroPointException, PointInaccessibleIfNotMemberException, NoOngoingPurchaseException, SearchedItemNotExist {
         return state.payWithPoint(externalModifier);
     }
 
