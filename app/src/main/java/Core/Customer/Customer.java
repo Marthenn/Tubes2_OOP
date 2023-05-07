@@ -90,14 +90,18 @@ public class Customer implements IDAbleEmitter<IDAbleListener<Customer>>, CanPay
         }
 
         assert(getOngoingPurchase() != null);
+
         Bill ourBill = this.getOngoingPurchase();
+        ourBill.assertBillValid();
         for (QuantifiableItem item : ourBill.getItemList()) {
             try {
                 DataStore.getInstance().getItemWithID(item.getID()).decreaseQuantity(ourBill.getQuantityOfItemWithID(item.getID()));
             } catch (NegativeQuantityModifierException | NegativeQuantityException ignored) {
             }
         }
+
         FixedBill finalBill = getOngoingPurchase().getFixedBill();
+
         addFixedBill(finalBill);
         return finalBill;
 
