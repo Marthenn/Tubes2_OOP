@@ -27,12 +27,21 @@ import java.util.Base64;
 import java.util.stream.Collectors;
 
 public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>, StorerDataListener {
+    private static Cashier instance = null;
 
     private ArrayList<BillDisplay> currentActiveBillDisplays = new ArrayList<>();
     ArrayList<QuantifiableItem> browseObjects = new ArrayList<>();
     DefaultTableModel browseListTableModel = new DefaultTableModel();
     JTabbedPane parentTabbedPane = new JTabbedPane();
-    public Cashier(JTabbedPane parentTabbedPane) {
+
+    public static Cashier getInstance(JTabbedPane parentTabbedPane) {
+        if(instance == null) {
+            instance = new Cashier(parentTabbedPane);
+        }
+        return instance;
+    }
+
+    private Cashier(JTabbedPane parentTabbedPane) {
         this.parentTabbedPane = parentTabbedPane;
 
         initComponents();
