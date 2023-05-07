@@ -10,6 +10,8 @@ import java.util.Map;
 import javax.swing.*;
 
 import Core.DataStore.DataStore;
+import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
+import Core.Item.QuantifiableItem;
 import Plugins.PieInsight.PieChart;
 
 /**
@@ -23,27 +25,33 @@ public class PieInsightGUI extends JPanel {
     public PieInsightGUI() {
         initComponents();
         Thread updateData = new Thread (() -> {
-            System.out.println("PieInsightGUI: updateData thread started");
+//            System.out.println("PieInsightGUI: updateData thread started");
             while (true) {
                 try {
                     Thread.sleep(1000);
                     Map<Integer,Integer> soldItems = PieInsight.getSoldItems();
                     if (soldItems.equals(items)) {
-                        System.out.println("PieInsightGUI: chart data is equal to soldItems");
+//                        System.out.println("PieInsightGUI: chart data is equal to soldItems");
                         continue;
                     } else {
-                        System.out.println("Looping soldItems:");
+//                        System.out.println("Looping soldItems:");
                         chart.clear();
                         for (Map.Entry<Integer, Integer> entry : soldItems.entrySet()) {
                             Integer key = entry.getKey();
                             Integer value = entry.getValue();
-                            System.out.println("Key: " + key + " Value: " + value);
-                            chart.addSlice(value, "oke bang "+key.toString());
+//                            System.out.println("Key: " + key + " Value: " + value);
+//                            System.out.println(ds.getItems().size());
+//                            for (QuantifiableItem item : ds.getItems()) {
+//                                System.out.println("Item: " + item.getName() + " ID: " + item.getID());
+//                            }
+                            chart.addSlice(value, ds.getItemWithID(key).getName());
                         }
                         items = soldItems;
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
+                } catch (SearchedItemNotExist searchedItemNotExist) {
+                    searchedItemNotExist.printStackTrace();
                 }
                 repaint();
             }

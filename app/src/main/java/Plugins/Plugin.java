@@ -56,7 +56,13 @@ public interface Plugin {
     }
 
     public default void addToSetting(String name, ArrayList<String> items){
+        System.out.print("Adding " + name + " to setting...");
         Setting setting = Setting.getInstance();
         setting.addPlugin(name, items);
+    }
+
+    public default void removeFromSetting(String name){
+        Setting setting = Setting.getInstance();
+        setting.removePlugin(name);
     }
 }
