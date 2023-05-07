@@ -65,6 +65,8 @@ public class Customer implements IDAbleEmitter<IDAbleListener<Customer>>, CanPay
             finalBill.addFixedBillModifier(modifier);
         }
 
+        notifyListener();
+
         return finalBill;
     }
 
@@ -94,7 +96,9 @@ public class Customer implements IDAbleEmitter<IDAbleListener<Customer>>, CanPay
      * @param fixedBill
      */
     public void addFixedBill(FixedBill fixedBill){
+
         history.add(fixedBill);
+        notifyListener();
     };
 
     /**
@@ -103,6 +107,7 @@ public class Customer implements IDAbleEmitter<IDAbleListener<Customer>>, CanPay
      */
     public void assignBill(Bill bill){
         billID = bill.getID();
+        notifyListener();
     }
 
     public Bill getOngoingPurchase() throws NoOngoingPurchaseException, SearchedItemNotExist {

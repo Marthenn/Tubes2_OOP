@@ -31,17 +31,14 @@ public class PremiumCustomer extends Customer implements MembershipStateInterfac
 
     @Getter(AccessLevel.PUBLIC)
     @NonNull
-    @Setter
     private String name;
 
     @Getter(AccessLevel.PUBLIC)
     @NonNull
-    @Setter
     private String email;
 
     @Getter(AccessLevel.PUBLIC)
     @NonNull
-    @Setter
     private String phoneNumber;
 
     @Getter(AccessLevel.PUBLIC)
@@ -72,6 +69,7 @@ public class PremiumCustomer extends Customer implements MembershipStateInterfac
 
         this.state = MembershipStateFactory.getInstance().createState(state, this);
         this.stateName = this.state.getStatus();
+        notifyListener();
     }
 
     /**
@@ -98,5 +96,20 @@ public class PremiumCustomer extends Customer implements MembershipStateInterfac
     @Override
     public FixedBill payWithPoint(ArrayList<FixedBillModifier> externalModifier) throws ZeroPointException, PointInaccessibleIfNotMemberException, NoOngoingPurchaseException, SearchedItemNotExist {
         return state.payWithPoint(externalModifier);
+    }
+
+    public void setName(String name) {
+        this.name = name;
+        notifyListener();
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+        notifyListener();
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+        notifyListener();
     }
 }
