@@ -37,20 +37,6 @@ public class History extends JPanel implements IDAbleListener<Customer>, StorerD
     Customer selectedCustomer;
     DefaultTableModel historyTableModel = new DefaultTableModel();
     public History() {
-
-//        // DEBUG DATA //
-//        try {
-//            DataStore.getInstance().promoteCustomer(DataStore.getInstance().createNewCustomer().getID(), "lmao", "123456789012", "asd@gmail.com", MembershipStateName.VIP );
-//            DataStore.getInstance().promoteCustomer(DataStore.getInstance().createNewCustomer().getID(), "likalat", "123456789012", "asd@gmail.com", MembershipStateName.MEMBER );
-//        } catch (CustomerNotExistException e) {
-//            throw new RuntimeException(e);
-//        } catch (PromotedCustomerAlreadyExist e) {
-//            throw new RuntimeException(e);
-//        }
-//        // HAPUS KALO GA DIPAKE //
-//        // DEBUG DATA //
-
-
         initComponents();
     }
 
