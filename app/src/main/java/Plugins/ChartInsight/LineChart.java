@@ -2,14 +2,13 @@ package Plugins.ChartInsight;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class LineChart extends JPanel {
     private Map<String, Double> datas;
     public LineChart(){
-        datas = new HashMap<>();
+        datas = new LinkedHashMap<>();
     }
 
     public void addData(String label, double value){
