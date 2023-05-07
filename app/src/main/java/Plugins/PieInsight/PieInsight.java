@@ -51,6 +51,7 @@ public class PieInsight implements Plugin {
             // add PieChart menuItem at the second from last index
             menuBar.add(pieChart, menuBar.getMenuCount() - 1);
             addToSetting("PieChart", null);
+            System.out.println("Successfully added PieChart menuItem");
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
@@ -58,6 +59,16 @@ public class PieInsight implements Plugin {
 
     public void unload() {
         System.out.println("Unloading PieChart based insight");
+        Field menuBarField = findField(MainMenu.class, "menuBar");
+        menuBarField.setAccessible(true);
+        JMenuBar menuBar = null;
+        try {
+            menuBar = (JMenuBar) menuBarField.get(mainMenu);
+            menuBar.remove(menuBar.getMenuCount() - 2);
+            System.out.println("Successfully removed PieChart menuItem");
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
     public ArrayList<String> getItems() {
