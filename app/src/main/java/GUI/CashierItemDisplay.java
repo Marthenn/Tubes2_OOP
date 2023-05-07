@@ -37,7 +37,7 @@ public class CashierItemDisplay extends JPanel {
         Nama = new JLabel(qItem.getName());
         Kategori = new JLabel(qItem.getCategory());
         GambarItem = new JLabel();
-        HargaItem = new JButton(Double.toString(qItem.getPrice()));
+        HargaItem = new JButton(Double.toString(qItem.getSingularPrice()));
 
         // set bgColor
         header.setBackground(bgColor);
