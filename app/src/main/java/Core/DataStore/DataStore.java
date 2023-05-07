@@ -45,10 +45,6 @@ public class DataStore {
 
 
     private DataStore() {
-
-        items.setListenerList(itemStoreListeners);
-        customers.setListenerList(customerStoreListeners);
-        premiumCustomers.setListenerList(customerStoreListeners);
     }
 
     public static DataStore getInstance() {
@@ -70,18 +66,18 @@ public class DataStore {
             retMap.put("Images", 0);
         }
 
-        retMap.put("Items", 1);
-        try {
-            this.items = controller.loadItem();
-        } catch (IOException ignored) {
-            retMap.put("Items", 0);
-        }
-
         retMap.put("Customers", 1);
         try {
             this.customers = controller.loadCustomer();
         } catch (IOException ignored) {
             retMap.put("Customers", 0);
+        }
+
+        retMap.put("Items", 1);
+        try {
+            this.items = controller.loadItem();
+        } catch (IOException ignored) {
+            retMap.put("Items", 0);
         }
 
         retMap.put("Premium Customers", 1);
@@ -98,6 +94,11 @@ public class DataStore {
         } catch (IOException ignored){
             retMap.put("Ongoing Purchase", 0);
         }
+
+        items.setListenerList(itemStoreListeners);
+        customers.setListenerList(customerStoreListeners);
+        premiumCustomers.setListenerList(customerStoreListeners);
+
 
         return retMap;
     }
