@@ -69,6 +69,7 @@ public class PieInsight implements Plugin {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
+        removeFromSetting("PieChart");
     }
 
     public ArrayList<String> getItems() {

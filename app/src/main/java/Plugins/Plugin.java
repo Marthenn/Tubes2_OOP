@@ -59,4 +59,9 @@ public interface Plugin {
         Setting setting = Setting.getInstance();
         setting.addPlugin(name, items);
     }
+
+    public default void removeFromSetting(String name){
+        Setting setting = Setting.getInstance();
+        setting.removePlugin(name);
+    }
 }

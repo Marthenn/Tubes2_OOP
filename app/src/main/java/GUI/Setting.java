@@ -154,6 +154,21 @@ public class Setting extends JPanel {
         }
     }
 
+    public void removePlugin(String name){
+        for (Component component : viewportPanel.getComponents()) {
+            JPanel panel = (JPanel) component;
+            JLabel label = (JLabel) panel.getComponent(0);
+            if (label.getText().equals(name)) {
+                viewportPanel.remove(panel);
+                break;
+            }
+        }
+        viewportPanel.revalidate();
+        viewportPanel.repaint();
+        pluginPanes.revalidate();
+        pluginPanes.repaint();
+    }
+
     public void addPlugin(String name, ArrayList<String> items){
         // Create a new JComboBox with the items ArrayList
         JComboBox<String> dropdown = new JComboBox<>(items.toArray(new String[0]));
