@@ -156,8 +156,8 @@ public class CashierCheckout extends JPanel implements StorerDataListener {
 //                System.out.println(DataStore.getInstance().getBillWithID(billToBeCheckedOut).getID());
 
                 // pay
+                // TODO : add modifiers if exists
                 billOwner.pay();
-
 
                 // pop up print bill
                 int custId = billOwner.getID();
@@ -181,6 +181,9 @@ public class CashierCheckout extends JPanel implements StorerDataListener {
                 // hide this page (TODO: destroy or recycle instead)
                 parentTabbedPane.setComponentAt(parentTabbedPane.getSelectedIndex(), parentCashier);
                 parentTabbedPane.repaint();
+
+                // close bill tab
+                parentCashier.removeCurrentBillTab();
                 removeAll();
             }
         });

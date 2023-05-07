@@ -5,9 +5,12 @@
 package GUI;
 
 import Core.DataStore.DataStore;
+import Core.DataStore.StorerData.Exception.ItemWithIDAlreadyExist;
 import Core.DataStore.StorerData.StorerDataListener;
 import Core.IDAble.IDAbleListener;
+import Core.Item.Exception.NegativeQuantityException;
 import Core.Item.QuantifiableItem;
+import lombok.SneakyThrows;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -15,8 +18,7 @@ import javax.swing.event.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -48,6 +50,33 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
 
         //TODO : DATA PERSISTENCE AND NON_STATIC DATA FETCHING
         // FIRST TIME FETCH
+        // DEBUG DATA
+        try {
+            DataStore.getInstance().addNewItem("1", 2d, 3d, "sad", 4, "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAABzklEQVR4nOzavWtTURjHca9cScQgouAgCEEcTMggEgIJODgpGaMoxBA0JMQh4qCgqIvGoBjUQMjgImSw7ZRA20x9oVAKHQJtOhQS+kKhlLZ3SNsEQkmh/Qe++8OB5zt+zhB+nKGX3mtbxaVz1HiwiV4O3kG3vrInNhfRvQ+O0CP+2+ip/27086gGpQOk0wHS6QDp7FUnjAdXPn1Er/XG0K9HKuh72wvoxek36IMPL9FdhTi68TegA6TTAdLpAOns0iU/HngyLvQXqXfoPl8Q/XSEn+Nfd1bQyxf4dx/Z/HfD+BvQAdLpAOl0gHRW53kSD7y9a+iZcB3995cc+o+7t9Ar2WfosV6JvcG/a/wN6ADpdIB0OkA6a3SX/5/TfXIfveH5g/7wagi91R6i37gXQc+u83P/ZOgbuvE3oAOk0wHS6QDp7M+/jvGg7qTQ89/fovdbDvpj9yH6vrOGHkreRH8fraIbfwM6QDodIJ0OkM4+aXbxYCv9D30Qu4weCLxCb/aX0f9e5O+IcsMZ9Il0At34G9AB0ukA6XSAdLaT4/cAO7P83ejPOL/fzU9toM9V59FrVQ/60+gAvdA+QDf+BnSAdDpAOh0g3VkAAAD//+/NYfgVbkzvAAAAAElFTkSuQmCC");
+            DataStore.getInstance().addNewItem("23", 2d, 3d, "sad", 4, "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAABzklEQVR4nOzavWtTURjHca9cScQgouAgCEEcTMggEgIJODgpGaMoxBA0JMQh4qCgqIvGoBjUQMjgImSw7ZRA20x9oVAKHQJtOhQS+kKhlLZ3SNsEQkmh/Qe++8OB5zt+zhB+nKGX3mtbxaVz1HiwiV4O3kG3vrInNhfRvQ+O0CP+2+ip/27086gGpQOk0wHS6QDp7FUnjAdXPn1Er/XG0K9HKuh72wvoxek36IMPL9FdhTi68TegA6TTAdLpAOns0iU/HngyLvQXqXfoPl8Q/XSEn+Nfd1bQyxf4dx/Z/HfD+BvQAdLpAOl0gHRW53kSD7y9a+iZcB3995cc+o+7t9Ar2WfosV6JvcG/a/wN6ADpdIB0OkA6a3SX/5/TfXIfveH5g/7wagi91R6i37gXQc+u83P/ZOgbuvE3oAOk0wHS6QDp7M+/jvGg7qTQ89/fovdbDvpj9yH6vrOGHkreRH8fraIbfwM6QDodIJ0OkM4+aXbxYCv9D30Qu4weCLxCb/aX0f9e5O+IcsMZ9Il0At34G9AB0ukA6XSAdLaT4/cAO7P83ejPOL/fzU9toM9V59FrVQ/60+gAvdA+QDf+BnSAdDpAOh0g3VkAAAD//+/NYfgVbkzvAAAAAElFTkSuQmCC");
+            DataStore.getInstance().addNewItem("123", 2d, 3d, "sad", 4, "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAABzklEQVR4nOzavWtTURjHca9cScQgouAgCEEcTMggEgIJODgpGaMoxBA0JMQh4qCgqIvGoBjUQMjgImSw7ZRA20x9oVAKHQJtOhQS+kKhlLZ3SNsEQkmh/Qe++8OB5zt+zhB+nKGX3mtbxaVz1HiwiV4O3kG3vrInNhfRvQ+O0CP+2+ip/27086gGpQOk0wHS6QDp7FUnjAdXPn1Er/XG0K9HKuh72wvoxek36IMPL9FdhTi68TegA6TTAdLpAOns0iU/HngyLvQXqXfoPl8Q/XSEn+Nfd1bQyxf4dx/Z/HfD+BvQAdLpAOl0gHRW53kSD7y9a+iZcB3995cc+o+7t9Ar2WfosV6JvcG/a/wN6ADpdIB0OkA6a3SX/5/TfXIfveH5g/7wagi91R6i37gXQc+u83P/ZOgbuvE3oAOk0wHS6QDp7M+/jvGg7qTQ89/fovdbDvpj9yH6vrOGHkreRH8fraIbfwM6QDodIJ0OkM4+aXbxYCv9D30Qu4weCLxCb/aX0f9e5O+IcsMZ9Il0At34G9AB0ukA6XSAdLaT4/cAO7P83ejPOL/fzU9toM9V59FrVQ/60+gAvdA+QDf+BnSAdDpAOh0g3VkAAAD//+/NYfgVbkzvAAAAAElFTkSuQmCC");
+            DataStore.getInstance().addNewItem("ayam", 5d, 3d, "sad", 4, "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAABzklEQVR4nOzavWtTURjHca9cScQgouAgCEEcTMggEgIJODgpGaMoxBA0JMQh4qCgqIvGoBjUQMjgImSw7ZRA20x9oVAKHQJtOhQS+kKhlLZ3SNsEQkmh/Qe++8OB5zt+zhB+nKGX3mtbxaVz1HiwiV4O3kG3vrInNhfRvQ+O0CP+2+ip/27086gGpQOk0wHS6QDp7FUnjAdXPn1Er/XG0K9HKuh72wvoxek36IMPL9FdhTi68TegA6TTAdLpAOns0iU/HngyLvQXqXfoPl8Q/XSEn+Nfd1bQyxf4dx/Z/HfD+BvQAdLpAOl0gHRW53kSD7y9a+iZcB3995cc+o+7t9Ar2WfosV6JvcG/a/wN6ADpdIB0OkA6a3SX/5/TfXIfveH5g/7wagi91R6i37gXQc+u83P/ZOgbuvE3oAOk0wHS6QDp7M+/jvGg7qTQ89/fovdbDvpj9yH6vrOGHkreRH8fraIbfwM6QDodIJ0OkM4+aXbxYCv9D30Qu4weCLxCb/aX0f9e5O+IcsMZ9Il0At34G9AB0ukA6XSAdLaT4/cAO7P83ejPOL/fzU9toM9V59FrVQ/60+gAvdA+QDf+BnSAdDpAOh0g3VkAAAD//+/NYfgVbkzvAAAAAElFTkSuQmCC");
+            DataStore.getInstance().addNewItem("bebek", 2d, 3d, "sad", 4, "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAABzklEQVR4nOzavWtTURjHca9cScQgouAgCEEcTMggEgIJODgpGaMoxBA0JMQh4qCgqIvGoBjUQMjgImSw7ZRA20x9oVAKHQJtOhQS+kKhlLZ3SNsEQkmh/Qe++8OB5zt+zhB+nKGX3mtbxaVz1HiwiV4O3kG3vrInNhfRvQ+O0CP+2+ip/27086gGpQOk0wHS6QDp7FUnjAdXPn1Er/XG0K9HKuh72wvoxek36IMPL9FdhTi68TegA6TTAdLpAOns0iU/HngyLvQXqXfoPl8Q/XSEn+Nfd1bQyxf4dx/Z/HfD+BvQAdLpAOl0gHRW53kSD7y9a+iZcB3995cc+o+7t9Ar2WfosV6JvcG/a/wN6ADpdIB0OkA6a3SX/5/TfXIfveH5g/7wagi91R6i37gXQc+u83P/ZOgbuvE3oAOk0wHS6QDp7M+/jvGg7qTQ89/fovdbDvpj9yH6vrOGHkreRH8fraIbfwM6QDodIJ0OkM4+aXbxYCv9D30Qu4weCLxCb/aX0f9e5O+IcsMZ9Il0At34G9AB0ukA6XSAdLaT4/cAO7P83ejPOL/fzU9toM9V59FrVQ/60+gAvdA+QDf+BnSAdDpAOh0g3VkAAAD//+/NYfgVbkzvAAAAAElFTkSuQmCC");
+            DataStore.getInstance().addNewItem("123", 2d, 3d, "sad", 4, "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAABzklEQVR4nOzavWtTURjHca9cScQgouAgCEEcTMggEgIJODgpGaMoxBA0JMQh4qCgqIvGoBjUQMjgImSw7ZRA20x9oVAKHQJtOhQS+kKhlLZ3SNsEQkmh/Qe++8OB5zt+zhB+nKGX3mtbxaVz1HiwiV4O3kG3vrInNhfRvQ+O0CP+2+ip/27086gGpQOk0wHS6QDp7FUnjAdXPn1Er/XG0K9HKuh72wvoxek36IMPL9FdhTi68TegA6TTAdLpAOns0iU/HngyLvQXqXfoPl8Q/XSEn+Nfd1bQyxf4dx/Z/HfD+BvQAdLpAOl0gHRW53kSD7y9a+iZcB3995cc+o+7t9Ar2WfosV6JvcG/a/wN6ADpdIB0OkA6a3SX/5/TfXIfveH5g/7wagi91R6i37gXQc+u83P/ZOgbuvE3oAOk0wHS6QDp7M+/jvGg7qTQ89/fovdbDvpj9yH6vrOGHkreRH8fraIbfwM6QDodIJ0OkM4+aXbxYCv9D30Qu4weCLxCb/aX0f9e5O+IcsMZ9Il0At34G9AB0ukA6XSAdLaT4/cAO7P83ejPOL/fzU9toM9V59FrVQ/60+gAvdA+QDf+BnSAdDpAOh0g3VkAAAD//+/NYfgVbkzvAAAAAElFTkSuQmCC");
+            DataStore.getInstance().addNewItem("ayam", 5d, 3d, "sad", 4, "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAABzklEQVR4nOzavWtTURjHca9cScQgouAgCEEcTMggEgIJODgpGaMoxBA0JMQh4qCgqIvGoBjUQMjgImSw7ZRA20x9oVAKHQJtOhQS+kKhlLZ3SNsEQkmh/Qe++8OB5zt+zhB+nKGX3mtbxaVz1HiwiV4O3kG3vrInNhfRvQ+O0CP+2+ip/27086gGpQOk0wHS6QDp7FUnjAdXPn1Er/XG0K9HKuh72wvoxek36IMPL9FdhTi68TegA6TTAdLpAOns0iU/HngyLvQXqXfoPl8Q/XSEn+Nfd1bQyxf4dx/Z/HfD+BvQAdLpAOl0gHRW53kSD7y9a+iZcB3995cc+o+7t9Ar2WfosV6JvcG/a/wN6ADpdIB0OkA6a3SX/5/TfXIfveH5g/7wagi91R6i37gXQc+u83P/ZOgbuvE3oAOk0wHS6QDp7M+/jvGg7qTQ89/fovdbDvpj9yH6vrOGHkreRH8fraIbfwM6QDodIJ0OkM4+aXbxYCv9D30Qu4weCLxCb/aX0f9e5O+IcsMZ9Il0At34G9AB0ukA6XSAdLaT4/cAO7P83ejPOL/fzU9toM9V59FrVQ/60+gAvdA+QDf+BnSAdDpAOh0g3VkAAAD//+/NYfgVbkzvAAAAAElFTkSuQmCC");
+            DataStore.getInstance().addNewItem("bebek", 2d, 3d, "sad", 4, "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAABzklEQVR4nOzavWtTURjHca9cScQgouAgCEEcTMggEgIJODgpGaMoxBA0JMQh4qCgqIvGoBjUQMjgImSw7ZRA20x9oVAKHQJtOhQS+kKhlLZ3SNsEQkmh/Qe++8OB5zt+zhB+nKGX3mtbxaVz1HiwiV4O3kG3vrInNhfRvQ+O0CP+2+ip/27086gGpQOk0wHS6QDp7FUnjAdXPn1Er/XG0K9HKuh72wvoxek36IMPL9FdhTi68TegA6TTAdLpAOns0iU/HngyLvQXqXfoPl8Q/XSEn+Nfd1bQyxf4dx/Z/HfD+BvQAdLpAOl0gHRW53kSD7y9a+iZcB3995cc+o+7t9Ar2WfosV6JvcG/a/wN6ADpdIB0OkA6a3SX/5/TfXIfveH5g/7wagi91R6i37gXQc+u83P/ZOgbuvE3oAOk0wHS6QDp7M+/jvGg7qTQ89/fovdbDvpj9yH6vrOGHkreRH8fraIbfwM6QDodIJ0OkM4+aXbxYCv9D30Qu4weCLxCb/aX0f9e5O+IcsMZ9Il0At34G9AB0ukA6XSAdLaT4/cAO7P83ejPOL/fzU9toM9V59FrVQ/60+gAvdA+QDf+BnSAdDpAOh0g3VkAAAD//+/NYfgVbkzvAAAAAElFTkSuQmCC");
+            DataStore.getInstance().addNewItem("123", 2d, 3d, "sad", 4, "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAABzklEQVR4nOzavWtTURjHca9cScQgouAgCEEcTMggEgIJODgpGaMoxBA0JMQh4qCgqIvGoBjUQMjgImSw7ZRA20x9oVAKHQJtOhQS+kKhlLZ3SNsEQkmh/Qe++8OB5zt+zhB+nKGX3mtbxaVz1HiwiV4O3kG3vrInNhfRvQ+O0CP+2+ip/27086gGpQOk0wHS6QDp7FUnjAdXPn1Er/XG0K9HKuh72wvoxek36IMPL9FdhTi68TegA6TTAdLpAOns0iU/HngyLvQXqXfoPl8Q/XSEn+Nfd1bQyxf4dx/Z/HfD+BvQAdLpAOl0gHRW53kSD7y9a+iZcB3995cc+o+7t9Ar2WfosV6JvcG/a/wN6ADpdIB0OkA6a3SX/5/TfXIfveH5g/7wagi91R6i37gXQc+u83P/ZOgbuvE3oAOk0wHS6QDp7M+/jvGg7qTQ89/fovdbDvpj9yH6vrOGHkreRH8fraIbfwM6QDodIJ0OkM4+aXbxYCv9D30Qu4weCLxCb/aX0f9e5O+IcsMZ9Il0At34G9AB0ukA6XSAdLaT4/cAO7P83ejPOL/fzU9toM9V59FrVQ/60+gAvdA+QDf+BnSAdDpAOh0g3VkAAAD//+/NYfgVbkzvAAAAAElFTkSuQmCC");
+            DataStore.getInstance().addNewItem("ayam", 5d, 3d, "sad", 4, "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAABzklEQVR4nOzavWtTURjHca9cScQgouAgCEEcTMggEgIJODgpGaMoxBA0JMQh4qCgqIvGoBjUQMjgImSw7ZRA20x9oVAKHQJtOhQS+kKhlLZ3SNsEQkmh/Qe++8OB5zt+zhB+nKGX3mtbxaVz1HiwiV4O3kG3vrInNhfRvQ+O0CP+2+ip/27086gGpQOk0wHS6QDp7FUnjAdXPn1Er/XG0K9HKuh72wvoxek36IMPL9FdhTi68TegA6TTAdLpAOns0iU/HngyLvQXqXfoPl8Q/XSEn+Nfd1bQyxf4dx/Z/HfD+BvQAdLpAOl0gHRW53kSD7y9a+iZcB3995cc+o+7t9Ar2WfosV6JvcG/a/wN6ADpdIB0OkA6a3SX/5/TfXIfveH5g/7wagi91R6i37gXQc+u83P/ZOgbuvE3oAOk0wHS6QDp7M+/jvGg7qTQ89/fovdbDvpj9yH6vrOGHkreRH8fraIbfwM6QDodIJ0OkM4+aXbxYCv9D30Qu4weCLxCb/aX0f9e5O+IcsMZ9Il0At34G9AB0ukA6XSAdLaT4/cAO7P83ejPOL/fzU9toM9V59FrVQ/60+gAvdA+QDf+BnSAdDpAOh0g3VkAAAD//+/NYfgVbkzvAAAAAElFTkSuQmCC");
+            DataStore.getInstance().addNewItem("bebek", 2d, 3d, "sad", 4, "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAABzklEQVR4nOzavWtTURjHca9cScQgouAgCEEcTMggEgIJODgpGaMoxBA0JMQh4qCgqIvGoBjUQMjgImSw7ZRA20x9oVAKHQJtOhQS+kKhlLZ3SNsEQkmh/Qe++8OB5zt+zhB+nKGX3mtbxaVz1HiwiV4O3kG3vrInNhfRvQ+O0CP+2+ip/27086gGpQOk0wHS6QDp7FUnjAdXPn1Er/XG0K9HKuh72wvoxek36IMPL9FdhTi68TegA6TTAdLpAOns0iU/HngyLvQXqXfoPl8Q/XSEn+Nfd1bQyxf4dx/Z/HfD+BvQAdLpAOl0gHRW53kSD7y9a+iZcB3995cc+o+7t9Ar2WfosV6JvcG/a/wN6ADpdIB0OkA6a3SX/5/TfXIfveH5g/7wagi91R6i37gXQc+u83P/ZOgbuvE3oAOk0wHS6QDp7M+/jvGg7qTQ89/fovdbDvpj9yH6vrOGHkreRH8fraIbfwM6QDodIJ0OkM4+aXbxYCv9D30Qu4weCLxCb/aX0f9e5O+IcsMZ9Il0At34G9AB0ukA6XSAdLaT4/cAO7P83ejPOL/fzU9toM9V59FrVQ/60+gAvdA+QDf+BnSAdDpAOh0g3VkAAAD//+/NYfgVbkzvAAAAAElFTkSuQmCC");
+            DataStore.getInstance().addNewItem("123", 2d, 3d, "sad", 4, "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAABzklEQVR4nOzavWtTURjHca9cScQgouAgCEEcTMggEgIJODgpGaMoxBA0JMQh4qCgqIvGoBjUQMjgImSw7ZRA20x9oVAKHQJtOhQS+kKhlLZ3SNsEQkmh/Qe++8OB5zt+zhB+nKGX3mtbxaVz1HiwiV4O3kG3vrInNhfRvQ+O0CP+2+ip/27086gGpQOk0wHS6QDp7FUnjAdXPn1Er/XG0K9HKuh72wvoxek36IMPL9FdhTi68TegA6TTAdLpAOns0iU/HngyLvQXqXfoPl8Q/XSEn+Nfd1bQyxf4dx/Z/HfD+BvQAdLpAOl0gHRW53kSD7y9a+iZcB3995cc+o+7t9Ar2WfosV6JvcG/a/wN6ADpdIB0OkA6a3SX/5/TfXIfveH5g/7wagi91R6i37gXQc+u83P/ZOgbuvE3oAOk0wHS6QDp7M+/jvGg7qTQ89/fovdbDvpj9yH6vrOGHkreRH8fraIbfwM6QDodIJ0OkM4+aXbxYCv9D30Qu4weCLxCb/aX0f9e5O+IcsMZ9Il0At34G9AB0ukA6XSAdLaT4/cAO7P83ejPOL/fzU9toM9V59FrVQ/60+gAvdA+QDf+BnSAdDpAOh0g3VkAAAD//+/NYfgVbkzvAAAAAElFTkSuQmCC");
+            DataStore.getInstance().addNewItem("ayam", 5d, 3d, "sad", 4, "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAABzklEQVR4nOzavWtTURjHca9cScQgouAgCEEcTMggEgIJODgpGaMoxBA0JMQh4qCgqIvGoBjUQMjgImSw7ZRA20x9oVAKHQJtOhQS+kKhlLZ3SNsEQkmh/Qe++8OB5zt+zhB+nKGX3mtbxaVz1HiwiV4O3kG3vrInNhfRvQ+O0CP+2+ip/27086gGpQOk0wHS6QDp7FUnjAdXPn1Er/XG0K9HKuh72wvoxek36IMPL9FdhTi68TegA6TTAdLpAOns0iU/HngyLvQXqXfoPl8Q/XSEn+Nfd1bQyxf4dx/Z/HfD+BvQAdLpAOl0gHRW53kSD7y9a+iZcB3995cc+o+7t9Ar2WfosV6JvcG/a/wN6ADpdIB0OkA6a3SX/5/TfXIfveH5g/7wagi91R6i37gXQc+u83P/ZOgbuvE3oAOk0wHS6QDp7M+/jvGg7qTQ89/fovdbDvpj9yH6vrOGHkreRH8fraIbfwM6QDodIJ0OkM4+aXbxYCv9D30Qu4weCLxCb/aX0f9e5O+IcsMZ9Il0At34G9AB0ukA6XSAdLaT4/cAO7P83ejPOL/fzU9toM9V59FrVQ/60+gAvdA+QDf+BnSAdDpAOh0g3VkAAAD//+/NYfgVbkzvAAAAAElFTkSuQmCC");
+            DataStore.getInstance().addNewItem("bebek", 2d, 3d, "sad", 4, "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAABzklEQVR4nOzavWtTURjHca9cScQgouAgCEEcTMggEgIJODgpGaMoxBA0JMQh4qCgqIvGoBjUQMjgImSw7ZRA20x9oVAKHQJtOhQS+kKhlLZ3SNsEQkmh/Qe++8OB5zt+zhB+nKGX3mtbxaVz1HiwiV4O3kG3vrInNhfRvQ+O0CP+2+ip/27086gGpQOk0wHS6QDp7FUnjAdXPn1Er/XG0K9HKuh72wvoxek36IMPL9FdhTi68TegA6TTAdLpAOns0iU/HngyLvQXqXfoPl8Q/XSEn+Nfd1bQyxf4dx/Z/HfD+BvQAdLpAOl0gHRW53kSD7y9a+iZcB3995cc+o+7t9Ar2WfosV6JvcG/a/wN6ADpdIB0OkA6a3SX/5/TfXIfveH5g/7wagi91R6i37gXQc+u83P/ZOgbuvE3oAOk0wHS6QDp7M+/jvGg7qTQ89/fovdbDvpj9yH6vrOGHkreRH8fraIbfwM6QDodIJ0OkM4+aXbxYCv9D30Qu4weCLxCb/aX0f9e5O+IcsMZ9Il0At34G9AB0ukA6XSAdLaT4/cAO7P83ejPOL/fzU9toM9V59FrVQ/60+gAvdA+QDf+BnSAdDpAOh0g3VkAAAD//+/NYfgVbkzvAAAAAElFTkSuQmCC");
+            DataStore.getInstance().addNewItem("123", 2d, 3d, "sad", 4, "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAABzklEQVR4nOzavWtTURjHca9cScQgouAgCEEcTMggEgIJODgpGaMoxBA0JMQh4qCgqIvGoBjUQMjgImSw7ZRA20x9oVAKHQJtOhQS+kKhlLZ3SNsEQkmh/Qe++8OB5zt+zhB+nKGX3mtbxaVz1HiwiV4O3kG3vrInNhfRvQ+O0CP+2+ip/27086gGpQOk0wHS6QDp7FUnjAdXPn1Er/XG0K9HKuh72wvoxek36IMPL9FdhTi68TegA6TTAdLpAOns0iU/HngyLvQXqXfoPl8Q/XSEn+Nfd1bQyxf4dx/Z/HfD+BvQAdLpAOl0gHRW53kSD7y9a+iZcB3995cc+o+7t9Ar2WfosV6JvcG/a/wN6ADpdIB0OkA6a3SX/5/TfXIfveH5g/7wagi91R6i37gXQc+u83P/ZOgbuvE3oAOk0wHS6QDp7M+/jvGg7qTQ89/fovdbDvpj9yH6vrOGHkreRH8fraIbfwM6QDodIJ0OkM4+aXbxYCv9D30Qu4weCLxCb/aX0f9e5O+IcsMZ9Il0At34G9AB0ukA6XSAdLaT4/cAO7P83ejPOL/fzU9toM9V59FrVQ/60+gAvdA+QDf+BnSAdDpAOh0g3VkAAAD//+/NYfgVbkzvAAAAAElFTkSuQmCC");
+            DataStore.getInstance().addNewItem("ayam", 5d, 3d, "sad", 4, "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAABzklEQVR4nOzavWtTURjHca9cScQgouAgCEEcTMggEgIJODgpGaMoxBA0JMQh4qCgqIvGoBjUQMjgImSw7ZRA20x9oVAKHQJtOhQS+kKhlLZ3SNsEQkmh/Qe++8OB5zt+zhB+nKGX3mtbxaVz1HiwiV4O3kG3vrInNhfRvQ+O0CP+2+ip/27086gGpQOk0wHS6QDp7FUnjAdXPn1Er/XG0K9HKuh72wvoxek36IMPL9FdhTi68TegA6TTAdLpAOns0iU/HngyLvQXqXfoPl8Q/XSEn+Nfd1bQyxf4dx/Z/HfD+BvQAdLpAOl0gHRW53kSD7y9a+iZcB3995cc+o+7t9Ar2WfosV6JvcG/a/wN6ADpdIB0OkA6a3SX/5/TfXIfveH5g/7wagi91R6i37gXQc+u83P/ZOgbuvE3oAOk0wHS6QDp7M+/jvGg7qTQ89/fovdbDvpj9yH6vrOGHkreRH8fraIbfwM6QDodIJ0OkM4+aXbxYCv9D30Qu4weCLxCb/aX0f9e5O+IcsMZ9Il0At34G9AB0ukA6XSAdLaT4/cAO7P83ejPOL/fzU9toM9V59FrVQ/60+gAvdA+QDf+BnSAdDpAOh0g3VkAAAD//+/NYfgVbkzvAAAAAElFTkSuQmCC");
+            DataStore.getInstance().addNewItem("bebek", 2d, 3d, "sad", 4, "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAABzklEQVR4nOzavWtTURjHca9cScQgouAgCEEcTMggEgIJODgpGaMoxBA0JMQh4qCgqIvGoBjUQMjgImSw7ZRA20x9oVAKHQJtOhQS+kKhlLZ3SNsEQkmh/Qe++8OB5zt+zhB+nKGX3mtbxaVz1HiwiV4O3kG3vrInNhfRvQ+O0CP+2+ip/27086gGpQOk0wHS6QDp7FUnjAdXPn1Er/XG0K9HKuh72wvoxek36IMPL9FdhTi68TegA6TTAdLpAOns0iU/HngyLvQXqXfoPl8Q/XSEn+Nfd1bQyxf4dx/Z/HfD+BvQAdLpAOl0gHRW53kSD7y9a+iZcB3995cc+o+7t9Ar2WfosV6JvcG/a/wN6ADpdIB0OkA6a3SX/5/TfXIfveH5g/7wagi91R6i37gXQc+u83P/ZOgbuvE3oAOk0wHS6QDp7M+/jvGg7qTQ89/fovdbDvpj9yH6vrOGHkreRH8fraIbfwM6QDodIJ0OkM4+aXbxYCv9D30Qu4weCLxCb/aX0f9e5O+IcsMZ9Il0At34G9AB0ukA6XSAdLaT4/cAO7P83ejPOL/fzU9toM9V59FrVQ/60+gAvdA+QDf+BnSAdDpAOh0g3VkAAAD//+/NYfgVbkzvAAAAAElFTkSuQmCC");
+
+        } catch (ItemWithIDAlreadyExist e) {
+            throw new RuntimeException(e);
+        } catch (NegativeQuantityException e) {
+            throw new RuntimeException(e);
+        }
+        // DEBUG DATA
+
          browseObjects = DataStore.getInstance().getItems();
 
 
@@ -57,10 +86,10 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
         searchText = new JTextField();
         searchButton = new JButton();
         billTabPane = new JTabbedPane();
-        createNewBillTab(); // Bill1
-        createNewBillTab(); // +
         subtotalTitle = new JLabel();
         subtotalAmount = new JLabel();
+        createNewBillTab(); // Bill1
+        createNewBillTab(); // +
         deleteBill = new JButton();
         checkoutBill = new JButton();
         addItem = new JButton();
@@ -71,27 +100,27 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
         browseListTableModel.addColumn("Price");
         browseListTableModel.addColumn("Detail");
 
+        browseTable.setTableHeader(null);
+        browseTable.setIntercellSpacing(new Dimension(15, 15));
+        browseTable.setBackground(browseTable.getBackground().darker());
+        browseTable.setShowGrid(false);
+
         updateBrowseTableModel();
 
         browseTable.setModel(browseListTableModel);
+        browseTable.setCellSelectionEnabled(true);
 
         // set last column as jlabel
-        browseTable.getColumnModel().getColumn(3).setCellRenderer(new JTableCellRenderer());
+        for(int i = 0; i < browseTable.getColumnCount(); i++) {
+            browseTable.getColumnModel().getColumn(i).setCellRenderer(new JTableCellRenderer());
+        }
 
         // set table row height
         browseTable.setRowHeight(128);
+//        browseTable.setRowHeight(browseTable.getWidth() / browseTable.getColumnCount());
 
 
 
-        // DEBUG DATA
-//        try {
-//            DataStore.getInstance().addNewItem("123", 2d, 3d, "sad", 4, "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAABzklEQVR4nOzavWtTURjHca9cScQgouAgCEEcTMggEgIJODgpGaMoxBA0JMQh4qCgqIvGoBjUQMjgImSw7ZRA20x9oVAKHQJtOhQS+kKhlLZ3SNsEQkmh/Qe++8OB5zt+zhB+nKGX3mtbxaVz1HiwiV4O3kG3vrInNhfRvQ+O0CP+2+ip/27086gGpQOk0wHS6QDp7FUnjAdXPn1Er/XG0K9HKuh72wvoxek36IMPL9FdhTi68TegA6TTAdLpAOns0iU/HngyLvQXqXfoPl8Q/XSEn+Nfd1bQyxf4dx/Z/HfD+BvQAdLpAOl0gHRW53kSD7y9a+iZcB3995cc+o+7t9Ar2WfosV6JvcG/a/wN6ADpdIB0OkA6a3SX/5/TfXIfveH5g/7wagi91R6i37gXQc+u83P/ZOgbuvE3oAOk0wHS6QDp7M+/jvGg7qTQ89/fovdbDvpj9yH6vrOGHkreRH8fraIbfwM6QDodIJ0OkM4+aXbxYCv9D30Qu4weCLxCb/aX0f9e5O+IcsMZ9Il0At34G9AB0ukA6XSAdLaT4/cAO7P83ejPOL/fzU9toM9V59FrVQ/60+gAvdA+QDf+BnSAdDpAOh0g3VkAAAD//+/NYfgVbkzvAAAAAElFTkSuQmCC");
-//        } catch (ItemWithIDAlreadyExist e) {
-//            throw new RuntimeException(e);
-//        } catch (NegativeQuantityException e) {
-//            throw new RuntimeException(e);
-//        }
-        // DEBUG DATA
 
 
         //---- title ----
@@ -215,24 +244,56 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
         // Selecting Browsable Object
         browseTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         ListSelectionModel browseTableSM = browseTable.getSelectionModel();
-        browseTableSM.addListSelectionListener(new ListSelectionListener() {
+        browseTable.addMouseListener(new MouseAdapter() {
             @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (e.getValueIsAdjusting()) return;
+            public void mouseReleased(MouseEvent e) {
+                super.mouseReleased(e);
 
-                ListSelectionModel listSelectionModel = (ListSelectionModel) e.getSource();
-                if(!listSelectionModel.isSelectionEmpty()) {
-                    setSelectedBrowseObject(browseObjects
-                                            .stream()
-                                            .filter(qItem ->    qItem.getName().toLowerCase()
-                                                                        .contains(searchText.getText().toLowerCase()) ||
-                                                                qItem.getCategory().toLowerCase()
-                                                                        .contains(searchText.getText().toLowerCase()) ||
-                                                                Double.toString(qItem.getSingularPrice()).toLowerCase()
-                                                                        .contains(searchText.getText().toLowerCase()))
-                                            .collect(Collectors.toCollection(ArrayList::new))
-                                            .get(listSelectionModel.getMinSelectionIndex()));
+                int index = browseTable.getSelectedRow() * 4 + browseTable.getSelectedColumn();
+                ArrayList<QuantifiableItem> filteredObjs =
+                        browseObjects
+                                .stream()
+                                .filter(qItem ->    qItem.getName().toLowerCase()
+                                        .contains(searchText.getText().toLowerCase()) ||
+                                        qItem.getCategory().toLowerCase()
+                                                .contains(searchText.getText().toLowerCase()) ||
+                                        Double.toString(qItem.getSingularPrice()).toLowerCase()
+                                                .contains(searchText.getText().toLowerCase()))
+                                .collect(Collectors.toCollection(ArrayList::new));
+
+                if (index >= filteredObjs.size()) {
+                    return;
                 }
+
+                setSelectedBrowseObject(
+                        filteredObjs.get(index));
+            }
+        });
+
+        // workaround for keyboard.arrow input
+        browseTable.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                super.keyReleased(e);
+
+                int index = browseTable.getSelectedRow() * 4 + browseTable.getSelectedColumn();
+                ArrayList<QuantifiableItem> filteredObjs =
+                        browseObjects
+                        .stream()
+                        .filter(qItem ->    qItem.getName().toLowerCase()
+                                .contains(searchText.getText().toLowerCase()) ||
+                                qItem.getCategory().toLowerCase()
+                                        .contains(searchText.getText().toLowerCase()) ||
+                                Double.toString(qItem.getSingularPrice()).toLowerCase()
+                                        .contains(searchText.getText().toLowerCase()))
+                        .collect(Collectors.toCollection(ArrayList::new));
+
+                if (index >= filteredObjs.size()) {
+                    return;
+                }
+
+                setSelectedBrowseObject(
+                        filteredObjs.get(index));
             }
         });
 
@@ -286,31 +347,18 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
             @Override
             public void actionPerformed(ActionEvent e) {
 //                browseObjects.get(0).setName(browseObjects.get(0).getName().concat(browseObjects.get(0).getName().substring(1)));
-                int selectedIdx = billTabPane.getSelectedIndex();
-
-                // TO AVOID AUTO BILL TAB CREATION BECAUSE OF SELECTED INDEX INHERITANCE
-                if (selectedIdx == currentActiveBillDisplays.size()-2) {
-                  billTabPane.setSelectedIndex(selectedIdx-1);
-                }
-                billTabPane.removeTabAt(selectedIdx);
-                currentActiveBillDisplays.remove(selectedIdx);
-
-                updateBillTabTitle();
+                removeCurrentBillTab();
             }
         });
 
         checkoutBill.addActionListener(new ActionListener() {
-//            @SneakyThrows
             @Override
             public void actionPerformed(ActionEvent e) {
-//                if (currentActiveBillDisplays.get(billTabPane.getSelectedIndex()).getDisplayedTableModel().getRowCount() == 0) {
-//                    System.out.println("bill kosong");
-////                    return;
-//                }
+                if (currentActiveBillDisplays.get(billTabPane.getSelectedIndex()).getDisplayedTableModel().getRowCount() == 0) {
+                    System.out.println("bill kosong");
+//                    return;
+                }
 
-//                Customer customer = DataStore.getInstance().createNewCustomer(); //dummy customer yang diassign
-//                currentActiveBillDisplays.get(billTabPane.getSelectedIndex()).getDisplayedBill().setOwner(customer);
-//                FixedBill toBePrinted = currentActiveBillDisplays.get(billTabPane.getSelectedIndex()).getDisplayedBill().getFixedBill();// dummy fixedbill
                 parentTabbedPane.setComponentAt(parentTabbedPane.getSelectedIndex(),
                         new CashierCheckout(parentTabbedPane,
                                                 thisCashier,
@@ -326,8 +374,8 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
         selectedSoldItem = soldItem;
     }
 
+    @SneakyThrows
     void updateBrowseTableModel(){
-
         String filterText = searchText.getText() == null ? "" : searchText.getText();
 
         // Empty tableModel
@@ -346,18 +394,18 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
                 .collect(Collectors.toCollection(ArrayList::new));
 
         // Update tableModel
-        for (QuantifiableItem qItem : filteredBrowseObjects) {
 
-            try {
-                browseListTableModel.addRow(new Object[]{qItem.getName(), qItem.getCategory(), Double.toString(qItem.getSingularPrice()), base64ImageDecode(qItem.getImage().getBase64Image())});
-            } catch (Exception e) {
-                System.out.println(e.toString());
-            }
+        for(int i = 0; i < filteredBrowseObjects.size() / 4; i++) {
+            browseListTableModel.addRow(filteredBrowseObjects.subList(i * 4, i * 4 + 4).toArray());
         }
+        browseListTableModel.addRow(filteredBrowseObjects.subList(filteredBrowseObjects.size() / 4 * 4, filteredBrowseObjects.size()).toArray());
+
+        browseTable.repaint();
     }
 
     BillDisplay createNewBillTab() {
-        currentActiveBillDisplays.add(new BillDisplay());
+        // TODO : currently getprice doesnt display de
+        currentActiveBillDisplays.add(new BillDisplay(subtotalAmount));
 
         updateBillTabTitle();
 
@@ -389,7 +437,19 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
             browseObjects = DataStore.getInstance().getItems();
             updateBrowseTableModel();
         }
+    }
 
+    void removeCurrentBillTab() {
+        int selectedIdx = billTabPane.getSelectedIndex();
+
+        // TO AVOID AUTO BILL TAB CREATION BECAUSE OF SELECTED INDEX INHERITANCE
+        if (selectedIdx == currentActiveBillDisplays.size()-2 && selectedIdx > 0) {
+            billTabPane.setSelectedIndex(selectedIdx-1);
+        }
+        billTabPane.removeTabAt(selectedIdx);
+        currentActiveBillDisplays.remove(selectedIdx);
+
+        updateBillTabTitle();
     }
 
     private ImageIcon base64ImageDecode(String base64img){
@@ -428,11 +488,19 @@ class JTableCellRenderer extends DefaultTableCellRenderer {
 
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        //TODO : onselect
-        label.setIcon((Icon) value);
-        label.setHorizontalAlignment(JLabel.CENTER);
-//        label.setText((String) value);
-        return label;
+        if (value == null) return  null;
+
+        Color bg =
+                isSelected
+                    ?
+                super.getTableCellRendererComponent(table, "", isSelected, hasFocus, row, column).getBackground()
+                    :
+                Color.WHITE
+                ;
+
+        JPanel panel = new CashierItemDisplay((QuantifiableItem) value, bg);
+
+        return panel;
     }
 
 
