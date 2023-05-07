@@ -61,25 +61,27 @@ public class DataStore {
         try {
             this.images = controller.loadImage();
         } catch (IOException ignored) {
-            return -1;
+            return 1;
         }
 
         try {
             this.items = controller.loadItem();
         } catch (IOException ignored) {
-            return -1;
+            return 2;
         }
 
         try {
             this.customers = controller.loadCustomer();
         } catch (IOException ignored) {
-            return -1;
+            System.out.println("c error");
+            return 3;
         }
 
         try {
             this.premiumCustomers = controller.loadPremiumCustomer();
         } catch (IOException ignored) {
-            return -1;
+            System.out.println("pc error");
+            return 4;
         }
         return 0;
     }

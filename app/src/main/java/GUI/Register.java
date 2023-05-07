@@ -31,6 +31,7 @@ public class Register extends JPanel {
             try {
                 while (true) {
                     List<Customer> customers = ds.getCustomers();
+                    System.out.println(customers);
                     Set<Integer> currentIDs = new HashSet<>();
                     for (int i = 0; i < idDropDown.getItemCount(); i++) {
                         currentIDs.add((Integer) idDropDown.getItemAt(i));

@@ -43,8 +43,14 @@ public class LoadingScreen {
             try {
                 DataStore ds = DataStore.getInstance();
                 int retcode = ds.load();
-                if(retcode == -1){
-                    JOptionPane.showMessageDialog(null, "Some data wasn't loaded");
+                if(retcode == 1){
+                    JOptionPane.showMessageDialog(null, "Image wasn't loaded");
+                } else if(retcode == 2){
+                    JOptionPane.showMessageDialog(null, "Item wasn't loaded");
+                } else if(retcode == 3){
+                    JOptionPane.showMessageDialog(null, "Customer data wasn't loaded");
+                } else if(retcode == 4){
+                    JOptionPane.showMessageDialog(null, "Premium customer data wasn't loaded");
                 }
             } catch (Exception e){
                 JOptionPane.showMessageDialog(null, "Error loading data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
