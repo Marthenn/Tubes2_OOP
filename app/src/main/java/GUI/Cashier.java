@@ -385,6 +385,7 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
         ArrayList<QuantifiableItem> filteredBrowseObjects =
                 browseObjects
                 .stream()
+                .filter(qItem -> !qItem.isDeleted())
                 .filter(qItem ->    qItem.getName().toLowerCase()
                                             .contains(filterText.toLowerCase()) ||
                                     qItem.getCategory().toLowerCase()
