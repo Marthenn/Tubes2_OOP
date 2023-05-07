@@ -5,10 +5,7 @@
 package GUI;
 
 import Core.Customer.Customer;
-import Core.Customer.MembershipState.MembershipStateName;
 import Core.DataStore.DataStore;
-import Core.DataStore.Exception.CustomerNotExistException;
-import Core.DataStore.Exception.PromotedCustomerAlreadyExist;
 import Core.DataStore.StorerData.StorerDataListener;
 import Core.Printer.FixedBillPrinter;
 import Core.Item.Bill.Bill;
@@ -16,13 +13,18 @@ import Core.Item.Bill.FixedBill.FixedBillModifier.FixedBillModifier;
 import Core.Item.QuantifiableItem;
 import lombok.SneakyThrows;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Base64;
 
 /**
  * @author Fakih A
@@ -48,7 +50,7 @@ public class CashierCheckout extends JPanel implements StorerDataListener {
         // listener init
         DataStore.getInstance().listenToCustomerStore(this);
 
-        Title = new JLabel();
+        CancelCheckout = new JButton();
         DaftarPembelian = new JScrollPane();
         TabelPembelian = new JTable();
         LabelCustomer = new JLabel();
@@ -63,10 +65,12 @@ public class CashierCheckout extends JPanel implements StorerDataListener {
 
         tabelDetailModel.addColumn("No");
         tabelDetailModel.addColumn("Name");
-        tabelDetailModel.addColumn("Detail");
         tabelDetailModel.addColumn("Price");
-        tabelDetailModel.addColumn("Qty");
+        tabelDetailModel.addColumn("Purchase Qty");
         tabelDetailModel.addColumn("Subtotal");
+        tabelDetailModel.addColumn("Keterangan");
+
+        TabelDetail.getColumnModel().getColumn(5).setCellRenderer(new KeteranganDetailRenderer());
 
         updateTabelDetailModel();
 
@@ -77,8 +81,8 @@ public class CashierCheckout extends JPanel implements StorerDataListener {
         ((GridBagLayout)getLayout()).rowWeights = new double[] {0.6, 0.6, 2.0, 1.0, 0.2, 1.0E-4};
 
         //---- Title ----
-        Title.setText("Checkout");
-        add(Title, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+        CancelCheckout.setText("Batalkan");
+        add(CancelCheckout, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 5), 0, 0));
 
@@ -177,6 +181,16 @@ public class CashierCheckout extends JPanel implements StorerDataListener {
             }
         });
 
+        CancelCheckout.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                parentTabbedPane.setComponentAt(parentTabbedPane.getSelectedIndex(), parentCashier);
+                parentTabbedPane.repaint();
+
+                removeAll();
+            }
+        });
+
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
 
@@ -188,17 +202,16 @@ public class CashierCheckout extends JPanel implements StorerDataListener {
         for (QuantifiableItem qItem : billToBeCheckedOut.getItemList()) {
             tabelDetailModel.addRow(new String[]{Integer.toString(i),
                     qItem.getName(),
-                    "TODO",
                     Double.toString(qItem.getSingularPrice()),
-                    Integer.toString(qItem.getQuantity()),
-                    Double.toString(qItem.getPrice())
+                    Integer.toString(this.billToBeCheckedOut.getQuantityOfItemWithID(qItem.getID())),
+                    Double.toString(qItem.getPrice()),
+                    Integer.toString(DataStore.getInstance().getItemWithID(qItem.getID()).getQuantity() - qItem.getQuantity())
             });
         }
     }
-
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
     // Generated using JFormDesigner Evaluation license - Fakih Anugerah Pratama
-    private JLabel Title;
+    private JButton CancelCheckout;
     private JScrollPane DaftarPembelian;
     private JTable TabelPembelian;
     private JLabel LabelCustomer;
@@ -216,4 +229,34 @@ public class CashierCheckout extends JPanel implements StorerDataListener {
      }
     }
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
+}
+
+class KeteranganDetailRenderer extends DefaultTableCellRenderer {
+    JLabel label = new JLabel();
+
+    @Override
+    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        if (value == null) return  null;
+
+        Boolean tersedia = Integer.parseInt(String.valueOf(value)) >= 0;
+
+        Color bg =
+                isSelected
+                        ?
+                        super.getTableCellRendererComponent(table, "", isSelected, hasFocus, row, column).getBackground()
+                        :
+                         tersedia
+                            ?
+                            Color.GREEN
+                                :
+                            Color.RED
+                ;
+
+        JButton labelValue = new JButton(tersedia ? "Tersedia" : "Melebihi stok");
+        labelValue.setBackground(bg);
+
+        return labelValue;
+    }
+
+
 }

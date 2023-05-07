@@ -72,7 +72,7 @@ public class CashierItemDisplay extends JPanel {
     }
 
     @SneakyThrows
-    public ImageIcon getImageIcon(String img, int desiredWidth){
+    private ImageIcon getImageIcon(String img, int desiredWidth){
             byte[] btDataFile = Base64.getDecoder().decode(img);
             BufferedImage image1 = ImageIO.read(new ByteArrayInputStream(btDataFile));
             ImageIcon image2 = new ImageIcon(image1);
@@ -80,7 +80,7 @@ public class CashierItemDisplay extends JPanel {
             return resizeImageIcon(image2, desiredWidth);
     }
 
-    public ImageIcon resizeImageIcon(ImageIcon imgIcon, int desiredWidth) {
+    private ImageIcon resizeImageIcon(ImageIcon imgIcon, int desiredWidth) {
         return  new ImageIcon(imgIcon.getImage().getScaledInstance(desiredWidth, (int) ((double)imgIcon.getIconHeight() / imgIcon.getIconWidth() * desiredWidth), Image.SCALE_SMOOTH));
     }
 
