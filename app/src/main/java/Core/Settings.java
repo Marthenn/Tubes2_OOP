@@ -51,7 +51,6 @@ public class Settings {
         for (Class<?> cls : classes) {
             try{
                 Object obj = cls.newInstance();
-                System.out.println(obj.getClass().getSimpleName());
                 if (obj instanceof Plugin){
                     Plugin plugin = (Plugin) obj;
                     System.out.println(plugin);

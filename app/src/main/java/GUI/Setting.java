@@ -5,6 +5,7 @@
 package GUI;
 
 import Core.Settings;
+import Plugins.Plugin;
 import lombok.SneakyThrows;
 
 import javax.swing.*;
@@ -107,9 +108,9 @@ public class Setting extends JPanel {
     }
 
     private void resetButtonMousePressed(MouseEvent e) {
-//        for (String plugin : settings.getPlugins()) {
-//            settings.getPlugins().removePlugin(plugin);
-//        }
+        for (Plugin plugin : settings.getPlugins()) {
+            plugin.unload();
+        }
     }
 
     private void objBoxItemStateChanged(ItemEvent e) {
@@ -170,8 +171,14 @@ public class Setting extends JPanel {
     }
 
     public void addPlugin(String name, ArrayList<String> items){
+        if (items == null) {
+            items = new ArrayList<>();
+        }
         // Create a new JComboBox with the items ArrayList
         JComboBox<String> dropdown = new JComboBox<>(items.toArray(new String[0]));
+        if (items.size() == 0) {
+            dropdown.addItem("No items");
+        }
         dropdown.setSelectedIndex(0);
 
         // Create a new JPanel with a BorderLayout
