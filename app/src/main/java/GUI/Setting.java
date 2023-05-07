@@ -101,7 +101,7 @@ public class Setting extends JPanel {
 
     private void resetButtonMousePressed(MouseEvent e) {
         for (Plugin plugin : settings.getPlugins()) {
-            plugin.unload();
+            settings.removePlugin(plugin);
         }
     }
 

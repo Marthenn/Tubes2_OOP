@@ -28,10 +28,11 @@ public class Currency implements Plugin {
     Thread currencyThread = new Thread(new Runnable() {
         @Override
         public void run() {
-            while(true){
+            while (true) {
                 try {
-                    Thread.sleep(10000);
+                    Thread.sleep(1000);
                     currencyRates = getCurrencyRates();
+                    System.out.println("Current Currency: " + currentCurrency);
 
                     // read the currency chosen from the setting dropdown
                     Setting setting = Setting.getInstance();
@@ -39,24 +40,29 @@ public class Currency implements Plugin {
                     pluginField.setAccessible(true);
 
                     // get the JPanel inside the viewportPanel with the JLabel name "Currency"
-                    for (Component component : ((JPanel) pluginField.get(setting)).getComponents()) {
-                        if (component instanceof JLabel) {
-                            if (((JLabel) component).getText().equals("Currency")) {
-                                // get the JComboBox inside the JPanel
-                                for (Component component1 : ((JPanel) component.getParent()).getComponents()) {
-                                    if (component1 instanceof JComboBox) {
-                                        // get the selected item from the JComboBox
-                                        String newCurrency = (String) ((JComboBox) component1).getSelectedItem();
-                                        modifyCurrency(newCurrency);
-                                        currentCurrency = newCurrency;
+                    for (Component componentOuter : ((JPanel) pluginField.get(setting)).getComponents()) {
+//                        System.out.println(componentOuter.getClass().getName());
+                        if (componentOuter instanceof JPanel) {
+                            for (Component component : ((JPanel) componentOuter).getComponents()) {
+//                                System.out.println(component.getClass().getName());
+                                if (component instanceof JLabel) {
+                                    if (((JLabel) component).getText().equals("Currency")) {
+                                        // get the JComboBox inside the JPanel
+                                        for (Component component1 : ((JPanel) component.getParent()).getComponents()) {
+                                            if (component1 instanceof JComboBox) {
+                                                // get the selected item from the JComboBox
+                                                String newCurrency = (String) ((JComboBox) component1).getSelectedItem();
+                                                modifyCurrency(newCurrency);
+                                                currentCurrency = newCurrency;
+                                            }
+                                        }
                                     }
                                 }
                             }
                         }
                     }
-
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    throw new RuntimeException(e);
                 } catch (IllegalAccessException e) {
                     throw new RuntimeException(e);
                 }
@@ -71,14 +77,16 @@ public class Currency implements Plugin {
         double rate = currencyRates.get(newCurrency) / currencyRates.get(currentCurrency);
         DataStore ds = DataStore.getInstance();
         for (QuantifiableItem item : ds.getItems()) {
+//            System.out.println("Old: " + item.getSingularPrice());
             item.setSingularPrice(item.getSingularPrice() * rate);
-            item.setSingularPrice(item.getSingularPrice() * rate);
+//            System.out.println("New: " + item.getSingularPrice());
+            item.setSingularCost(item.getSingularCost() * rate);
         }
         for (PremiumCustomer pc : ds.getPremiumCustomers()) {
             for (FixedBill fb : pc.getHistory()) {
                 for (QuantifiableItem item : fb.getItems()) {
                     item.setSingularPrice(item.getSingularPrice() * rate);
-                    item.setSingularPrice(item.getSingularPrice() * rate);
+                    item.setSingularCost(item.getSingularCost() * rate);
                 }
             }
         }
@@ -86,7 +94,7 @@ public class Currency implements Plugin {
             for (FixedBill fb : c.getHistory()) {
                 for (QuantifiableItem item : fb.getItems()) {
                     item.setSingularPrice(item.getSingularPrice() * rate);
-                    item.setSingularPrice(item.getSingularPrice() * rate);
+                    item.setSingularCost(item.getSingularCost() * rate);
                 }
             }
         }
@@ -100,6 +108,9 @@ public class Currency implements Plugin {
         System.out.println("Loading Currency based insight.....");
         addToSetting("Currency", getItems());
         currencyThread.start();
+
+        // make pop up
+        JOptionPane.showMessageDialog(null, "Make sure to set the currency in the setting menu as the first on before exiting!");
     }
 
     public void unload() {
@@ -140,9 +151,9 @@ public class Currency implements Plugin {
             try{
                 currencyRatesFile.createNewFile();
                 System.out.println("Currency rates file created");
-                currencyRates.put("USD", 15000.0);
-                currencyRates.put("EUR", 17000.0);
-                currencyRates.put("SGD", 11000.0);
+                currencyRates.put("USD", 1/15000.0);
+                currencyRates.put("EUR", 1/17000.0);
+                currencyRates.put("SGD", 1/11000.0);
 
                 // write all the currency rates to the file (FILE IO)
                 FileOutputStream fos = new FileOutputStream(currencyRatesFile);

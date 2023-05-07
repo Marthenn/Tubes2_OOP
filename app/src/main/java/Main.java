@@ -1,11 +1,13 @@
 import GUI.LoadingScreen;
 import GUI.MainMenu;
+import Plugins.Plugin;
 
 import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
         System.out.println("Hello World! GUI STARTED!");
+        Plugin.initialLoad();
         LoadingScreen loadingScreen = new LoadingScreen();
         JFrame loadingFrame = new JFrame("Loading Data..");
         loadingFrame.setContentPane(loadingScreen.getPanel());
