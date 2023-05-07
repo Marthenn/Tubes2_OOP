@@ -1,1 +1,1 @@
-{"storedItemName":"Customer","store":"{}"}
+{"storedItemName":"Customer","store":"{\"3\":{\"id\":3,\"history\":[{\"id\":1,\"items\":[{\"id\":3,\"name\":\"orange juice\",\"singularCost\":15000.0,\"singularPrice\":20000.0,\"quantity\":4,\"imageId\":3,\"category\":\"beverage\",\"deleted\":false}],\"modifiers\":[]}],\"billId\":1}}"}  
