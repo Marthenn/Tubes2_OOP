@@ -295,7 +295,7 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
         addItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (browseTableSM.isSelectionEmpty()) return;
+                if (browseTableSM.isSelectionEmpty() || selectedSoldItem == null) return;
                 CashierItemAdd cashierItemAddDialog = new CashierItemAdd(selectedSoldItem,
                                                         currentActiveBillDisplays
                                                         .get(billTabPane.getSelectedIndex())
@@ -379,6 +379,9 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
         browseListTableModel.addRow(filteredBrowseObjects.subList(filteredBrowseObjects.size() / 4 * 4, filteredBrowseObjects.size()).toArray());
 
         if (browseTable != null) {
+            if (browseTable.getSelectionModel().isSelectionEmpty()){
+                setSelectedBrowseObject(null);
+            }
             browseTable.repaint();
         }
     }
