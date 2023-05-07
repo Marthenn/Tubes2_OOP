@@ -5,10 +5,7 @@
 package GUI;
 
 import Core.Customer.Customer;
-import Core.Customer.MembershipState.MembershipStateName;
 import Core.DataStore.DataStore;
-import Core.DataStore.Exception.CustomerNotExistException;
-import Core.DataStore.Exception.PromotedCustomerAlreadyExist;
 import Core.DataStore.StorerData.StorerDataListener;
 import Core.Printer.FixedBillPrinter;
 import Core.Item.Bill.Bill;
@@ -48,7 +45,7 @@ public class CashierCheckout extends JPanel implements StorerDataListener {
         // listener init
         DataStore.getInstance().listenToCustomerStore(this);
 
-        Title = new JLabel();
+        CancelCheckout = new JButton();
         DaftarPembelian = new JScrollPane();
         TabelPembelian = new JTable();
         LabelCustomer = new JLabel();
@@ -77,8 +74,8 @@ public class CashierCheckout extends JPanel implements StorerDataListener {
         ((GridBagLayout)getLayout()).rowWeights = new double[] {0.6, 0.6, 2.0, 1.0, 0.2, 1.0E-4};
 
         //---- Title ----
-        Title.setText("Checkout");
-        add(Title, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+        CancelCheckout.setText("Batalkan");
+        add(CancelCheckout, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 5), 0, 0));
 
@@ -177,6 +174,16 @@ public class CashierCheckout extends JPanel implements StorerDataListener {
             }
         });
 
+        CancelCheckout.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                parentTabbedPane.setComponentAt(parentTabbedPane.getSelectedIndex(), parentCashier);
+                parentTabbedPane.repaint();
+
+                removeAll();
+            }
+        });
+
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
 
@@ -198,7 +205,7 @@ public class CashierCheckout extends JPanel implements StorerDataListener {
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
     // Generated using JFormDesigner Evaluation license - Fakih Anugerah Pratama
-    private JLabel Title;
+    private JButton CancelCheckout;
     private JScrollPane DaftarPembelian;
     private JTable TabelPembelian;
     private JLabel LabelCustomer;
