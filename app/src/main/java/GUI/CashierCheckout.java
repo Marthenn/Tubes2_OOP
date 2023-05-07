@@ -48,16 +48,16 @@ public class CashierCheckout extends JPanel implements StorerDataListener {
         // listener init
         DataStore.getInstance().listenToCustomerStore(this);
 
-        // DEBUG DATA //
-        try {
-            DataStore.getInstance().promoteCustomer(DataStore.getInstance().createNewCustomer().getID(), "lmao", "123456789012", "asd@gmail.com", MembershipStateName.VIP );
-            DataStore.getInstance().promoteCustomer(DataStore.getInstance().createNewCustomer().getID(), "likalat", "123456789012", "asd@gmail.com", MembershipStateName.MEMBER );
-        } catch (CustomerNotExistException e) {
-            throw new RuntimeException(e);
-        } catch (PromotedCustomerAlreadyExist e) {
-            throw new RuntimeException(e);
-        }
-        // DEBUG DATA //
+//        // DEBUG DATA //
+//        try {
+//            DataStore.getInstance().promoteCustomer(DataStore.getInstance().createNewCustomer().getID(), "lmao", "123456789012", "asd@gmail.com", MembershipStateName.VIP );
+//            DataStore.getInstance().promoteCustomer(DataStore.getInstance().createNewCustomer().getID(), "likalat", "123456789012", "asd@gmail.com", MembershipStateName.MEMBER );
+//        } catch (CustomerNotExistException e) {
+//            throw new RuntimeException(e);
+//        } catch (PromotedCustomerAlreadyExist e) {
+//            throw new RuntimeException(e);
+//        }
+//        // DEBUG DATA //
 
         Title = new JLabel();
         DaftarPembelian = new JScrollPane();
