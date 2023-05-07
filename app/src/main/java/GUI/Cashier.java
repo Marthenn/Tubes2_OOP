@@ -18,8 +18,7 @@ import javax.swing.event.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -245,24 +244,56 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
         // Selecting Browsable Object
         browseTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         ListSelectionModel browseTableSM = browseTable.getSelectionModel();
-        browseTableSM.addListSelectionListener(new ListSelectionListener() {
+        browseTable.addMouseListener(new MouseAdapter() {
             @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (e.getValueIsAdjusting()) return;
+            public void mouseReleased(MouseEvent e) {
+                super.mouseReleased(e);
 
-                ListSelectionModel listSelectionModel = (ListSelectionModel) e.getSource();
-                if(!listSelectionModel.isSelectionEmpty()) {
-                    setSelectedBrowseObject(browseObjects
-                                            .stream()
-                                            .filter(qItem ->    qItem.getName().toLowerCase()
-                                                                        .contains(searchText.getText().toLowerCase()) ||
-                                                                qItem.getCategory().toLowerCase()
-                                                                        .contains(searchText.getText().toLowerCase()) ||
-                                                                Double.toString(qItem.getSingularPrice()).toLowerCase()
-                                                                        .contains(searchText.getText().toLowerCase()))
-                                            .collect(Collectors.toCollection(ArrayList::new))
-                                            .get(listSelectionModel.getMinSelectionIndex()));
+                int index = browseTable.getSelectedRow() * 4 + browseTable.getSelectedColumn();
+                ArrayList<QuantifiableItem> filteredObjs =
+                        browseObjects
+                                .stream()
+                                .filter(qItem ->    qItem.getName().toLowerCase()
+                                        .contains(searchText.getText().toLowerCase()) ||
+                                        qItem.getCategory().toLowerCase()
+                                                .contains(searchText.getText().toLowerCase()) ||
+                                        Double.toString(qItem.getSingularPrice()).toLowerCase()
+                                                .contains(searchText.getText().toLowerCase()))
+                                .collect(Collectors.toCollection(ArrayList::new));
+
+                if (index >= filteredObjs.size()) {
+                    return;
                 }
+
+                setSelectedBrowseObject(
+                        filteredObjs.get(index));
+            }
+        });
+
+        // workaround for keyboard.arrow input
+        browseTable.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                super.keyReleased(e);
+
+                int index = browseTable.getSelectedRow() * 4 + browseTable.getSelectedColumn();
+                ArrayList<QuantifiableItem> filteredObjs =
+                        browseObjects
+                        .stream()
+                        .filter(qItem ->    qItem.getName().toLowerCase()
+                                .contains(searchText.getText().toLowerCase()) ||
+                                qItem.getCategory().toLowerCase()
+                                        .contains(searchText.getText().toLowerCase()) ||
+                                Double.toString(qItem.getSingularPrice()).toLowerCase()
+                                        .contains(searchText.getText().toLowerCase()))
+                        .collect(Collectors.toCollection(ArrayList::new));
+
+                if (index >= filteredObjs.size()) {
+                    return;
+                }
+
+                setSelectedBrowseObject(
+                        filteredObjs.get(index));
             }
         });
 
@@ -330,17 +361,13 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
         });
 
         checkoutBill.addActionListener(new ActionListener() {
-//            @SneakyThrows
             @Override
             public void actionPerformed(ActionEvent e) {
-//                if (currentActiveBillDisplays.get(billTabPane.getSelectedIndex()).getDisplayedTableModel().getRowCount() == 0) {
-//                    System.out.println("bill kosong");
-////                    return;
-//                }
+                if (currentActiveBillDisplays.get(billTabPane.getSelectedIndex()).getDisplayedTableModel().getRowCount() == 0) {
+                    System.out.println("bill kosong");
+//                    return;
+                }
 
-//                Customer customer = DataStore.getInstance().createNewCustomer(); //dummy customer yang diassign
-//                currentActiveBillDisplays.get(billTabPane.getSelectedIndex()).getDisplayedBill().setOwner(customer);
-//                FixedBill toBePrinted = currentActiveBillDisplays.get(billTabPane.getSelectedIndex()).getDisplayedBill().getFixedBill();// dummy fixedbill
                 parentTabbedPane.setComponentAt(parentTabbedPane.getSelectedIndex(),
                         new CashierCheckout(parentTabbedPane,
                                                 thisCashier,
