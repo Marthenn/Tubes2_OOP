@@ -733,7 +733,12 @@ public class Inventory extends JPanel implements IDAbleListener<QuantifiableItem
     
     private int getFirstIndexWithFilter(DefaultListModel<String> model, String filter) {
         for (int i=0; i<model.getSize();i++) {
-            if (model.get(i).startsWith(filter)) {
+            if (model.get(i).toLowerCase().startsWith(filter)) {
+                return i;
+            }
+        }
+        for (int i=0; i<model.getSize();i++) {
+            if (model.get(i).toLowerCase().contains(filter)) {
                 return i;
             }
         }
