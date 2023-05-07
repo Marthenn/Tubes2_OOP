@@ -25,7 +25,7 @@ public class QuantifiableItem implements ItemLikeInterface, IDAbleEmitter<IDAble
     @Setter
     private int quantity = 0;
 
-    @Getter
+    @Setter
     private Item item;
 
     @JsonIgnore
@@ -170,6 +170,7 @@ public class QuantifiableItem implements ItemLikeInterface, IDAbleEmitter<IDAble
     @Override
     public void setDeleted(boolean deleted) {
         item.setDeleted(deleted);
+        notifyListener();
     }
 
     public void setSingularCost(Double cost) {
