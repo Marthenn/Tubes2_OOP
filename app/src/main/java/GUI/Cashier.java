@@ -350,7 +350,7 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
                 int selectedIdx = billTabPane.getSelectedIndex();
 
                 // TO AVOID AUTO BILL TAB CREATION BECAUSE OF SELECTED INDEX INHERITANCE
-                if (selectedIdx == currentActiveBillDisplays.size()-2) {
+                if (selectedIdx == currentActiveBillDisplays.size()-2 && selectedIdx > 0) {
                   billTabPane.setSelectedIndex(selectedIdx-1);
                 }
                 billTabPane.removeTabAt(selectedIdx);
