@@ -123,7 +123,7 @@ public class ObjController extends ConcreteFileController {
 
     @Override
     public StorerDataPremiumCustomer loadPremiumCustomer() throws IOException {
-        FileInputStream fileIn = new FileInputStream(getFile("premium_customer"));
+        FileInputStream fileIn = new FileInputStream(getFile("premiumCustomer"));
         ObjectInputStream in = new ObjectInputStream(fileIn);
         StorerDataPremiumCustomer premiumCustomer = null;
         try {

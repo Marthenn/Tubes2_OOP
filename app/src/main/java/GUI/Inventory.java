@@ -9,6 +9,8 @@ import lombok.SneakyThrows;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -65,6 +67,7 @@ public class Inventory extends JPanel implements IDAbleListener<QuantifiableItem
         item_stock = new JLabel();
         item_category = new JLabel();
         delete_mark = new JLabel();
+        search_textfield = new JTextField();
         dialog1 = new JDialog();
         prop_name_edit = new JLabel();
         input_name = new JTextField();
@@ -84,12 +87,12 @@ public class Inventory extends JPanel implements IDAbleListener<QuantifiableItem
         error_message = new JLabel();
 
         //======== this ========
-        setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax . swing. border
-        .EmptyBorder ( 0, 0 ,0 , 0) ,  "JFor\u006dDesi\u0067ner \u0045valu\u0061tion" , javax. swing .border . TitledBorder. CENTER ,javax
-        . swing. border .TitledBorder . BOTTOM, new java. awt .Font ( "Dia\u006cog", java .awt . Font. BOLD ,
-        12 ) ,java . awt. Color .red ) , getBorder () ) );  addPropertyChangeListener( new java. beans
-        .PropertyChangeListener ( ){ @Override public void propertyChange (java . beans. PropertyChangeEvent e) { if( "bord\u0065r" .equals ( e.
-        getPropertyName () ) )throw new RuntimeException( ) ;} } );
+        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing.
+        border. EmptyBorder( 0, 0, 0, 0) , "JF\u006frmDesi\u0067ner Ev\u0061luatio\u006e", javax. swing. border. TitledBorder. CENTER
+        , javax. swing. border. TitledBorder. BOTTOM, new java .awt .Font ("Dialo\u0067" ,java .awt .Font
+        .BOLD ,12 ), java. awt. Color. red) , getBorder( )) );  addPropertyChangeListener (
+        new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java .beans .PropertyChangeEvent e) {if ("borde\u0072"
+        .equals (e .getPropertyName () )) throw new RuntimeException( ); }} );
 
         //---- title ----
         title.setText("Items");
@@ -110,6 +113,7 @@ public class Inventory extends JPanel implements IDAbleListener<QuantifiableItem
         item_image.setSize(210,210);
         setBase64ImageToDefault();
         displayImageInJLabel(base64Image,item_image);
+
 
         //---- prop_name ----
         prop_name.setText("Name              ");
@@ -138,7 +142,7 @@ public class Inventory extends JPanel implements IDAbleListener<QuantifiableItem
         edit_button.setText("edit");
 
         //---- add_button ----
-        add_button.setText("add");
+        add_button.setText("add item");
 
         //---- item_name ----
         item_name.setText(" ");
@@ -161,7 +165,7 @@ public class Inventory extends JPanel implements IDAbleListener<QuantifiableItem
         item_category.setFont(item_category.getFont().deriveFont(14f));
 
         //---- delete_mark ----
-        delete_mark.setText("");
+        delete_mark.setText(" ");
         delete_mark.setForeground(new Color(0xff0033));
         delete_mark.setFont(new Font(Font.DIALOG, Font.BOLD | Font.ITALIC, 20));
 
@@ -170,16 +174,22 @@ public class Inventory extends JPanel implements IDAbleListener<QuantifiableItem
         layout.setHorizontalGroup(
             layout.createParallelGroup()
                 .addGroup(layout.createSequentialGroup()
-                    .addGap(12, 12, 12)
                     .addGroup(layout.createParallelGroup()
                         .addGroup(layout.createSequentialGroup()
-                            .addComponent(title, GroupLayout.PREFERRED_SIZE, 296, GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(add_button))
-                        .addComponent(scrollPane1))
+                            .addGap(12, 12, 12)
+                            .addGroup(layout.createParallelGroup()
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(title, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 325, Short.MAX_VALUE))
+                                .addComponent(scrollPane1)
+                                .addComponent(search_textfield, GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE)))
+                        .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addContainerGap(162, Short.MAX_VALUE)
+                            .addComponent(add_button, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
+                            .addGap(143, 143, 143)))
                     .addGroup(layout.createParallelGroup()
                         .addGroup(layout.createSequentialGroup()
-                            .addGap(76, 76, 76)
+                            .addGap(68, 68, 68)
                             .addGroup(layout.createParallelGroup()
                                 .addComponent(prop_name)
                                 .addComponent(prop_sellprice)
@@ -193,9 +203,9 @@ public class Inventory extends JPanel implements IDAbleListener<QuantifiableItem
                                 .addComponent(item_buyprice, GroupLayout.PREFERRED_SIZE, 183, GroupLayout.PREFERRED_SIZE)
                                 .addComponent(item_stock, GroupLayout.PREFERRED_SIZE, 183, GroupLayout.PREFERRED_SIZE)
                                 .addComponent(item_category, GroupLayout.PREFERRED_SIZE, 183, GroupLayout.PREFERRED_SIZE))
-                            .addContainerGap(47, Short.MAX_VALUE))
+                            .addContainerGap(24, Short.MAX_VALUE))
                         .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 134, Short.MAX_VALUE)
+                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 103, Short.MAX_VALUE)
                             .addGroup(layout.createParallelGroup()
                                 .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                     .addComponent(item_image, GroupLayout.PREFERRED_SIZE, 210, GroupLayout.PREFERRED_SIZE)
@@ -213,15 +223,12 @@ public class Inventory extends JPanel implements IDAbleListener<QuantifiableItem
             layout.createParallelGroup()
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
-                    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(add_button)
-                        .addComponent(title, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(delete_mark))
-                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                    .addGroup(layout.createParallelGroup()
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(delete_mark)
+                            .addGap(16, 16, 16)
                             .addComponent(item_image, GroupLayout.PREFERRED_SIZE, 210, GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGap(20, 20, 20)
                             .addGroup(layout.createParallelGroup()
                                 .addGroup(layout.createSequentialGroup()
                                     .addComponent(prop_name)
@@ -245,10 +252,16 @@ public class Inventory extends JPanel implements IDAbleListener<QuantifiableItem
                             .addGap(37, 37, 37)
                             .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                 .addComponent(edit_button)
-                                .addComponent(delete_button))
-                            .addGap(19, 19, 19))
-                        .addComponent(scrollPane1, GroupLayout.PREFERRED_SIZE, 436, GroupLayout.PREFERRED_SIZE))
-                    .addContainerGap(109, Short.MAX_VALUE))
+                                .addComponent(delete_button)))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(title, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(search_textfield, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(scrollPane1, GroupLayout.PREFERRED_SIZE, 381, GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(add_button)))
+                    .addContainerGap(114, Short.MAX_VALUE))
         );
 
         //======== dialog1 ========
@@ -446,8 +459,8 @@ public class Inventory extends JPanel implements IDAbleListener<QuantifiableItem
             public void actionPerformed(ActionEvent e) {
                 dialog1.setTitle("Add Item");
                 clearTextField();
-                dialog1.setVisible(true);
                 displayImageInJLabel(base64Image,image_editdisplay);
+                dialog1.setVisible(true);
             }
         });
 
@@ -566,6 +579,23 @@ public class Inventory extends JPanel implements IDAbleListener<QuantifiableItem
                 }
             }
         });
+
+        search_textfield.getDocument().addDocumentListener(new DocumentListener() {
+            public void changedUpdate(DocumentEvent e) {
+                changeSelectedListId();
+            }
+            public void removeUpdate(DocumentEvent e) {
+            }
+            public void insertUpdate(DocumentEvent e) {
+                changeSelectedListId();
+            }
+            public void changeSelectedListId() {
+                int idx = getFirstIndexWithFilter(items_list,search_textfield.getText());
+                if (idx!=-1){
+                    item_list.setSelectedIndex(idx);
+                }
+            }
+        });
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
@@ -588,6 +618,7 @@ public class Inventory extends JPanel implements IDAbleListener<QuantifiableItem
     private JLabel item_stock;
     private JLabel item_category;
     private JLabel delete_mark;
+    private JTextField search_textfield;
     private JDialog dialog1;
     private JLabel prop_name_edit;
     private JTextField input_name;
@@ -613,7 +644,7 @@ public class Inventory extends JPanel implements IDAbleListener<QuantifiableItem
         item_stock.setText(stock.toString());
         item_category.setText(category);
         if (isDeleted) delete_mark.setText("(deleted)");
-        else delete_mark.setText("");
+        else delete_mark.setText(" ");
     }
 
     private void clearItemProperty(){
@@ -699,5 +730,15 @@ public class Inventory extends JPanel implements IDAbleListener<QuantifiableItem
             updateItemsList();
         }
     }
+    
+    private int getFirstIndexWithFilter(DefaultListModel<String> model, String filter) {
+        for (int i=0; i<model.getSize();i++) {
+            if (model.get(i).startsWith(filter)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
 }
 
