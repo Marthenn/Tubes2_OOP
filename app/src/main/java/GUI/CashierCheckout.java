@@ -13,13 +13,18 @@ import Core.Item.Bill.FixedBill.FixedBillModifier.FixedBillModifier;
 import Core.Item.QuantifiableItem;
 import lombok.SneakyThrows;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Base64;
 
 /**
  * @author Fakih A
@@ -60,10 +65,12 @@ public class CashierCheckout extends JPanel implements StorerDataListener {
 
         tabelDetailModel.addColumn("No");
         tabelDetailModel.addColumn("Name");
-        tabelDetailModel.addColumn("Detail");
         tabelDetailModel.addColumn("Price");
-        tabelDetailModel.addColumn("Qty");
+        tabelDetailModel.addColumn("Purchase Qty");
         tabelDetailModel.addColumn("Subtotal");
+        tabelDetailModel.addColumn("Keterangan");
+
+        TabelDetail.getColumnModel().getColumn(5).setCellRenderer(new KeteranganDetailRenderer());
 
         updateTabelDetailModel();
 
@@ -195,14 +202,13 @@ public class CashierCheckout extends JPanel implements StorerDataListener {
         for (QuantifiableItem qItem : billToBeCheckedOut.getItemList()) {
             tabelDetailModel.addRow(new String[]{Integer.toString(i),
                     qItem.getName(),
-                    "TODO",
                     Double.toString(qItem.getSingularPrice()),
-                    Integer.toString(qItem.getQuantity()),
-                    Double.toString(qItem.getPrice())
+                    Integer.toString(this.billToBeCheckedOut.getQuantityOfItemWithID(qItem.getID())),
+                    Double.toString(qItem.getPrice()),
+                    Integer.toString(DataStore.getInstance().getItemWithID(qItem.getID()).getQuantity() - qItem.getQuantity())
             });
         }
     }
-
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
     // Generated using JFormDesigner Evaluation license - Fakih Anugerah Pratama
     private JButton CancelCheckout;
@@ -223,4 +229,34 @@ public class CashierCheckout extends JPanel implements StorerDataListener {
      }
     }
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
+}
+
+class KeteranganDetailRenderer extends DefaultTableCellRenderer {
+    JLabel label = new JLabel();
+
+    @Override
+    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        if (value == null) return  null;
+
+        Boolean tersedia = Integer.parseInt(String.valueOf(value)) >= 0;
+
+        Color bg =
+                isSelected
+                        ?
+                        super.getTableCellRendererComponent(table, "", isSelected, hasFocus, row, column).getBackground()
+                        :
+                         tersedia
+                            ?
+                            Color.GREEN
+                                :
+                            Color.RED
+                ;
+
+        JButton labelValue = new JButton(tersedia ? "Tersedia" : "Melebihi stok");
+        labelValue.setBackground(bg);
+
+        return labelValue;
+    }
+
+
 }
