@@ -15,7 +15,7 @@ public class DataStoreController implements FileController{
                 fileController = new XmlController();
             }
             case OBJ -> {
-
+                fileController = new ObjController();
             }
             case JSON -> {
                 fileController = new JsonController();
