@@ -77,7 +77,7 @@ public class MainMenu extends JPanel {
 
     private void cashierMenuMousePressed(MouseEvent e) {
         if(tabbedPane.indexOfTab("Cashier") == -1){
-            tabbedPane.addTab("Cashier", new Cashier(tabbedPane));
+            tabbedPane.addTab("Cashier", Cashier.getInstance(tabbedPane));
         }
         tabbedPane.setSelectedIndex(tabbedPane.indexOfTab("Cashier"));
     }
@@ -237,7 +237,7 @@ public class MainMenu extends JPanel {
 
             //======== exitMenu ========
             {
-                exitMenu.setText("Exit");
+                exitMenu.setText("Save and Exit");
                 exitMenu.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mousePressed(MouseEvent e) {

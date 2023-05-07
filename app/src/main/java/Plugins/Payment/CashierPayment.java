@@ -2,19 +2,19 @@
  * Created by JFormDesigner on Mon Apr 24 01:03:02 WIB 2023
  */
 
-package GUI;
+package Plugins.Payment;
 
 import Core.DataStore.DataStore;
-import Core.DataStore.StorerData.Exception.ItemWithIDAlreadyExist;
-import Core.DataStore.StorerData.StorerDataListener;
-import Core.IDAble.IDAbleListener;
-import Core.Item.Exception.NegativeQuantityException;
 import Core.Item.QuantifiableItem;
+import GUI.*;
 import lombok.SneakyThrows;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -22,28 +22,51 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.stream.Collectors;
 
-public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>, StorerDataListener {
-    private static Cashier instance = null;
-
+public class CashierPayment extends GUI.Cashier {
+    private static CashierPayment instance = null;
     private ArrayList<BillDisplay> currentActiveBillDisplays = new ArrayList<>();
     ArrayList<QuantifiableItem> browseObjects = new ArrayList<>();
     DefaultTableModel browseListTableModel = new DefaultTableModel();
     JTabbedPane parentTabbedPane = new JTabbedPane();
-
-    public static Cashier getInstance(JTabbedPane parentTabbedPane) {
-        if(instance == null) {
-            instance = new Cashier(parentTabbedPane);
+    public static CashierPayment getInstance() {
+        if (instance == null) {
+            MainMenu parentMainMenu = MainMenu.getInstance();
+            Field parentTabbedPaneField = null;
+            JTabbedPane tabbedPane = null;
+            try{
+                for (Field field : parentMainMenu.getClass().getDeclaredFields()) {
+                    if (field.getName().equals("tabbedPane")) {
+                        parentTabbedPaneField = field;
+                        tabbedPane = (JTabbedPane) field.get(parentMainMenu);
+                        break;
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            instance = new CashierPayment(tabbedPane);
         }
         return instance;
     }
-
-    protected Cashier(JTabbedPane parentTabbedPane) {
-        this.parentTabbedPane = parentTabbedPane;
-
+    protected CashierPayment(JTabbedPane parentTabbedPane) {
+        super(parentTabbedPane);
+        MainMenu parentMainMenu = MainMenu.getInstance();
+        Field parentTabbedPaneField = null;
+        try{
+            for (Field field : parentMainMenu.getClass().getDeclaredFields()) {
+                if (field.getName().equals("tabbedPane")) {
+                    parentTabbedPaneField = field;
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         initComponents();
     }
 
@@ -328,6 +351,8 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
 //                    return;
                 }
 
+                // pop up
+                JOptionPane.showMessageDialog(null, "oke bang", "Checkout", JOptionPane.INFORMATION_MESSAGE);
                 parentTabbedPane.setComponentAt(parentTabbedPane.getSelectedIndex(),
                         new CashierCheckout(parentTabbedPane,
                                                 thisCashier,
@@ -428,7 +453,6 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
     public void onItemWithIDChange(QuantifiableItem item) {
         // NOTE : MIGHT CHANGE INTO MORE OPTIMIZED SOLUTION
         // should we update cost and qty realtime?
-        System.out.println(item.getName());
         browseObjects = DataStore.getInstance().getItems();
         updateBrowseTableModel();
     }
