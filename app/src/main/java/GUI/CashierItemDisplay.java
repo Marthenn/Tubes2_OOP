@@ -81,7 +81,7 @@ public class CashierItemDisplay extends JPanel {
     }
 
     public ImageIcon resizeImageIcon(ImageIcon imgIcon, int desiredWidth) {
-        return  new ImageIcon(imgIcon.getImage().getScaledInstance(desiredWidth, imgIcon.getIconHeight() / imgIcon.getIconWidth() * desiredWidth, Image.SCALE_SMOOTH));
+        return  new ImageIcon(imgIcon.getImage().getScaledInstance(desiredWidth, (int) ((double)imgIcon.getIconHeight() / imgIcon.getIconWidth() * desiredWidth), Image.SCALE_SMOOTH));
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
