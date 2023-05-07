@@ -5,6 +5,7 @@
 package GUI;
 
 import Core.Settings;
+import Plugins.Plugin;
 import lombok.SneakyThrows;
 
 import javax.swing.*;
@@ -15,18 +16,25 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.jar.JarInputStream;
+
+import Core.DataStore.DataStore;
+import Core.Settings;
 
 /**
  * @author Marthen
  */
 public class Setting extends JPanel {
     private Settings settings = Settings.getInstance();
+
+    private static Setting instance = null;
 //    private JButton saveButton;
     private JFileChooser fileChooser = new JFileChooser();
 //    private JRadioButton objRadioButton, xmlRadioButton, jsonRadioButton;
 //    private JLabel fileFormat;
 
-    public Setting() {
+    private Setting() {
         initComponents();
 
         Thread settingThread = new Thread(() -> {
@@ -65,6 +73,13 @@ public class Setting extends JPanel {
         settingThread.start();
     }
 
+    public static Setting getInstance() {
+        if (instance == null) {
+            instance = new Setting();
+        }
+        return instance;
+    }
+
     private void dirButtonMousePressed(MouseEvent e) {
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int result = fileChooser.showOpenDialog(Setting.this);
@@ -93,9 +108,9 @@ public class Setting extends JPanel {
     }
 
     private void resetButtonMousePressed(MouseEvent e) {
-//        for (String plugin : settings.getPlugins()) {
-//            settings.getPlugins().removePlugin(plugin);
-//        }
+        for (Plugin plugin : settings.getPlugins()) {
+            plugin.unload();
+        }
     }
 
     private void objBoxItemStateChanged(ItemEvent e) {
@@ -140,6 +155,54 @@ public class Setting extends JPanel {
         }
     }
 
+    public void removePlugin(String name){
+        for (Component component : viewportPanel.getComponents()) {
+            JPanel panel = (JPanel) component;
+            JLabel label = (JLabel) panel.getComponent(0);
+            if (label.getText().equals(name)) {
+                viewportPanel.remove(panel);
+                break;
+            }
+        }
+        viewportPanel.revalidate();
+        viewportPanel.repaint();
+        pluginPanes.revalidate();
+        pluginPanes.repaint();
+    }
+
+    public void addPlugin(String name, ArrayList<String> items){
+        if (items == null) {
+            items = new ArrayList<>();
+        }
+        // Create a new JComboBox with the items ArrayList
+        JComboBox<String> dropdown = new JComboBox<>(items.toArray(new String[0]));
+        if (items.size() == 0) {
+            dropdown.addItem("No items");
+        }
+        dropdown.setSelectedIndex(0);
+
+        // Create a new JPanel with a BorderLayout
+        JPanel panel = new JPanel(new BorderLayout());
+
+        // Create a new JLabel for the plugin name and add it to the left of the JPanel
+        JLabel nameLabel = new JLabel(name);
+        panel.add(nameLabel, BorderLayout.WEST);
+
+        // Add the JComboBox to the right of the JPanel
+        panel.add(dropdown, BorderLayout.CENTER);
+
+        // Add the JPanel to the viewportPanel
+        viewportPanel.add(panel);
+
+        // Repaint the viewportPanel to update its content
+        viewportPanel.revalidate();
+        viewportPanel.repaint();
+        pluginPanes.revalidate();
+        pluginPanes.repaint();
+
+        System.out.println("added plugin to pane");
+    }
+
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner Evaluation license - Bintang Dwi Marthen
@@ -152,18 +215,19 @@ public class Setting extends JPanel {
         jsonBox = new JCheckBox();
         xmlBox = new JCheckBox();
         pluginPanes = new JScrollPane();
+        viewportPanel = new JPanel();
         resetButton = new JButton();
         dirButton = new JButton();
         directoryLabel = new JLabel();
 
         //======== this ========
-        setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.
-        swing.border.EmptyBorder(0,0,0,0), "JF\u006frmDes\u0069gner \u0045valua\u0074ion",javax.swing.border
-        .TitledBorder.CENTER,javax.swing.border.TitledBorder.BOTTOM,new java.awt.Font("D\u0069alog"
-        ,java.awt.Font.BOLD,12),java.awt.Color.red), getBorder
-        ())); addPropertyChangeListener(new java.beans.PropertyChangeListener(){@Override public void propertyChange(java
-        .beans.PropertyChangeEvent e){if("\u0062order".equals(e.getPropertyName()))throw new RuntimeException
-        ();}});
+        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax
+        . swing. border. EmptyBorder( 0, 0, 0, 0) , "JFor\u006dDesi\u0067ner \u0045valu\u0061tion", javax. swing
+        . border. TitledBorder. CENTER, javax. swing. border. TitledBorder. BOTTOM, new java .awt .
+        Font ("Dia\u006cog" ,java .awt .Font .BOLD ,12 ), java. awt. Color. red
+        ) , getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override
+        public void propertyChange (java .beans .PropertyChangeEvent e) {if ("bord\u0065r" .equals (e .getPropertyName (
+        ) )) throw new RuntimeException( ); }} );
         setLayout(new BorderLayout());
 
         //---- label1 ----
@@ -209,8 +273,7 @@ public class Setting extends JPanel {
             //---- jsonBox ----
             jsonBox.setText("JSON");
             jsonBox.setFont(new Font("Verdana", Font.BOLD, 30));
-            jsonBox.addItemListener(e ->
-                    jsonBoxItemStateChanged(e));
+            jsonBox.addItemListener(e -> jsonBoxItemStateChanged(e));
             panel1.add(jsonBox);
             jsonBox.setBounds(525, 15, 120, 43);
 
@@ -220,6 +283,16 @@ public class Setting extends JPanel {
             xmlBox.addItemListener(e -> xmlBoxItemStateChanged(e));
             panel1.add(xmlBox);
             xmlBox.setBounds(655, 15, 150, 43);
+
+            //======== pluginPanes ========
+            {
+
+                //======== viewportPanel ========
+                {
+                    viewportPanel.setLayout(new BoxLayout(viewportPanel, BoxLayout.Y_AXIS));
+                }
+                pluginPanes.setViewportView(viewportPanel);
+            }
             panel1.add(pluginPanes);
             pluginPanes.setBounds(0, 170, 800, 300);
 
@@ -282,6 +355,7 @@ public class Setting extends JPanel {
     private JCheckBox jsonBox;
     private JCheckBox xmlBox;
     private JScrollPane pluginPanes;
+    private JPanel viewportPanel;
     private JButton resetButton;
     private JButton dirButton;
     private JLabel directoryLabel;

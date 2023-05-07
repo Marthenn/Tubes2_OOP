@@ -4,12 +4,15 @@
 
 package GUI;
 
+import Core.Customer.Customer;
 import Core.Customer.MembershipState.MembershipStateName;
 import Core.DataStore.DataStore;
 import Core.DataStore.Exception.CustomerNotExistException;
 import Core.DataStore.Exception.PromotedCustomerAlreadyExist;
 import Core.DataStore.StorerData.StorerDataListener;
+import Core.FixedBillPrinter;
 import Core.Item.Bill.Bill;
+import Core.Item.Bill.FixedBill.FixedBillModifier.FixedBillModifier;
 import Core.Item.QuantifiableItem;
 import lombok.SneakyThrows;
 
@@ -18,6 +21,8 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.ArrayList;
 
 /**
  * @author Fakih A
@@ -26,8 +31,8 @@ public class CashierCheckout extends JPanel implements StorerDataListener {
     JTabbedPane parentTabbedPane;
     Cashier parentCashier;
     Bill billToBeCheckedOut; // add listeners
-
     DefaultTableModel tabelDetailModel = new DefaultTableModel();
+    ArrayList<FixedBillModifier> fixedBillModifiers = new ArrayList<>();
     public CashierCheckout(JTabbedPane parentTabbedPane, Cashier parentCashier, Bill billToBeCheckedOut) {
         this.parentTabbedPane = parentTabbedPane;
         this.parentCashier = parentCashier;
@@ -43,7 +48,7 @@ public class CashierCheckout extends JPanel implements StorerDataListener {
         // listener init
         DataStore.getInstance().listenToCustomerStore(this);
 
-        //data//
+        // DEBUG DATA //
         try {
             DataStore.getInstance().promoteCustomer(DataStore.getInstance().createNewCustomer().getID(), "lmao", "123456789012", "asd@gmail.com", MembershipStateName.VIP );
             DataStore.getInstance().promoteCustomer(DataStore.getInstance().createNewCustomer().getID(), "likalat", "123456789012", "asd@gmail.com", MembershipStateName.MEMBER );
@@ -52,7 +57,7 @@ public class CashierCheckout extends JPanel implements StorerDataListener {
         } catch (PromotedCustomerAlreadyExist e) {
             throw new RuntimeException(e);
         }
-        //data//
+        // DEBUG DATA //
 
         Title = new JLabel();
         DaftarPembelian = new JScrollPane();
@@ -135,19 +140,43 @@ public class CashierCheckout extends JPanel implements StorerDataListener {
             @SneakyThrows // MAY RESULT IN DEACTIVATED USER
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println(NamaCustomer.getSelectedCustomerID());
+//                System.out.println(NamaCustomer.getSelectedCustomerID());
                 // function finish checkout
-                billToBeCheckedOut.setOwner(
-                        NamaCustomer.getSelectedCustomerID() == -1
-                                ?
-                        DataStore.getInstance().createNewCustomer()
-                                :
-                        DataStore.getInstance().getCustomerWithID(NamaCustomer.getSelectedCustomerID()
-                        ));
+                Customer billOwner = NamaCustomer.getSelectedCustomerID() == -1
+                        ?
+                        DataStore.getInstance().createNewCustomer()                                         // soon-to-be-customer
+                        :
+                        DataStore.getInstance().getCustomerWithID(NamaCustomer.getSelectedCustomerID()      // premium customer
+                        );
+
+                billToBeCheckedOut.setOwner(billOwner);
+                billOwner.assignBill(billToBeCheckedOut);
+
+//                System.out.println("Bill Id = " + billToBeCheckedOut.getID());
+//                System.out.println(DataStore.getInstance().getBillWithID(billToBeCheckedOut).getID());
 
                 // pay
+                billOwner.pay();
 
 
+                // pop up print bill
+                int custId = billOwner.getID();
+                int fixedbillidx = DataStore.getInstance().getCustomerWithID(custId).getHistory().size() - 1; // print latest
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                fileChooser.setDialogTitle("Print Bill");
+                int userSelection = JOptionPane.showConfirmDialog(null, "Do you want to print the bill?", "Print Bill?", JOptionPane.YES_NO_OPTION);
+                if (userSelection == JOptionPane.YES_OPTION) {
+                    int result = fileChooser.showSaveDialog(null);
+                    if (result == JFileChooser.APPROVE_OPTION) {
+                        File fileToSave = fileChooser.getSelectedFile();
+                        FixedBillPrinter fbp = new FixedBillPrinter(fileToSave.getAbsolutePath()+"/bill_"+custId+"_"+fixedbillidx+".pdf", custId,
+                                fixedbillidx);
+                        fbp.printFixedBill();
+                    }
+                } else {
+                    // Don't save file
+                }
                 // hide this page (TODO: destroy or recycle instead)
                 parentTabbedPane.setComponentAt(parentTabbedPane.getSelectedIndex(), parentCashier);
                 parentTabbedPane.repaint();

@@ -32,7 +32,7 @@ public class Settings {
     }};
 
     @Getter(AccessLevel.PUBLIC)
-    private ArrayList<String> plugins = new ArrayList<>();
+    private ArrayList<Plugin> plugins = new ArrayList<>();
 
     private Settings(){}
 
@@ -53,11 +53,23 @@ public class Settings {
                 Object obj = cls.newInstance();
                 if (obj instanceof Plugin){
                     Plugin plugin = (Plugin) obj;
+                    System.out.println(plugin);
                     System.out.println(plugin.getName());
-                    this.plugins.add(plugin.getName());
+                    this.plugins.add(plugin);
+                    plugin.load();
                 }
             } catch (Exception e){
-                System.out.println("Failed to load plugin");
+                System.out.println("Failed to load plugin: " + cls.getName() + "\n " + e.getMessage());
+            }
+        }
+    }
+    public void removePlugin(Plugin plugin){
+        // unload the plugin
+        for (Plugin pl : this.plugins){
+            if (pl.getName().equals(plugin.getName())){
+                pl.unload();
+                this.plugins.remove(pl);
+                break;
             }
         }
     }
@@ -76,10 +88,6 @@ public class Settings {
     public void loadFileType() throws IOException {
         String json = new String(Files.readAllBytes(Paths.get("jsonConfig/fileType_config.json")));
         this.fileType = new ObjectMapper().readValue(json, Map.class);
-    }
-    public void removePlugin(String pluginName){
-        // unload the plugin
-        this.plugins.remove(pluginName);
     }
 }
 
