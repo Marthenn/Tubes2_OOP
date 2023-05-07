@@ -2,6 +2,7 @@ package Core.Item.Bill.FixedBill.FixedBillModifier;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,12 +11,13 @@ import lombok.NonNull;
 import java.io.Serializable;
 
 @AllArgsConstructor
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "modifierType")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = DiscountFixedBillModifier.class, name = "DiscountFixedBillModifier"),
         @JsonSubTypes.Type(value = FractionFixedBillModifier.class, name = "FractionFixedBillModifier"),
         @JsonSubTypes.Type(value = FlatFixedBillModifier.class, name = "FlatFixedBillModifier")
 })
+@JsonSerialize
 public abstract class FixedBillModifier implements Serializable {
     @NonNull
     @Getter

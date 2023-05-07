@@ -1,6 +1,5 @@
 package Core.Item.Bill.FixedBill.FixedBillModifier;
 
-
 public class DiscountFixedBillModifier extends FixedBillModifier{
     public DiscountFixedBillModifier(String modifierText, double modifierValue){
         super(FixedBillModifierType.DISCOUNT, modifierText, modifierValue);
