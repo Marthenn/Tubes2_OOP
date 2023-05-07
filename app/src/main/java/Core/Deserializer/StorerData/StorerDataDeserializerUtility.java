@@ -18,15 +18,8 @@ public class StorerDataDeserializerUtility<T extends IDAble> {
     public StorerDataDeserializerUtility() {
     }
 
-    public Pair<String, HashMap<Integer, T>> getDeserializedProperty(JsonParser jp) throws IOException {
-        JsonNode node = jp.getCodec().readTree(jp);
-
-        String storerName = node.get("storedItemName").asText();
-        TypeReference<HashMap<Integer, T>> typeRef = new TypeReference<>() {};
-        ObjectMapper objectMapper = new ObjectMapper();
-        HashMap<Integer, T> store = objectMapper.readValue(node.get("store").asText(), typeRef);
-
-        return new Pair<>(storerName, store);
+    public String getName(JsonNode node) throws IOException {
+        return node.get("storedItemName").asText();
     }
 
     @SneakyThrows
@@ -37,7 +30,7 @@ public class StorerDataDeserializerUtility<T extends IDAble> {
         storeNameField.setAccessible(true);
         storeField.setAccessible(true);
 
-        storeField.set(storerData, attribute.getFirst());
-        storeNameField.set(storerData, attribute.getSecond());
+        storeNameField.set(storerData, attribute.getFirst());
+        storeField.set(storerData, attribute.getSecond());
     }
 }

@@ -19,8 +19,12 @@ import Core.Item.Item;
 import Core.Item.QuantifiableItem;
 import lombok.SneakyThrows;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 
 public class DataStore {
     private static DataStore instance = null;
@@ -42,19 +46,6 @@ public class DataStore {
 
     private DataStore() {
 
-        FileController controller = new DataStoreController();
-        try {
-            this.images = controller.loadImage();
-        } catch (IOException ignored) {
-
-        }
-
-        try {
-            this.items = controller.loadItem();
-        } catch (IOException ignored) {
-
-        }
-
         items.setListenerList(itemStoreListeners);
         customers.setListenerList(customerStoreListeners);
         premiumCustomers.setListenerList(customerStoreListeners);
@@ -65,6 +56,49 @@ public class DataStore {
             DataStore.instance = new DataStore();
         }
         return DataStore.instance;
+    }
+
+    public HashMap<String, Integer> load() {
+        FileController controller = new DataStoreController();
+
+        HashMap<String, Integer> retMap = new HashMap<>();
+
+        retMap.put("Images", 1);
+        try {
+            this.images = controller.loadImage();
+        } catch (IOException ignored) {
+            retMap.put("Images", 0);
+        }
+
+        retMap.put("Items", 1);
+        try {
+            this.items = controller.loadItem();
+        } catch (IOException ignored) {
+            retMap.put("Items", 0);
+        }
+
+        retMap.put("Customers", 1);
+        try {
+            this.customers = controller.loadCustomer();
+        } catch (IOException ignored) {
+            retMap.put("Customers", 0);
+        }
+
+        retMap.put("Premium Customers", 1);
+        try {
+            this.premiumCustomers = controller.loadPremiumCustomer();
+        } catch (IOException ignored) {
+            retMap.put("Premium Customers", 0);
+        }
+
+        retMap.put("Ongoing Purchase", 1);
+        try {
+            this.bills = controller.loadBill();
+        } catch (IOException ignored){
+            retMap.put("Ongoing Purchase", 0);
+        }
+
+        return retMap;
     }
 
     /**
@@ -267,6 +301,9 @@ public class DataStore {
     }
     public void saveItem() throws IOException {
         FileController controller = new DataStoreController();
+        for (QuantifiableItem qItem : items.getItemList()) {
+            System.out.println(qItem);
+        }
         controller.saveItem(this.items);
     }
 
@@ -275,5 +312,13 @@ public class DataStore {
         controller.saveBill(this.bills);
     }
 
+    public void saveCustomers() throws IOException {
+        FileController controller = new DataStoreController();
+        controller.saveCustomers(this.customers);
+    }
 
+    public void savePremiumCustomers() throws IOException {
+        FileController controller = new DataStoreController();
+        controller.savePremiumCustomers(this.premiumCustomers);
+    }
 }

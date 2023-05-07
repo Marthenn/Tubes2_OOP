@@ -4,9 +4,11 @@ import Core.DataStore.DataStore;
 import Core.Settings;
 
 import javax.swing.*;
+import javax.xml.crypto.Data;
 import java.awt.*;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 
 public class LoadingScreen {
     private JProgressBar progressBar = new JProgressBar();
@@ -35,9 +37,17 @@ public class LoadingScreen {
             try {
                 Settings.getInstance().loadPath();
                 Settings.getInstance().loadFileType();
-                DataStore.getInstance();
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null, "Error loading settings: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+            try {
+                DataStore ds = DataStore.getInstance();
+                HashMap<String, Integer> retMap = ds.load();
+                String message = String.join(", ", retMap.keySet().stream().filter(key -> retMap.get(key) == 0).toList());
+                JOptionPane.showMessageDialog(null, message + " wasn't loaded");
+            } catch (Exception e){
+                JOptionPane.showMessageDialog(null, "Error loading data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
             finished = true;
         }).start();

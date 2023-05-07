@@ -6,8 +6,10 @@ import Core.Pair;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.ObjectCodec;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import lombok.SneakyThrows;
 
@@ -27,11 +29,13 @@ public class StorerDataWithImageIDDeserializer extends StdDeserializer<StorerDat
     @SneakyThrows
     @Override
     public StorerDataImageWithID deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
-        ObjectCodec codec = jp.getCodec();
-        JsonNode node = codec.readTree(jp);
+        JsonNode node = jp.getCodec().readTree(jp);
         StorerDataDeserializerUtility<ImageWithID> utility = new StorerDataDeserializerUtility<ImageWithID>();
-        Pair<String, HashMap<Integer, ImageWithID>> attribute = utility.getDeserializedProperty(jp);
+        TypeReference<HashMap<Integer, ImageWithID>> typeRef = new TypeReference<>() {};
+
+        HashMap<Integer, ImageWithID> store = new ObjectMapper().readValue(node.get("store").asText(), typeRef);
         StorerDataImageWithID loadedStorerData = new StorerDataImageWithID();
+        Pair<String, HashMap<Integer, ImageWithID>> attribute = new Pair<>(utility.getName(node), store);
         utility.setDeserializedProperty(loadedStorerData, attribute);
         return loadedStorerData;
     }

@@ -3,8 +3,6 @@ package GUI;
 import Core.DataStore.DataStore;
 import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
 import Core.Item.QuantifiableItem;
-import Core.Settings;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -378,7 +376,7 @@ public class Inventory extends JPanel {
         item_list.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                if (e.getValueIsAdjusting() == false) {
+                if (!e.getValueIsAdjusting()) {
                     int idx = item_list.getSelectedIndex();
                     try {
                         if (idx!=-1) {
@@ -642,19 +640,6 @@ public class Inventory extends JPanel {
             ex.printStackTrace();
         }
     }
-//    public ImageIcon ResizeImage(String ImagePath,Boolean isitem_image)
-//    {
-//        ImageIcon MyImage = new ImageIcon(ImagePath);
-//        Image img = MyImage.getImage();
-//        Image newImg;
-//        if (isitem_image){
-//            newImg = img.getScaledInstance(item_image.getWidth(), item_image.getHeight(), Image.SCALE_SMOOTH);
-//        } else {
-//            newImg = img.getScaledInstance(image_editdisplay.getWidth(), image_editdisplay.getHeight(), Image.SCALE_SMOOTH);
-//        }
-//        ImageIcon image = new ImageIcon(newImg);
-//        return image;
-//    }
 
     private void clearTextField(){
         setTextField("","","","","");

@@ -86,7 +86,7 @@ public class Settings {
         this.path =  new ObjectMapper().readValue(json, String.class);
     }
     public void loadFileType() throws IOException {
-        String json = new String(Files.readAllBytes(Paths.get("jsonConfig/fileType_config.json")));
+        String json = new String(Files.readAllBytes(Paths.get("jsonConfig/filetype_config.json")));
         this.fileType = new ObjectMapper().readValue(json, Map.class);
     }
 }
