@@ -5,6 +5,7 @@
 package GUI;
 
 import Core.Item.QuantifiableItem;
+import com.itextpdf.text.Header;
 import lombok.SneakyThrows;
 
 import java.awt.*;
@@ -24,37 +25,70 @@ public class CashierItemDisplay extends JPanel {
 //    byte[] btDataFile = Base64.getDecoder().decode(base64Image);
 //    BufferedImage image1 = ImageIO.read(new ByteArrayInputStream(btDataFile));
 //    ImageIcon image2 = new ImageIcon(image1);
-    public CashierItemDisplay(QuantifiableItem displ) {
-        initComponents(displ);
+    public CashierItemDisplay(QuantifiableItem qItem, Color bgColor) {
+        initComponents(qItem, bgColor);
     }
 
     @SneakyThrows
-    private void initComponents(QuantifiableItem displ) {
+    private void initComponents(QuantifiableItem qItem, Color bgColor) {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner Evaluation license - Fakih Anugerah Pratama
-        GambarItem = new JLabel(displ.getName());
-        HargaItem = new JButton();
-        button4 = new JButton();
+        header = new JPanel();
+        Nama = new JLabel(qItem.getName());
+        Kategori = new JLabel(qItem.getCategory());
+        GambarItem = new JLabel();
+        HargaItem = new JButton(Double.toString(qItem.getPrice()));
 
+        // set bgColor
+        header.setBackground(bgColor);
 
         setLayout(new BorderLayout());
 
         //---- GambarItem ----
-//        GambarItem.setText("gambar");
+        GambarItem.setHorizontalAlignment(SwingConstants.CENTER);
         add(GambarItem, BorderLayout.CENTER);
 
         //---- HargaItem ----
-        HargaItem.setText("harga");
         add(HargaItem, BorderLayout.SOUTH);
 
-        //---- button4 ----
-        button4.setText("nama");
-        add(button4, BorderLayout.NORTH);
+        //======== panel1 ========
+        {
+            header.setLayout(new BorderLayout());
+
+            //---- Nama ----
+            Nama.setFont(Nama.getFont().deriveFont(Nama.getFont().getSize() + 3f));
+            Nama.setHorizontalAlignment(SwingConstants.CENTER);
+            header.add(Nama, BorderLayout.CENTER);
+
+            //---- Kategori ----
+            Kategori.setFont(Kategori.getFont().deriveFont(Kategori.getFont().getSize() - 1f));
+            Kategori.setHorizontalAlignment(SwingConstants.CENTER);
+            header.add(Kategori, BorderLayout.SOUTH);
+        }
+        add(header, BorderLayout.NORTH);
+
+        GambarItem.setIcon(getImageIcon(qItem.getImage().getBase64Image(), 128));
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
+    }
+
+    @SneakyThrows
+    public ImageIcon getImageIcon(String img, int desiredWidth){
+            byte[] btDataFile = Base64.getDecoder().decode(img);
+            BufferedImage image1 = ImageIO.read(new ByteArrayInputStream(btDataFile));
+            ImageIcon image2 = new ImageIcon(image1);
+
+            return resizeImageIcon(image2, desiredWidth);
+    }
+
+    public ImageIcon resizeImageIcon(ImageIcon imgIcon, int desiredWidth) {
+        return  new ImageIcon(imgIcon.getImage().getScaledInstance(desiredWidth, desiredWidth / imgIcon.getIconWidth() * imgIcon.getIconHeight(), Image.SCALE_SMOOTH));
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
     // Generated using JFormDesigner Evaluation license - Fakih Anugerah Pratama
+    private JPanel header;
+    private JLabel Nama;
+    private JLabel Kategori;
     private JLabel GambarItem;
     private JButton HargaItem;
     private JButton button4;

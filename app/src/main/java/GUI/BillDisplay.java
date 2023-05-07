@@ -19,6 +19,7 @@ public class BillDisplay extends JScrollPane {
     @Getter(AccessLevel.PRIVATE)
     private JTable displayedTable;
 
+    @Getter(AccessLevel.PUBLIC)
     private DefaultTableModel displayedTableModel;
     public BillDisplay() {
         this.displayedBill = DataStore.getInstance().createNewBill();

@@ -103,6 +103,7 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
 
         browseTable.setTableHeader(null);
         browseTable.setIntercellSpacing(new Dimension(15, 15));
+        browseTable.setBackground(browseTable.getBackground().darker());
         browseTable.setShowGrid(false);
 
         updateBrowseTableModel();
@@ -378,11 +379,10 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
 
         for(int i = 0; i < filteredBrowseObjects.size() / 4; i++) {
             browseListTableModel.addRow(filteredBrowseObjects.subList(i * 4, i * 4 + 4).toArray());
-
-//                browseListTableModel.addRow(new Object[]{qItem.getName(), qItem.getCategory(), Double.toString(qItem.getSingularPrice()), (qItem.getImage().getBase64Image())});
-
         }
         browseListTableModel.addRow(filteredBrowseObjects.subList(filteredBrowseObjects.size() / 4 * 4, filteredBrowseObjects.size()).toArray());
+
+        browseTable.repaint();
     }
 
     BillDisplay createNewBillTab() {
@@ -457,27 +457,17 @@ class JTableCellRenderer extends DefaultTableCellRenderer {
 
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        if (isSelected)
-        {
-//            return super.getTableCellRendererComponent(table, new CashierItemPanel(), isSelected, hasFocus, row, column);
+        if (value == null) return  null;
 
-        }
-        JPanel panel;
-        if (value == null) {
-                return null;
-        } else {
-            panel = new CashierItemDisplay((QuantifiableItem) value);
-        }
+        Color bg =
+                isSelected
+                    ?
+                super.getTableCellRendererComponent(table, "", isSelected, hasFocus, row, column).getBackground()
+                    :
+                Color.WHITE
+                ;
 
-        Color bg = super.getTableCellRendererComponent(table, "", isSelected, hasFocus, row, column).getBackground();
-
-        if (isSelected) panel.setBackground(bg);
-
-
-        //TODO : onselect
-//        label.setIcon((Icon) value);
-//        label.setHorizontalAlignment(JLabel.CENTER);
-//        label.setText((String) value);
+        JPanel panel = new CashierItemDisplay((QuantifiableItem) value, bg);
 
         return panel;
     }
