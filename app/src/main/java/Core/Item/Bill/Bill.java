@@ -149,8 +149,7 @@ public class Bill implements Priceable, IDAble, Serializable {
         return id;
     }
 
-    public FixedBill getFixedBill() throws ItemOverOrderedException {
-        assertBillValid();
+    public FixedBill getFixedBill() {
         return new FixedBill(this.id, getItemList(), new ArrayList<>()
         );
     }
