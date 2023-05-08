@@ -1,4 +1,4 @@
-package Plugins.Payment;
+package Plugins;
 
 import Core.Customer.Customer;
 import Core.Customer.PremiumCustomer;
