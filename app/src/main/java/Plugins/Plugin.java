@@ -27,35 +27,6 @@ public interface Plugin {
             return null;
         }
     }
-    default Method findMethod(Class<?> clazz, String name, Class<?>... parameterTypes) {
-        try {
-            return clazz.getDeclaredMethod(name, parameterTypes);
-        } catch (NoSuchMethodException e) {
-            if (clazz.getSuperclass() != null) {
-                return findMethod(clazz.getSuperclass(), name, parameterTypes);
-            }
-            return null;
-        }
-    }
-    default void setField(Object obj, String name, Object value) {
-        try {
-            Field field = findField(obj.getClass(), name);
-            field.setAccessible(true);
-            field.set(obj, value);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-    }
-    default Object getField(Object obj, String name) {
-        try {
-            Field field = findField(obj.getClass(), name);
-            field.setAccessible(true);
-            return field.get(obj);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
     public default void addToSetting(String name, ArrayList<String> items){
         System.out.print("Adding " + name + " to setting...");

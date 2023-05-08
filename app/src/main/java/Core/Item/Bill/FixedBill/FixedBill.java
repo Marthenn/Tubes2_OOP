@@ -37,7 +37,7 @@ public class FixedBill implements Profitable, IDAble, Serializable {
         modifiers.add(fixedBillModifier);
     }
 
-    private double getUnmodifiedCost() {
+    private double getUnmodifiedPrice() {
         double realCost = 0;
         for (QuantifiableItem transactionHistory : items){
             realCost += transactionHistory.getCost();
@@ -49,7 +49,7 @@ public class FixedBill implements Profitable, IDAble, Serializable {
 
     @Override
     public Double getPrice() {
-        double price = getUnmodifiedCost();
+        double price = getUnmodifiedPrice();
         for (FixedBillModifier modifier : modifiers){
             price = modifier.applyModifier(price);
         }
