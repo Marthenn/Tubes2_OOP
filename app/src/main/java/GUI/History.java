@@ -36,6 +36,7 @@ import java.util.stream.Stream;
 public class History extends JPanel implements IDAbleListener<Customer>, StorerDataListener {
     Customer selectedCustomer;
     DefaultTableModel historyTableModel = new DefaultTableModel();
+    DefaultComboBoxModel customerListModel;
     public History() {
         initComponents();
     }
@@ -54,15 +55,9 @@ public class History extends JPanel implements IDAbleListener<Customer>, StorerD
         historyTableModel.addColumn("Total Price");
 
 
-        DefaultComboBoxModel customerListModel = new DefaultComboBoxModel();
+        customerListModel = new DefaultComboBoxModel();
 
-        List<? extends Customer> listOfAllCustomers = Stream.of(DataStore.getInstance().getCustomers(), DataStore.getInstance().getPremiumCustomers())
-                                                        .flatMap(x -> x.stream())
-                                                        .collect(Collectors.toList());
-
-        for (Customer customer : listOfAllCustomers) {
-            customerListModel.addElement(customer.getID());
-        }
+        updateCustomerListModel();
 
         NameLabel = new JLabel();
         Name = new JComboBox(customerListModel);
@@ -70,7 +65,7 @@ public class History extends JPanel implements IDAbleListener<Customer>, StorerD
         Membership = new JLabel();
         SearchBox = new JTextField();
         HistoryTablePane = new JScrollPane();
-        HistoryTable = new JTable();
+        HistoryTable = new JTable(historyTableModel);
         PrintFullReport = new JButton();
 
         setLayout(new GridBagLayout());
@@ -139,11 +134,6 @@ public class History extends JPanel implements IDAbleListener<Customer>, StorerD
             }
         });
 
-
-        // SET DEFAULT VALUE
-        if (listOfAllCustomers.size() != 0) {
-            updateCustomerData((int)customerListModel.getSelectedItem());
-        }
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
 
@@ -200,6 +190,7 @@ public class History extends JPanel implements IDAbleListener<Customer>, StorerD
     }
 
     private void updateHistoryTable() {
+        if (selectedCustomer == null) return;
         // TODO:make them clickable
         historyTableModel.setRowCount(0);
         int idx = 1;
@@ -211,13 +202,33 @@ public class History extends JPanel implements IDAbleListener<Customer>, StorerD
 
     }
 
+    void updateCustomerListModel() {
+        customerListModel.removeAllElements();
+
+        List<? extends Customer> listOfAllCustomers = Stream.of(DataStore.getInstance().getCustomers(), DataStore.getInstance().getPremiumCustomers())
+                .flatMap(x -> x.stream())
+                .collect(Collectors.toList());
+
+        for (Customer customer : listOfAllCustomers) {
+            customerListModel.addElement(customer.getID());
+        }
+
+        // SET DEFAULT VALUE
+//        if (listOfAllCustomers.size() != 0) {
+//            updateCustomerData((int)customerListModel.getSelectedItem());
+//        }
+    }
+
     @Override
     public void onItemWithIDChange(Customer item) {
         // TODO : add notify when update customer status and other status
-        if (item.getID() == selectedCustomer.getID()) {
+        if (selectedCustomer != null && item.getID() == selectedCustomer.getID()) {
             updateCustomerData(selectedCustomer.getID());
+            System.out.println(item.toString() + " V " +selectedCustomer.getID());
         }
-        System.out.println(item.toString() + " V " +selectedCustomer.getID());
+
+
+        updateHistoryTable();
     }
     @Override
     public void onStorerDataChange(String storerName) {
@@ -225,7 +236,7 @@ public class History extends JPanel implements IDAbleListener<Customer>, StorerD
             // delete if deactivated(?) or removed(?)
 
         }
-
         System.out.println(storerName);
+        updateHistoryTable();
     }
 }
