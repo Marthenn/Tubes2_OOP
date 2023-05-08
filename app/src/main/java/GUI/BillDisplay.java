@@ -1,10 +1,13 @@
 package GUI;
 
 import Core.DataStore.DataStore;
+import Core.DataStore.StorerData.StorerDataListener;
+import Core.IDAble.IDAbleListener;
 import Core.Item.Bill.Bill;
 import Core.Item.Bill.Exception.ItemInBillNotExist;
 import Core.Item.QuantifiableItem;
 import lombok.AccessLevel;
+import lombok.Data;
 import lombok.Getter;
 import lombok.SneakyThrows;
 
@@ -12,7 +15,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
-public class BillDisplay extends JScrollPane {
+public class BillDisplay extends JScrollPane implements IDAbleListener<QuantifiableItem>, StorerDataListener {
 
     @Getter(AccessLevel.PUBLIC)
     private Bill displayedBill;
@@ -36,6 +39,10 @@ public class BillDisplay extends JScrollPane {
         this.totalPriceLabel = totalPriceLabel;
 
         this.setViewportView(this.displayedTable);
+
+        // init listener
+        DataStore.getInstance().listenToItem(this);
+        DataStore.getInstance().listenToItemStore(this);
     }
 
     @SneakyThrows
@@ -61,6 +68,16 @@ public class BillDisplay extends JScrollPane {
     }
 
 
+    @SneakyThrows
+    @Override
+    public void onItemWithIDChange(QuantifiableItem item) {
+        System.out.println("tes");
+        System.out.println(DataStore.getInstance().getBillWithID(displayedBill).getItemList().toString());
+        updateTotalPriceLabel();
+    }
 
+    @Override
+    public void onStorerDataChange(String storerName) {
 
+    }
 }
