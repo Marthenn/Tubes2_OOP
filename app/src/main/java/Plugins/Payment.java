@@ -58,11 +58,11 @@ public class Payment implements Plugin {
                             }
                         }
                     }
-                    System.out.println("Current tax: " + tax);
-                    System.out.println("Bills size: " + bills.size());
-                    for (FixedBill x : bills){
-                        System.out.println(x.getID()+" : "+ x.getPrice());
-                    }
+//                    System.out.println("Current tax: " + tax);
+//                    System.out.println("Bills size: " + bills.size());
+//                    for (FixedBill x : bills){
+//                        System.out.println(x.getID()+" : "+ x.getPrice());
+//                    }
                 } catch (InterruptedException e) {
                     // do nothing
                 } catch (IllegalAccessException e) {
@@ -83,14 +83,14 @@ public class Payment implements Plugin {
                         // if x not in bills
                         if (!bills.contains(x)){
                             Thread.sleep(500);
-                            x.addFixedBillModifier(new FractionFixedBillModifier("Tax and Service", 1+tax));
+                            x.addFixedBillModifier(new FractionFixedBillModifier("Tax and Service: "+(tax*100)+"%", 1+tax));
                             // JPopup to insert discount rate
                             Double d = -1.0;
                             while (d < 0 || d > 100){
                                 String s = JOptionPane.showInputDialog("Insert discount rate (0-100)");
                                 d = Double.parseDouble(s);
                             }
-                            x.addFixedBillModifier(new DiscountFixedBillModifier("Discount", d/100));
+                            x.addFixedBillModifier(new DiscountFixedBillModifier("Discount: "+ d + "%", d/100));
                             bills.add(x);
                         }
                     }
