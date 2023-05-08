@@ -5,6 +5,7 @@ import Core.Customer.PremiumCustomer;
 import Core.DataStore.DataStore;
 import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
 import Core.Item.Bill.Exception.ItemInBillNotExist;
+import Core.Item.Bill.FixedBill.FixedBillModifier.FixedBillModifier;
 import Core.Item.QuantifiableItem;
 import com.itextpdf.text.PageSize;
 
@@ -41,6 +42,11 @@ public class FullReportPrinter {
                             k + 1, item.getItem().getID(), item.getItem().getName(), item.getItem().getCategory(),
                             item.getItem().getPrice(), item.getQuantity(), item.getPrice());
                     pdfPrinter.addText(text2);
+                }
+                ArrayList<FixedBillModifier> modifiers = arrCust.get(i).getHistory().get(j).getModifiers();
+                for(int k = 0; k < arrCust.get(i).getHistory().get(j).getModifiers().size(); k++){
+                    String textModifier = "   " + arrCust.get(i).getHistory().get(j).getModifiers().get(k).getModifierText();
+                    pdfPrinter.addText(textModifier);
                 }
                 double price = arrCust.get(i).getHistory().get(j).getPrice();
                 double profit = arrCust.get(i).getHistory().get(j).getProfit();
