@@ -2,13 +2,10 @@ package Core.FileController;
 
 import Core.DataStore.StorerData.*;
 import Core.Settings.SaveFileType;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
-public class ObjController extends ConcreteFileController {
+public class ObjController extends AbstractFileController {
     public ObjController(){
     }
 

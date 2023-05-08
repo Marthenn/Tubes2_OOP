@@ -9,7 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 
-public class JsonController extends ConcreteFileController {
+public class JsonController extends AbstractFileController {
     public JsonController(){
     }
 
