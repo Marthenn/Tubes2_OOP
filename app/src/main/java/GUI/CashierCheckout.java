@@ -5,10 +5,15 @@
 package GUI;
 
 import Core.Customer.Customer;
+import Core.Customer.Exception.NoOngoingPurchaseException;
+import Core.Customer.Exception.PointInaccessibleIfNotMemberException;
+import Core.Customer.Exception.ZeroPointException;
 import Core.Customer.PremiumCustomer;
 import Core.DataStore.DataStore;
+import Core.DataStore.StorerData.Exception.SearchedItemNotExist;
 import Core.DataStore.StorerData.StorerDataListener;
 import Core.IDAble.IDAbleListener;
+import Core.Item.Bill.Exception.ItemOverOrderedException;
 import Core.Printer.FixedBillPrinter;
 import Core.Item.Bill.Bill;
 import Core.Item.Bill.FixedBill.FixedBillModifier.FixedBillModifier;
@@ -183,7 +188,7 @@ public class CashierCheckout extends JPanel implements StorerDataListener, IDAbl
                 } else {
                     // Don't save file
                 }
-                // hide this page (TODO: destroy or recycle instead)
+                // hide this page
                 parentTabbedPane.setComponentAt(parentTabbedPane.getSelectedIndex(), parentCashier);
                 parentTabbedPane.repaint();
 
@@ -194,7 +199,6 @@ public class CashierCheckout extends JPanel implements StorerDataListener, IDAbl
         });
 
         PayWithPointButton.addActionListener(new ActionListener() {// MAY RESULT IN DEACTIVATED USER
-            @SneakyThrows
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (adaStokKosong) {
@@ -210,12 +214,32 @@ public class CashierCheckout extends JPanel implements StorerDataListener, IDAbl
                 // TODO : add modifiers if exists
                 if (isPremium) {
                     billOwner = DataStore.getInstance().createNewCustomer();                                         // soon-to-be-customer
-                    PremiumCustomer pCustomer = DataStore.getInstance().getPremiumCustomerWithID(billOwner.getID());
+                    PremiumCustomer pCustomer = null;
+                    try {
+                        pCustomer = DataStore.getInstance().getPremiumCustomerWithID(billOwner.getID());
+                    } catch (SearchedItemNotExist ex) {
+                        throw new RuntimeException(ex);
+                    }
 
                     billToBeCheckedOut.setOwner(billOwner);
                     billOwner.assignBill(billToBeCheckedOut);
 
-                    pCustomer.payWithPoint();
+                    try {
+                        pCustomer.payWithPoint();
+                    } catch (ZeroPointException ex) {
+                        JOptionPane.showMessageDialog(null, "Point Tidak Cukup", "Payment", JOptionPane.WARNING_MESSAGE);
+                        return;
+                    } catch (PointInaccessibleIfNotMemberException ex) {
+                        throw new RuntimeException(ex);
+                    } catch (NoOngoingPurchaseException ex) {
+                        throw new RuntimeException(ex);
+                    } catch (SearchedItemNotExist ex) {
+                        throw new RuntimeException(ex);
+                    } catch (ItemOverOrderedException ex) {
+                        // sementara terhandle boolean adaStokKosong, karena membutuhkan sebuah customer yang harusnya baru dipastikan siapa customernya ketika memencet tombol ini
+
+                        throw new RuntimeException(ex);
+                    }
                 } else {
                     JOptionPane.showMessageDialog(null, "Bukan Premium Customer", "Payment", JOptionPane.WARNING_MESSAGE);
 
@@ -233,15 +257,20 @@ public class CashierCheckout extends JPanel implements StorerDataListener, IDAbl
                     int result = fileChooser.showSaveDialog(null);
                     if (result == JFileChooser.APPROVE_OPTION) {
                         File fileToSave = fileChooser.getSelectedFile();
-                        FixedBillPrinter fixedBillPrinter = new FixedBillPrinter(fileToSave.getAbsolutePath()+ File.separator + "bill_"+custId+"_"+fixedbillidx+".pdf", custId,
-                                fixedbillidx);
+                        FixedBillPrinter fixedBillPrinter = null;
+                        try {
+                            fixedBillPrinter = new FixedBillPrinter(fileToSave.getAbsolutePath()+ File.separator + "bill_"+custId+"_"+fixedbillidx+".pdf", custId,
+                                    fixedbillidx);
+                        } catch (SearchedItemNotExist ex) {
+                            throw new RuntimeException(ex);
+                        }
                         Thread printThread = new Thread(fixedBillPrinter::printFixedBill);
                         printThread.start();
                     }
                 } else {
                     // Don't save file
                 }
-                // hide this page (TODO: destroy or recycle instead)
+                // hide this page
                 parentTabbedPane.setComponentAt(parentTabbedPane.getSelectedIndex(), parentCashier);
                 parentTabbedPane.repaint();
 
@@ -264,7 +293,7 @@ public class CashierCheckout extends JPanel implements StorerDataListener, IDAbl
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
 
-    @SneakyThrows // TODO : check ketika item dihapus
+    @SneakyThrows
     void updateTabelDetailModel() {
         adaStokKosong = false;
         tabelDetailModel.setRowCount(0);
@@ -276,10 +305,14 @@ public class CashierCheckout extends JPanel implements StorerDataListener, IDAbl
                     Double.toString(qItem.getSingularPrice()),
                     Integer.toString(this.billToBeCheckedOut.getQuantityOfItemWithID(qItem.getID())),
                     Double.toString(qItem.getPrice()),
+                    DataStore.getInstance().getItemWithID(qItem.getID()).isDeleted()
+                        ?
+                    "-99999" // failed test
+                        :
                     Integer.toString(DataStore.getInstance().getItemWithID(qItem.getID()).getQuantity() - qItem.getQuantity())
             });
 
-            if (DataStore.getInstance().getItemWithID(qItem.getID()).getQuantity() - qItem.getQuantity() < 0) {
+            if (DataStore.getInstance().getItemWithID(qItem.getID()).getQuantity() - qItem.getQuantity() < 0 || DataStore.getInstance().getItemWithID(qItem.getID()).isDeleted()) {
                 adaStokKosong = true;
             }
         }
@@ -337,6 +370,7 @@ class KeteranganDetailRenderer extends DefaultTableCellRenderer {
         if (value == null) return  null;
 
         Boolean tersedia = Integer.parseInt(String.valueOf(value)) >= 0;
+        Boolean isDeleted = Integer.parseInt(String.valueOf(value)) == -99999;
 
         Color bg =
                 isSelected
@@ -350,7 +384,17 @@ class KeteranganDetailRenderer extends DefaultTableCellRenderer {
                             Color.RED
                 ;
 
-        JButton labelValue = new JButton(tersedia ? "Tersedia" : "Melebihi stok");
+        JButton labelValue = new JButton(tersedia
+                    ?
+                "Tersedia"
+                    :
+                ( isDeleted
+                        ?
+                    "Dihapus"
+                            :
+                    "Melebihi stok"
+                )
+        );
         labelValue.setBackground(bg);
 
         return labelValue;
