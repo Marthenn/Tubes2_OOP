@@ -82,6 +82,7 @@ public class Payment implements Plugin {
                     for (FixedBill x : fb){
                         // if x not in bills
                         if (!bills.contains(x)){
+                            Thread.sleep(500);
                             x.addFixedBillModifier(new FractionFixedBillModifier("Tax and Service", 1+tax));
                             // JPopup to insert discount rate
                             Double d = -1.0;
