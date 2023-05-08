@@ -497,7 +497,7 @@ public class Inventory extends JPanel implements IDAbleListener<QuantifiableItem
 
                             if (addingSuccess) {
                                 assert (newItem != null);
-                                items.add(newItem);
+//                                items.add(newItem);
 //                                items_list.addElement(newItem.getName());
                                 updateItemsList();
                                 dialog1.setVisible(false);
