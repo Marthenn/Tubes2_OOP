@@ -9,6 +9,7 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
+    id 'jacoco'
 }
 
 repositories {
@@ -25,6 +26,7 @@ dependencies {
     implementation 'com.itextpdf:itextpdf:5.5.13.2'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.10.0'
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.12.5'
+    testImplementation 'org.projectlombok:lombok:1.18.22'
 
 
     compileOnly 'org.projectlombok:lombok:1.18.20'
@@ -44,12 +46,17 @@ sourceSets {
             // plugin
             // use : gradle run -Pplugin=variabel_tanpa_quote
             if (project.hasProperty('plugin')) {
+                include("Core/**")
+                include("GUI/**")
+                include("Plugins/**")
+
                 include("Plugins/" + property('plugin'))
+
+                include("Main.java")
             }
             // main program
             else
             {
-                // atau buat include all(?)
                 include("Core/**")
                 include("GUI/**")
                 include("Plugins/**")
@@ -68,4 +75,13 @@ application {
 test {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
+
+    finalizedBy(jacocoTestReport)
 }
+
+jacocoTestReport {
+    dependsOn test
+}
+
+
+
