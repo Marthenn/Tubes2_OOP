@@ -3,6 +3,7 @@ package Plugins;
 import Core.Customer.Customer;
 import Core.Customer.PremiumCustomer;
 import Core.DataStore.DataStore;
+import Core.Item.Bill.Exception.ItemInBillNotExist;
 import Core.Item.Bill.FixedBill.FixedBill;
 import Core.Item.Bill.FixedBill.FixedBillModifier.DiscountFixedBillModifier;
 import Core.Item.Bill.FixedBill.FixedBillModifier.FractionFixedBillModifier;
@@ -63,7 +64,7 @@ public class Payment implements Plugin {
                         System.out.println(x.getID()+" : "+ x.getPrice());
                     }
                 } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+                    // do nothing
                 } catch (IllegalAccessException e) {
                     throw new RuntimeException(e);
                 }
@@ -81,11 +82,14 @@ public class Payment implements Plugin {
                     for (FixedBill x : fb){
                         // if x not in bills
                         if (!bills.contains(x)){
-//                            x.addFixedBillModifier(new FractionFixedBillModifier("Tax and Service", 1+tax));
+                            x.addFixedBillModifier(new FractionFixedBillModifier("Tax and Service", 1+tax));
                             // JPopup to insert discount rate
-                            String s = JOptionPane.showInputDialog("Insert discount rate (0-100)");
-                            Double d = Double.parseDouble(s);
-//                            x.addFixedBillModifier(new DiscountFixedBillModifier("Discount", d/100));
+                            Double d = -1.0;
+                            while (d < 0 || d > 100){
+                                String s = JOptionPane.showInputDialog("Insert discount rate (0-100)");
+                                d = Double.parseDouble(s);
+                            }
+                            x.addFixedBillModifier(new DiscountFixedBillModifier("Discount", d/100));
                             bills.add(x);
                         }
                     }
