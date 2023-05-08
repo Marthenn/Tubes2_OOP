@@ -313,12 +313,18 @@ public class CashierCheckout extends JPanel implements StorerDataListener, IDAbl
      if(storerName.equals("Premium Customer")) {
 
      }
+
+        updateNilaiTotalPembelian();
+        updateTabelDetailModel();
     }
 
     @SneakyThrows
     @Override
     public void onItemWithIDChange(QuantifiableItem item) {
         this.billToBeCheckedOut = DataStore.getInstance().getBillWithID(billToBeCheckedOut);
+
+        updateNilaiTotalPembelian();
+        updateTabelDetailModel();
     }
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }
