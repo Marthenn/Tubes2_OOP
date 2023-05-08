@@ -714,11 +714,17 @@ public class Inventory extends JPanel implements IDAbleListener<QuantifiableItem
     public void onItemWithIDChange(QuantifiableItem item) {
         this.items = DataStore.getInstance().getItems();
 
-        QuantifiableItem x = items.get(item_list.getSelectedIndex());
+        if (item_list.getSelectedIndex() == -1) {
+            setItemProperty("",0d,0d,0,"",false);
+            setBase64ImageToDefault();
+            displayImageInJLabel(base64Image,item_image);
+        } else {
+            QuantifiableItem x = items.get(item_list.getSelectedIndex());
 
-        if (x == item) {
-            setItemProperty(x.getName(),x.getItem().getPrice(), x.getItem().getCost(),x.getQuantity(),x.getCategory(),x.isDeleted());
-            displayImageInJLabel(x.getImage().getBase64Image(),item_image);
+            if (x == item) {
+                setItemProperty(x.getName(),x.getItem().getPrice(), x.getItem().getCost(),x.getQuantity(),x.getCategory(),x.isDeleted());
+                displayImageInJLabel(x.getImage().getBase64Image(),item_image);
+            }
         }
     }
 
