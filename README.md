@@ -5,7 +5,6 @@
 - [Description](#description)
 - [Program Requirements and Installation](#program-requirements-and-installation)
 - [Get Started](#get-started-)
-- [Screenshot] (#screenshot)
 - [Author](#author-)
 
 ## Description🚀
