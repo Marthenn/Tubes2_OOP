@@ -7,10 +7,12 @@ package GUI;
 import Core.Customer.Customer;
 import Core.DataStore.DataStore;
 import Core.DataStore.StorerData.StorerDataListener;
+import Core.IDAble.IDAbleListener;
 import Core.Printer.FixedBillPrinter;
 import Core.Item.Bill.Bill;
 import Core.Item.Bill.FixedBill.FixedBillModifier.FixedBillModifier;
 import Core.Item.QuantifiableItem;
+import lombok.Data;
 import lombok.SneakyThrows;
 
 import javax.imageio.ImageIO;
@@ -29,7 +31,7 @@ import java.util.Base64;
 /**
  * @author Fakih A
  */
-public class CashierCheckout extends JPanel implements StorerDataListener {
+public class CashierCheckout extends JPanel implements StorerDataListener, IDAbleListener<QuantifiableItem> {
     JTabbedPane parentTabbedPane;
     Cashier parentCashier;
     Bill billToBeCheckedOut; // add listeners
@@ -47,7 +49,9 @@ public class CashierCheckout extends JPanel implements StorerDataListener {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner Evaluation license - Fakih Anugerah Pratama
 
-        // listener init
+        // init observer
+        DataStore.getInstance().listenToItemStore(this);
+        DataStore.getInstance().listenToItem(this);
         DataStore.getInstance().listenToCustomerStore(this);
 
         CancelCheckout = new JButton();
@@ -118,7 +122,7 @@ public class CashierCheckout extends JPanel implements StorerDataListener {
             new Insets(0, 0, 5, 5), 0, 0));
 
         //---- NilaiTotalPembelian ----
-        NilaiTotalPembelian.setText("1000");
+        updateNilaiTotalPembelian();
         add(NilaiTotalPembelian, new GridBagConstraints(4, 3, 1, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 5, 0), 0, 0));
@@ -129,17 +133,18 @@ public class CashierCheckout extends JPanel implements StorerDataListener {
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 0, 0), 0, 0));
 
-        Checkout.addActionListener(new ActionListener() {
-            @SneakyThrows // MAY RESULT IN DEACTIVATED USER
+        Checkout.addActionListener(new ActionListener() {// MAY RESULT IN DEACTIVATED USER
+            @SneakyThrows
             @Override
             public void actionPerformed(ActionEvent e) {
 //                System.out.println(NamaCustomer.getSelectedCustomerID());
                 // function finish checkout
+
                 Customer billOwner = NamaCustomer.getSelectedCustomerID() == -1
                         ?
                         DataStore.getInstance().createNewCustomer()                                         // soon-to-be-customer
                         :
-                        DataStore.getInstance().getCustomerWithID(NamaCustomer.getSelectedCustomerID()      // premium customer
+                        DataStore.getInstance().getPremiumCustomerWithID(NamaCustomer.getSelectedCustomerID()      // premium customer
                         );
 
                 billToBeCheckedOut.setOwner(billOwner);
@@ -154,7 +159,7 @@ public class CashierCheckout extends JPanel implements StorerDataListener {
 
                 // pop up print bill
                 int custId = billOwner.getID();
-                int fixedbillidx = DataStore.getInstance().getCustomerWithID(custId).getHistory().size() - 1; // print latest
+                int fixedbillidx = billOwner.getHistory().size() - 1; // print latest
                 JFileChooser fileChooser = new JFileChooser();
                 fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
                 fileChooser.setDialogTitle("Print Bill");
@@ -209,6 +214,16 @@ public class CashierCheckout extends JPanel implements StorerDataListener {
             });
         }
     }
+
+    @SneakyThrows
+    void updateNilaiTotalPembelian() {
+        Double totalPurchase = 0d;
+        for (QuantifiableItem qItem : billToBeCheckedOut.getItemList()) {
+            totalPurchase += qItem.getPrice();
+        }
+
+        NilaiTotalPembelian.setText(Double.toString(totalPurchase));
+    }
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
     // Generated using JFormDesigner Evaluation license - Fakih Anugerah Pratama
     private JButton CancelCheckout;
@@ -227,6 +242,12 @@ public class CashierCheckout extends JPanel implements StorerDataListener {
      if(storerName.equals("Premium Customer")) {
 
      }
+    }
+
+    @SneakyThrows
+    @Override
+    public void onItemWithIDChange(QuantifiableItem item) {
+        this.billToBeCheckedOut = DataStore.getInstance().getBillWithID(billToBeCheckedOut);
     }
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }

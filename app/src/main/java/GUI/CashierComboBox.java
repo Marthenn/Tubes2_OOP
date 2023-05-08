@@ -61,23 +61,25 @@ public class CashierComboBox extends JComboBox {
     private void updateComboModel(){
         // TODO: MAKE SURE OF THE MAX LENGTH
         // KNOWN PROBLEM : AUTO WIDTH INCREASE
-        String lastInput = textField.getText().substring(0, textField.getText().length() >= 16 ?
-                                                                16
-                                                                :
-                                                                textField.getText().length()
-                                                        );
+//        String lastInput = textField.getText().substring(0, textField.getText().length() >= 16 ?
+//                                                                16
+//                                                                :
+//                                                                textField.getText().length()
+//                                                        );
+        String lastInput = textField.getText();
+
         comboBoxModel.removeAllElements();
         comboBoxModel.addElement(lastInput);
 
         displayedList = customerList
                             .stream()
-                            .filter(customer -> customer.getName().toLowerCase()
+                            .filter(customer -> (customer.getName().toLowerCase() + " (" + customer.getID() + ")")
                                     .contains(lastInput.toLowerCase()))
                             .collect(Collectors
                             .toCollection(ArrayList::new));
 
         for (PremiumCustomer pCustomer : displayedList) {
-            comboBoxModel.addElement(pCustomer.getName());
+            comboBoxModel.addElement(pCustomer.getName() + " (" + pCustomer.getID() + ")");
         }
     }
 
@@ -89,11 +91,19 @@ public class CashierComboBox extends JComboBox {
         }
 
         // incomplete query
-        if (getSelectedIndex() == 0 && ! displayedList.get(0).getName().equals(textField.getText())) {
+        if (getSelectedIndex() == 0 && ! (displayedList.get(0).getName() + " (" + displayedList.get(0).getID() + ")").equals(textField.getText())) {
+            System.out.println("buat");
             return -1;
         }
 
-        return displayedList.get(getSelectedIndex()).getID();
+        for (PremiumCustomer pCustomer : displayedList) {
+            if ((pCustomer.getName() + " (" + pCustomer.getID() + ")").equals(textField.getText())) {
+                System.out.println("make premium" + pCustomer.getID());
+                return pCustomer.getID();
+            }
+        }
+
+        return -1; // ERROR
     }
 
 
