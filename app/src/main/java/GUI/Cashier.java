@@ -379,7 +379,6 @@ public class Cashier extends JPanel implements IDAbleListener<QuantifiableItem>,
     }
 
     BillDisplay createNewBillTab() {
-        // TODO : currently getprice doesnt display de
         currentActiveBillDisplays.add(new BillDisplay(subtotalAmount));
 
         updateBillTabTitle();
