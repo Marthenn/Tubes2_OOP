@@ -14,6 +14,7 @@ Selain fitur-fitur utama tersebut, terdapat pula fitur tambahan berupa plugin ya
 ## Program Requirements and Installation🔧
 
 ```markdown
+JDK 17
 
 ```
 
