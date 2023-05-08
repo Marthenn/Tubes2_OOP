@@ -38,4 +38,21 @@ public class StorerDataSerializer<T extends StorerData<K>, K extends IDAble> ext
 
         System.out.println("Finish saving " +  value.getStoredItemName());
     }
+
+    @SneakyThrows
+    public void serializeStorerEmitter(T value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
+        jgen.writeStartObject();
+        jgen.writeStringField("storedItemName", value.getStoredItemName());
+        System.out.println("Saving " +  value.getStoredItemName());
+
+        Field fieldItemsStore = value.getClass().getSuperclass().getSuperclass().getDeclaredField("store");
+        fieldItemsStore.setAccessible(true);
+        ObjectMapper objectMapper = new ObjectMapper();
+        jgen.writeObjectField("store", objectMapper.writeValueAsString((HashMap<Integer, K>) fieldItemsStore.get(value)));
+        jgen.writeEndObject();
+
+        System.out.println("Finish saving " +  value.getStoredItemName());
+    }
+
+
 }
