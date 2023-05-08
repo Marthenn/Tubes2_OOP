@@ -4,6 +4,8 @@ import Core.Customer.Customer;
 import Core.Customer.PremiumCustomer;
 import Core.DataStore.DataStore;
 import Core.Item.Bill.FixedBill.FixedBill;
+import Core.Item.Bill.FixedBill.FixedBillModifier.DiscountFixedBillModifier;
+import Core.Item.Bill.FixedBill.FixedBillModifier.FractionFixedBillModifier;
 import GUI.Cashier;
 import GUI.Setting;
 import Plugins.Plugin;
@@ -17,7 +19,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 public class Payment implements Plugin {
-    ArrayList<FixedBill> bills = new ArrayList<>();
+    ArrayList<FixedBill> bills = getBills();
     private Double tax = 0.0;
     Thread paymentThread = new Thread(new Runnable() {
         @Override
@@ -46,6 +48,7 @@ public class Payment implements Plugin {
                                                 // get the selected item from the JComboBox
                                                 String newTax = (String) ((JComboBox) component1).getSelectedItem();
                                                 tax = Double.parseDouble(newTax);
+                                                writeTax(tax);
 //                                                System.out.println("New Tax: " + tax);
                                             }
                                         }
@@ -54,11 +57,40 @@ public class Payment implements Plugin {
                             }
                         }
                     }
-                    ArrayList<FixedBill> fb = getBills();
-                    // if fb is
+                    System.out.println("Current tax: " + tax);
+                    System.out.println("Bills size: " + bills.size());
+                    for (FixedBill x : bills){
+                        System.out.println(x.getID()+" : "+ x.getPrice());
+                    }
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+    });
+    Thread discountThread = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            while (true) {
+                try {
+                    Thread.sleep(100);
+                    ArrayList<FixedBill> fb = getBills();
+                    // if there's new bill then
+                    for (FixedBill x : fb){
+                        // if x not in bills
+                        if (!bills.contains(x)){
+//                            x.addFixedBillModifier(new FractionFixedBillModifier("Tax and Service", 1+tax));
+                            // JPopup to insert discount rate
+                            String s = JOptionPane.showInputDialog("Insert discount rate (0-100)");
+                            Double d = Double.parseDouble(s);
+//                            x.addFixedBillModifier(new DiscountFixedBillModifier("Discount", d/100));
+                            bills.add(x);
+                        }
+                    }
+                    bills = fb; // safety measure
+                } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -113,25 +145,16 @@ public class Payment implements Plugin {
         }
 
         paymentThread.start();
+        discountThread.start();
         // make pop up
         JOptionPane.showMessageDialog(null, "Change the tax and service charge rate in the setting menu (accumulative)");
-
-        Field instanceCashier = null;
-        try{
-            instanceCashier = Cashier.getInstance(null).getClass().getDeclaredField("instance");
-            instanceCashier.setAccessible(true);
-
-            // set field to CashierPayment instance
-            instanceCashier.set(Cashier.getInstance(null), new CashierPayment(null));
-        } catch (Exception e){
-            e.printStackTrace();
-        }
     }
 
     @Override
     public void unload() {
         System.out.println("Unloading Payment");
         paymentThread.interrupt();
+        discountThread.interrupt();
         removeFromSetting("Payment");
     }
 
@@ -143,6 +166,17 @@ public class Payment implements Plugin {
             items.add(d.toString());
         }
         return items;
+    }
+
+    private void writeTax(Double tax){
+        File file = new File("tax.txt");
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(tax.toString().getBytes());
+            fos.close();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void initialize(){
