@@ -14,10 +14,19 @@ Selain fitur-fitur utama tersebut, terdapat pula fitur tambahan berupa plugin ya
 ## Program Requirements and Installation🔧
 
 ```markdown
+JDK 17
 
 ```
 
 ## Get Started 🏁
+
+## Screenshot
+![image](https://user-images.githubusercontent.com/92701179/236724045-10b3a9dd-54a9-4981-9075-088cacd6b7bb.png)
+
+![image](https://user-images.githubusercontent.com/92701179/236724085-6829f108-e59c-40e7-84ef-43b766ecf1a6.png)
+
+![image](https://user-images.githubusercontent.com/92701179/236724122-c16f779a-0e34-4377-aa28-a4c8486e9653.png)
+
 
 ## Author 🧑‍💻
 | NO | Nama | NIM|

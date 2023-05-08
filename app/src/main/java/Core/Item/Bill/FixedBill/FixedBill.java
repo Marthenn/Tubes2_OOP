@@ -40,7 +40,10 @@ public class FixedBill implements Profitable, IDAble, Serializable {
     private double getUnmodifiedPrice() {
         double realCost = 0;
         for (QuantifiableItem transactionHistory : items){
-            realCost += transactionHistory.getCost();
+            try {
+                realCost += transactionHistory.getPrice();
+            } catch (ItemInBillNotExist ignored){
+            }
         }
 
         return realCost;
