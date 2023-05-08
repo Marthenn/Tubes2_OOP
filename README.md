@@ -19,6 +19,32 @@ JDK 17
 ```
 
 ## Get Started 🏁
+Aplikasi ini menggunakan package manager Gradle.
+
+
+### Run Aplikasi
+Untuk menjalankan aplikasi, masukan perintah
+```
+> gradle run
+````
+
+### Build Aplikasi
+```
+> gradle build
+```
+
+
+### Build jar
+```
+> gradle jar
+```
+
+``` 
+> gradle -Pplugin={nama-plugin}
+```
+
+Ganti {nama-plugin} dengan nama plugin yang tepat tanpa tanda spasi dan petik maupun kurung
+
 
 ## Screenshot
 ![image](https://user-images.githubusercontent.com/92701179/236724045-10b3a9dd-54a9-4981-9075-088cacd6b7bb.png)
